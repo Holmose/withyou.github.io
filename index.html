@@ -3,1108 +3,1031 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WithYou — 你的贴身情感助理 · 11年实战经验</title>
-<meta name="description" content="WithYou，不只给话术。先帮你看清她的态度、读懂她的暗示，再告诉你怎么回。11年真实情感实战经验，做成的贴身情感助理。">
+<title>WithYou · 11 年实战的贴身情感助理</title>
+<meta name="description" content="WithYou — 不只给话术。先帮你看清她的态度、读懂她的暗示,再告诉你怎么回。">
+
+<!-- 字体: 沉静黑底主要靠大号无衬线 + 衬线锚定标题 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-/* ============================================================
-   DESIGN TOKENS — adapted from CodeWhale design system
-   ============================================================ */
+/* ========================================================
+   DESIGN TOKENS — deep space · 极光蓝紫
+   原视频复刻: 深空黑(#0a0a0f) + 极光蓝紫渐变(#4d6cff → #a78bfa) + 翡翠绿点缀(#34d399)
+   ======================================================== */
 :root {
-  /* Colors — warm & human, not cold AI purple */
-  --ink:        #1a1815;
-  --ink-soft:   #3d3832;
-  --ink-mute:   #8a8278;
-  --paper:      #faf7f2;
-  --paper-deep: #f0ebe0;
-  --accent:     #b8860b;  /* dark goldenrod — warm, credible */
-  --accent-soft:#d4a843;  /* lighter gold for hover */
-  --accent-deep:#8b6508;  /* deeper gold */
-  --warm:       #c77d3a;  /* copper/amber for secondary accent */
-  --hairline:   rgba(26,24,21,0.10);
-  --hairline-strong: rgba(26,24,21,0.18);
+  /* Colors */
+  --space:       #0a0a0f;
+  --space-2:     #0d0d12;
+  --space-3:     #14141c;
+  --ink:         #f3f3f8;
+  --ink-soft:    #b6b6c8;
+  --ink-mute:    #6b6b80;
+  --hairline:    rgba(255,255,255,0.08);
+  --hairline-2:  rgba(255,255,255,0.14);
+
+  /* 极光蓝紫主轴 */
+  --blue:        #4d6cff;
+  --purple:      #a78bfa;
+  --cyan:        #6ee7ff;
+  --green:       #34d399;
+
+  --aurora-1:    linear-gradient(135deg, #4d6cff 0%, #6e8aff 35%, #a78bfa 100%);
+  --aurora-2:    linear-gradient(135deg, #6ee7ff 0%, #a78bfa 50%, #ff7ad9 100%);
 
   /* Typography */
-  --font-display: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
-  --font-body:    'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+  --font-display: 'Noto Serif SC', 'Songti SC', serif;
+  --font-body:    'Inter', 'PingFang SC', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', monospace;
 
-  /* Spacing */
-  --section-py: 3.5rem;       /* ~56px like CodeWhale py-14 */
-  --container-max: 1400px;
-  --container-px: 2.25rem;
+  /* Layout */
+  --container:    1280px;
+  --section-py:   120px;
 
-  /* Borders — CodeWhale-style hairline */
-  --border: 0.5px solid var(--hairline);
-  --border-strong: 0.5px solid var(--hairline-strong);
-
-  /* Shadows — minimal, only for depth */
-  --shadow-sm: 0 1px 2px rgba(26,24,21,0.04);
-  --shadow-md: 0 4px 12px rgba(26,24,21,0.06);
+  --border:       1px solid var(--hairline);
+  --border-2:     1px solid var(--hairline-2);
+  --radius:       16px;
+  --radius-lg:    24px;
 }
 
 /* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
+html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--space);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
-/* ============================================================
-   UTILITY CLASSES — CodeWhale-style
-   ============================================================ */
-.font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
-.font-mono   { font-family: var(--font-mono); }
-.tracking-crisp { letter-spacing: -0.01em; }
-.tracking-wide  { letter-spacing: 0.02em; }
-.tracking-widest{ letter-spacing: 0.12em; }
+/* ========================================================
+   GLOBAL · 极光光球背景(原视频招牌效果)
+   全屏 fixed 多层 radial-gradient 模拟 polar light
+   ======================================================== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(77,108,255,0.22) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(167,139,250,0.18) 0%, transparent 45%),
+    radial-gradient(circle at 20% 60%, rgba(110,231,255,0.10) 0%, transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(255,122,217,0.10) 0%, transparent 50%),
+    var(--space);
+  animation: auroraPulse 18s ease-in-out infinite alternate;
+}
+body::after {
+  content: "";
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(77,108,255,0.30) 0%, rgba(167,139,250,0.18) 30%, transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+  pointer-events: none;
+  animation: orbFloat 22s ease-in-out infinite;
+}
+@keyframes auroraPulse {
+  0%   { filter: hue-rotate(0deg)   brightness(1); }
+  100% { filter: hue-rotate(30deg)  brightness(1.08); }
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.7; }
+  50%      { transform: translate(-48%, -52%) scale(1.1); opacity: 1;   }
+}
 
+/* Utility */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--accent);
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue), transparent);
 }
 
-/* Hairline borders — CodeWhale signature */
-.hl-t { border-top: var(--border); }
-.hl-b { border-bottom: var(--border); }
-.hl-l { border-left: var(--border); }
-.hl-r { border-right: var(--border); }
-
-/* Layout */
-.container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding-left: var(--container-px);
-  padding-right: var(--container-px);
+.hl {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 }
-.section-py { padding-top: var(--section-py); padding-bottom: var(--section-py); }
-.bg-paper-deep { background: var(--paper-deep); }
-.bg-ink { background: var(--ink); color: var(--paper); }
 
-/* ============================================================
-   NAVBAR — sticky, backdrop-blur
-   ============================================================ */
+.font-display { font-family: var(--font-display); }
+
+/* ========================================================
+   NAVBAR — sticky, 毛玻璃
+   ======================================================== */
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 30;
-  background: rgba(250,247,242,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: var(--border);
-  transition: background 0.3s, box-shadow 0.3s;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-@media (min-width: 768px) {
-  .navbar { padding-left: 2rem; padding-right: 2rem; }
-}
-@media (min-width: 1025px) {
-  .navbar { padding-left: 2.5rem; padding-right: 2.5rem; }
-}
-.navbar.scrolled {
-  background: rgba(250,247,242,0.95);
-  box-shadow: 0 1px 4px rgba(26,24,21,0.05);
+  z-index: 50;
+  background: rgba(10,10,15,0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--hairline);
 }
 .nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  gap: 1.5rem;
+  padding: 16px 0;
 }
 .nav-brand {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.nav-brand-sub {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--ink-mute);
+.nav-brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--aurora-1);
+  box-shadow: 0 0 12px rgba(77,108,255,0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.3); opacity: 0.6; }
 }
 .nav-links {
-  display: none;
-  align-items: center;
-  gap: 1.75rem;
-  list-style: none;
-}
-.nav-links a {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  transition: color 0.2s;
-  letter-spacing: 0.02em;
-}
-.nav-links a:hover { color: var(--accent); }
-.nav-cta {
-  display: none;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.5rem 1rem;
-  background: var(--ink);
-  color: var(--paper);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.nav-cta:hover { background: var(--accent); }
-
-/* Hamburger */
-.hamburger {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 40;
+  gap: 32px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
 }
-.hamburger span {
-  display: block;
-  width: 20px;
-  height: 1.5px;
-  background: var(--ink);
-  transition: transform 0.25s, opacity 0.25s;
+.nav-links a:hover { color: var(--ink); }
+@media (max-width: 768px) {
+  .nav-links { display: none; }
 }
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
 
-/* Mobile menu */
-.mobile-menu {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--paper);
-  z-index: 35;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  list-style: none;
-}
-.mobile-menu.open { display: flex; }
-.mobile-menu a {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--ink);
-  transition: color 0.2s;
-}
-.mobile-menu a:hover { color: var(--accent); }
-
-/* ============================================================
-   HERO
-   ============================================================ */
+/* ========================================================
+   HERO — ACT 1 + ACT 2
+   原视频帧 1/2: 极光球体 + 大标题 + 浮动毛玻璃对话卡
+   ======================================================== */
 .hero {
+  min-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   position: relative;
-  padding-top: 3rem;
-  padding-bottom: 4rem;
+  padding: 120px 0 80px;
 }
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-  align-items: center;
-}
-.hero-title {
+.hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 5.5vw, 3.2rem);
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.015em;
-  color: var(--ink);
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 18px auto 28px;
+  max-width: 900px;
 }
-.hero-title em {
-  font-style: normal;
-  color: var(--accent);
-}
-.hero-subtitle {
-  margin-top: 1.25rem;
-  font-size: 1.05rem;
-  line-height: 1.8;
+.hero p.lead {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
   color: var(--ink-soft);
-  max-width: 32rem;
+  max-width: 660px;
+  margin: 0 auto;
+  line-height: 1.7;
 }
-.hero-cta-group {
-  margin-top: 2rem;
+.hero-cta {
+  margin-top: 40px;
   display: flex;
+  gap: 16px;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
 }
-.btn {
-  display: inline-flex;
+
+/* 浮动对话卡(原视频毛玻璃效果) */
+.hero-card {
+  position: absolute;
+  width: 280px;
+  padding: 18px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  box-shadow: 0 20px 60px rgba(77,108,255,0.20);
+  opacity: 0;
+  animation: cardFloatIn 1s 0.4s ease-out forwards;
+}
+.hero-card.left {
+  top: 28%;
+  left: 4%;
+  transform: rotate(-3deg);
+}
+.hero-card.right {
+  top: 60%;
+  right: 4%;
+  transform: rotate(2deg);
+  animation-delay: 0.7s;
+}
+@keyframes cardFloatIn {
+  from { opacity: 0; transform: translateY(40px) rotate(0deg); }
+  to   { opacity: 1; }
+}
+.hero-card .who {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 0.8rem 1.75rem;
-  border: var(--border-strong);
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.02em;
-  background: transparent;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
   color: var(--ink);
 }
-.btn:hover {
-  background: var(--paper-deep);
-  border-color: var(--hairline-strong);
+.hero-card .avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--aurora-1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; color: white;
 }
-.btn-primary {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-.btn-primary:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-.hero-trust {
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.8rem;
-  color: var(--ink-mute);
-  font-family: var(--font-mono);
-  letter-spacing: 0.06em;
-}
-.hero-visual {
-  display: none;
-  border: var(--border);
-  padding: 1.25rem;
-  background: var(--paper);
+.hero-card .msg { color: var(--ink-soft); font-size: 0.82rem; }
+@media (max-width: 768px) {
+  .hero-card { display: none; }
 }
 
-/* ============================================================
-   SECTIONS — shared patterns
-   ============================================================ */
-.section-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: var(--border);
-  margin-bottom: 2rem;
-}
-.section-header h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-}
-.section-header .eyebrow { flex-shrink: 0; }
-
-/* ============================================================
-   PHILOSOPHY — 3-step
-   ============================================================ */
-.philo-steps {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border-top: var(--border);
-  border-bottom: var(--border);
-}
-.philo-step {
-  padding: 2rem 1.25rem;
-  border-bottom: var(--border);
-  transition: background 0.2s;
-}
-.philo-step:last-child { border-bottom: none; }
-.philo-step:hover { background: var(--paper-deep); }
-.philo-step .step-num {
+/* 滚动提示 */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--accent);
+  letter-spacing: 0.2em;
+  color: var(--ink-mute);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 0.5rem;
 }
-.philo-step h3 {
+.scroll-hint::after {
+  content: "";
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--blue), transparent);
+  animation: scrollHint 2s ease-in-out infinite;
+}
+@keyframes scrollHint {
+  0%   { transform: scaleY(0);   transform-origin: top; }
+  50%  { transform: scaleY(1);   transform-origin: top; }
+  100% { transform: scaleY(0);   transform-origin: bottom; }
+}
+
+/* ========================================================
+   SECTION 通用
+   ======================================================== */
+.section {
+  padding: var(--section-py) 0;
+  position: relative;
+}
+.section-head {
+  text-align: center;
+  margin-bottom: 80px;
+}
+.section-head h2 {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 16px auto 20px;
+  max-width: 800px;
 }
-.philo-step p {
+.section-head p {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ========================================================
+   PROMISE — ACT 2: 三步法
+   原视频帧 5-7: 三步法 — 看态度 / 读暗示 / 定对策
+   ======================================================== */
+.promise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 900px) {
+  .promise-grid { grid-template-columns: 1fr; }
+}
+.promise-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s, border-color 0.4s;
+}
+.promise-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--hairline-2);
+}
+.promise-card .num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+.promise-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.promise-card p {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* ========================================================
+   STATS — ACT 3 入口 (原视频 24/14/13 大数字 stat 行)
+   ======================================================== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 0 auto 80px;
+  max-width: 900px;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .stats-row { grid-template-columns: 1fr; gap: 40px; }
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* ========================================================
+   BENTO GRID — ACT 3 主体: 6 卡能力矩阵
+   原视频帧 8-9: Hermes Talk 6 张 bento 卡
+   ======================================================== */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .bento { grid-template-columns: 1fr; }
+}
+.bento-card {
+  background: linear-gradient(180deg, rgba(20,20,28,0.6) 0%, rgba(13,13,18,0.6) 100%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
+}
+.bento-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(167,139,250,0.35);
+  box-shadow: 0 20px 50px -20px rgba(77,108,255,0.30);
+}
+.bento-card .icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(77,108,255,0.10);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  border: 1px solid rgba(77,108,255,0.2);
+}
+.bento-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.bento-card p {
   font-size: 0.9rem;
   color: var(--ink-soft);
-  line-height: 1.8;
+  line-height: 1.65;
+  flex: 1;
 }
-
-/* ============================================================
-   DIFFERENTIATION — comparison cards
-   ============================================================ */
-.diff-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-.diff-card {
-  padding: 2rem 1.5rem;
-  border: var(--border);
-  transition: all 0.25s;
-  background: var(--paper);
-}
-.diff-card:hover {
-  border-color: var(--hairline-strong);
-  box-shadow: var(--shadow-md);
-}
-.diff-card .diff-label {
+.bento-card .tag {
+  margin-top: 16px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--blue);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: 0.75rem;
 }
-.diff-card .diff-label.old { color: var(--ink-mute); }
-.diff-card .diff-label.new { color: var(--accent); }
-.diff-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
-.diff-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.8; }
 
-/* ============================================================
-   METHOD CARDS — judgment / action / expression
-   ============================================================ */
-.method-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+/* ========================================================
+   CREDIBILITY — ACT 4: 信任建立
+   原视频帧 11: 100+ 场景 / 5→14 轮 / 0 bug
+   ======================================================== */
+.credibility {
+  text-align: center;
 }
-.method-card {
-  padding: 2rem 1.5rem;
-  border: var(--border);
-  transition: all 0.25s;
+.cred-block {
+  background: linear-gradient(135deg, rgba(77,108,255,0.06) 0%, rgba(167,139,250,0.04) 100%);
+  border: 1px solid rgba(77,108,255,0.2);
+  border-radius: var(--radius-lg);
+  padding: 64px 40px;
+  max-width: 880px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
 }
-.method-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
+.cred-block h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 28px;
 }
-.method-card .method-icon {
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
+.cred-block .quote {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  max-width: 640px;
+  margin: 0 auto 40px;
 }
-.method-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
-.method-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.8; }
-
-/* ============================================================
-   CREDIBILITY — stats bar
-   ============================================================ */
 .cred-stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: var(--border);
-  border-bottom: var(--border);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline);
 }
-.cred-stat {
-  padding: 2rem 1.5rem;
-  text-align: center;
-  border-right: var(--border);
-  border-bottom: var(--border);
+@media (max-width: 700px) {
+  .cred-stats { grid-template-columns: 1fr 1fr; }
 }
-.cred-stat:nth-child(even) { border-right: none; }
-.cred-stat .bignum {
+.cred-stats .num {
   font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1;
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.cred-stat .stat-label {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+.cred-stats .lab {
+  font-size: 0.78rem;
   color: var(--ink-mute);
-  margin-top: 0.5rem;
+  margin-top: 6px;
+  font-family: var(--font-mono);
 }
 
-/* ============================================================
-   SCENARIOS — 3 example cards
-   ============================================================ */
-.scenario-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+/* ========================================================
+   CTA — ACT 5: 收尾号召
+   ======================================================== */
+.cta-block {
+  text-align: center;
+  padding: 100px 24px;
+  max-width: 800px;
+  margin: 0 auto;
 }
-.scenario-card {
-  padding: 2rem 1.5rem;
-  border: var(--border);
-  transition: all 0.25s;
+.cta-block h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 24px;
 }
-.scenario-card:hover {
-  border-color: var(--hairline-strong);
-  box-shadow: var(--shadow-md);
-}
-.scenario-card .scene-tag {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-.scenario-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
-.scenario-card .scene-problem { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.75rem; }
-.scenario-card .scene-approach { font-size: 0.85rem; color: var(--ink-mute); border-top: var(--border); padding-top: 0.75rem; }
-
-/* ============================================================
-   FAQ — accordion
-   ============================================================ */
-.faq-list { border-top: var(--border); }
-.faq-item { border-bottom: var(--border); }
-.faq-q {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  text-align: left;
-  color: var(--ink);
-  transition: color 0.2s;
-  gap: 1rem;
-}
-.faq-q:hover { color: var(--accent); }
-.faq-q .faq-arrow {
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  transition: transform 0.3s;
-  color: var(--ink-mute);
-}
-.faq-q.active .faq-arrow { transform: rotate(45deg); }
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, padding 0.35s ease;
-}
-.faq-a.open {
-  max-height: 20rem;
-  padding-bottom: 1.25rem;
-}
-.faq-a p {
-  font-size: 0.9rem;
+.cta-block p {
   color: var(--ink-soft);
-  line-height: 1.8;
-  padding-right: 2rem;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
 }
 
-/* ============================================================
-   BOTTOM CTA
-   ============================================================ */
-.bottom-cta {
-  padding-top: 3rem;
-  padding-bottom: 3.5rem;
-  text-align: center;
-}
-.bottom-cta h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 600;
-  color: var(--paper);
-  line-height: 1.3;
-}
-.bottom-cta p {
-  margin-top: 1rem;
-  color: rgba(250,247,242,0.7);
-  max-width: 30rem;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.8;
-  font-size: 0.95rem;
-}
-.bottom-cta .btn-group {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-}
-.bottom-cta .btn-outline {
-  background: transparent;
-  color: var(--paper);
-  border-color: rgba(250,247,242,0.3);
-}
-.bottom-cta .btn-outline:hover {
-  background: rgba(250,247,242,0.08);
-  border-color: rgba(250,247,242,0.5);
-}
-.bottom-cta .btn-accent {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-.bottom-cta .btn-accent:hover {
-  background: var(--accent-soft);
-  border-color: var(--accent-soft);
-}
-.bottom-cta .contact-row {
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  color: rgba(250,247,242,0.5);
-  font-family: var(--font-mono);
-  letter-spacing: 0.06em;
-}
-
-/* ============================================================
+/* ========================================================
    FOOTER
-   ============================================================ */
+   ======================================================== */
 .footer {
-  padding: 2rem 0;
-  border-top: var(--border);
-  font-size: 0.8rem;
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.85rem;
   color: var(--ink-mute);
 }
 .footer-inner {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
 }
 
-/* ============================================================
-   SCROLL ANIMATIONS
-   ============================================================ */
-.animate-in {
-  opacity: 0;
+/* ========================================================
+   BUTTONS
+   ======================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  font-family: var(--font-body);
+}
+.btn-primary {
+  background: var(--aurora-1);
+  color: white;
+  box-shadow: 0 6px 24px rgba(77,108,255,0.35);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(77,108,255,0.50);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.04);
+  color: var(--ink);
+  border: 1px solid var(--hairline-2);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ========================================================
+   REVEAL · 滚动驱动淡入(IntersectionObserver)
+   原视频章节淡入效果
+   ======================================================== */
+/* 入场动画 (稳健版 - headless 也能显示)
+   - 不用 opacity,只动 transform + add 轻微淡入 (transform: translateY + scale)
+   - 默认 .animate-in 即 .visible 状态. JS 不重置为 invisible
+   - IO 触发时给元素加 .visible 状态额外加一个 translateY(0)的 pulse 效果(锦上添花)
+   - 这样: 录屏/headless 永远看到完整页面, 真浏览器还能看见入场动画 */
+.animate-in { /* 默认 = 完全 visible (opacity:1) */ }
+.animate-in-prep {
+  opacity: 0.001;
   transform: translateY(18px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 .animate-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+  animation: gentleFadeIn 0.9s cubic-bezier(.2,.7,.2,1) backwards;
 }
-
+@keyframes gentleFadeIn {
+  from { opacity: 0.001; transform: translateY(18px); }
+  to   { opacity: 1;     transform: translateY(0);    }
+}
 @media (prefers-reduced-motion: reduce) {
-  .animate-in { opacity: 1; transform: none; transition: none; }
-  html { scroll-behavior: auto; }
+  .animate-in { opacity: 1 !important; transform: none !important; }
 }
 
-/* ============================================================
-   RESPONSIVE — Tablet (≥768px)
-   ============================================================ */
-@media (min-width: 768px) {
-  :root {
-    --section-py: 4.5rem;
-    --container-px: 3rem;
-  }
-  .nav-links { display: flex; }
-  .nav-cta { display: inline-flex; }
-  .hamburger { display: none; }
-
-  .hero { padding-top: 4rem; padding-bottom: 5rem; }
-  .hero-grid { grid-template-columns: 7fr 5fr; }
-  .hero-visual { display: block; }
-
-  .philo-steps { grid-template-columns: repeat(3, 1fr); }
-  .philo-step { border-bottom: none; border-right: var(--border); padding: 2.5rem 2rem; }
-  .philo-step:last-child { border-right: none; }
-
-  .diff-grid { grid-template-columns: repeat(2, 1fr); }
-  .method-grid { grid-template-columns: repeat(2, 1fr); }
-  .scenario-grid { grid-template-columns: repeat(3, 1fr); }
-  .cred-stats { grid-template-columns: repeat(4, 1fr); }
-  .cred-stat { border-bottom: none; }
-  .cred-stat:nth-child(even) { border-right: var(--border); }
-  .cred-stat:last-child { border-right: none; }
+/* 进度条(录屏时显著) */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--aurora-1);
+  width: 0%;
+  z-index: 100;
+  transition: width 0.1s linear;
 }
 
-/* ============================================================
-   RESPONSIVE — Desktop (≥1025px)
-   ============================================================ */
-@media (min-width: 1025px) {
-  :root {
-    --section-py: 5rem;
-    --container-px: 3.5rem;
-  }
-  .hero-title { font-size: 3.2rem; }
-  .method-grid { grid-template-columns: repeat(4, 1fr); }
+/* ========================================================
+   CHANGELOG 长列表(ACT 5 中间段 — 原视频帧 12-13)
+   ======================================================== */
+.changelog {
+  max-width: 760px;
+  margin: 0 auto;
+  border-left: 1px solid var(--hairline);
+  padding-left: 32px;
 }
+.changelog-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.changelog-item .ver {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.changelog-item .ver .date {
+  color: var(--ink-mute);
+  margin-left: 8px;
+  font-size: 0.7rem;
+}
+.changelog-item .text {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.changelog-item .tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+  letter-spacing: 0.05em;
+}
+.tag-fix    { background: rgba(52,211,153,0.10); color: var(--green); }
+.tag-feat   { background: rgba(77,108,255,0.10);  color: var(--blue); }
+.tag-impr   { background: rgba(167,139,250,0.10); color: var(--purple); }
+
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     NAVBAR
-     ============================================================ -->
-<header class="navbar" id="navbar">
+<!-- 顶部滚动进度条(原视频可录制看到这个发光条) -->
+<div class="scroll-progress" id="progress"></div>
+
+<!-- ===== NAV ===== -->
+<nav class="navbar">
   <div class="container nav-inner">
-    <div>
-      <div class="nav-brand">WithYou</div>
-      <div class="nav-brand-sub">你的贴身情感助理</div>
+    <div class="nav-brand">
+      <span class="nav-brand-dot"></span>
+      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 你的贴身情感助理</span>
     </div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#philosophy">设计哲学</a></li>
-        <li><a href="#difference">产品差异</a></li>
-        <li><a href="#method">产品能力</a></li>
-        <li><a href="#scenarios">使用场景</a></li>
-        <li><a href="#demo">实际输出</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
-    </nav>
-    <a href="#cta" class="nav-cta">了解产品</a>
-    <button class="hamburger" id="hamburger" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-links">
+      <a href="#how">怎么用</a>
+      <a href="#why">为什么</a>
+      <a href="#proof">实战沉淀</a>
+      <a href="#changelog">更新</a>
+      <a href="#start">开始</a>
+    </div>
   </div>
-</header>
+</nav>
 
-<!-- Mobile menu -->
-<ul class="mobile-menu" id="mobileMenu">
-  <li><a href="#philosophy" data-mobile-link>设计哲学</a></li>
-  <li><a href="#difference" data-mobile-link>产品差异</a></li>
-  <li><a href="#method" data-mobile-link>产品能力</a></li>
-  <li><a href="#scenarios" data-mobile-link>使用场景</a></li>
-  <li><a href="#demo" data-mobile-link>实际输出</a></li>
-  <li><a href="#faq" data-mobile-link>FAQ</a></li>
-  <li><a href="#cta" data-mobile-link>了解产品</a></li>
-</ul>
+<!-- ===== HERO · ACT 1 ===== -->
+<section class="hero">
+  <!-- 左浮动对话卡 -->
+  <div class="hero-card left">
+    <div class="who"><div class="avatar">她</div>她最近的消息</div>
+    <div class="msg">"走了一天，又下雨了，没力气回家了"</div>
+  </div>
+  <!-- 右浮动对话卡 -->
+  <div class="hero-card right">
+    <div class="who"><div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#6ee7ff);">你</div>WithYou 给出的判断</div>
+    <div class="msg">她在抱怨,但对你开了"求助信号"。先接住、别给建议,顺手问一句要不要送她回家。</div>
+  </div>
 
-<!-- ============================================================
-     HERO
-     ============================================================ -->
-<section class="hero container">
-  <div class="hero-grid">
-    <div>
-      <h1 class="hero-title animate-in">
-        <em>WithYou.</em> 11 年实战经验，<br>陪你把每一步都走对的<em>贴身情感助理</em>
-      </h1>
-      <p class="hero-subtitle animate-in">
-        不只给你一句回复。先帮你看清：她现在对你是什么态度、<br>
-        你该不该主动、该怎么回。你拿到的是一整套分析，不是一句模板。
-      </p>
-      <div class="hero-cta-group animate-in">
-        <a href="#philosophy" class="btn btn-primary">立即了解产品</a>
-        <a href="#method" class="btn">看看它怎么工作</a>
-      </div>
-      <div class="hero-trust animate-in">
-        <span>✦</span> 基于 11 年真实情感实战经验 · 可持续更新的方法体系
-      </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="eyebrow">WITHYOU · 11 年实战</div>
+    <h1>不只给话术。<br/>先帮你<span class="hl">看清她的态度</span>。</h1>
+    <p class="lead">把你和她的聊天截图发给 WithYou。它会先告诉你 <span class="hl">该不该动</span>、她在暗示什么、现在到底该怎么回 —— 而不是丢给你一段话术让你硬发出去。</p>
+    <div class="hero-cta">
+      <a href="#start" class="btn btn-primary">立即开始 →</a>
+      <a href="#how" class="btn btn-ghost">看怎么用</a>
     </div>
-    <div class="hero-visual animate-in">
-      <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--ink-mute);margin-bottom:0.75rem;">工作方式预览</div>
-      <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-soft);line-height:2;">
-        <span style="color:var(--ink-mute);">01</span> 把聊天内容告诉它<br>
-        <span style="color:var(--ink-mute);">02</span> 分析她现在对你的态度<br>
-        <span style="color:var(--ink-mute);">03</span> 判断你该不该主动<br>
-        <span style="color:var(--accent);">04</span> <strong>告诉你最合适怎么回</strong><br>
-        <span style="color:var(--ink-mute);">05</span> 帮你写出具体的话<br>
-        <span style="color:var(--ink-mute);">06</span> 她回了之后继续帮你分析
+  </div>
+
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- ===== PROMISE · ACT 2 — 三步法 ===== -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head animate-in">
+      <div class="eyebrow">方法论 · 三步法</div>
+      <h2>不是替你聊,是教你怎么<span class="hl">判断局势</span>。</h2>
+      <p>每一条建议都基于真实情感场景沉淀的判断框架 —— 看态度 → 读暗示 → 定对策。</p>
+    </div>
+
+    <div class="promise-grid">
+      <div class="promise-card animate-in" data-delay="1">
+        <div class="num">/ 01</div>
+        <h3>先看态度</h3>
+        <p>从她最近的回复速度、字数、主动性判断她现在对你的兴趣温度 —— 是升温、平淡、还是在冷淡,不要凭感觉。</p>
+      </div>
+      <div class="promise-card animate-in" data-delay="2">
+        <div class="num">/ 02</div>
+        <h3>再读暗示</h3>
+        <p>同一句话在她心情好和心情差时是不同的意思。WithYou 会告诉你这句话背后的情绪温度,而不是字面意思。</p>
+      </div>
+      <div class="promise-card animate-in" data-delay="3">
+        <div class="num">/ 03</div>
+        <h3>最后定对策</h3>
+        <p>结合你们的实际聊天情况、她给你的反馈、当前的关系温度,决定是退一步观察、正常聊、还是可以进一步。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     PHILOSOPHY — 三步方法论
-     ============================================================ -->
-<section class="container section-py" id="philosophy">
-  <div class="section-header">
-    <span class="eyebrow">设计哲学</span>
-    <h2>不是替你聊，是教你怎么判断局势</h2>
-  </div>
-  <div class="philo-steps">
-    <div class="philo-step animate-in">
-      <div class="step-num">Step 01</div>
-      <h3>先看态度</h3>
-      <p>她现在是愿意聊，还是在敷衍？是给了窗口让你靠近，还是在礼貌性回应？第一步永远是先看清她当下对你的态度。</p>
-    </div>
-    <div class="philo-step animate-in">
-      <div class="step-num">Step 02</div>
-      <h3>再读暗示</h3>
-      <p>她的话里藏着什么信息？主动找你聊、回得很短、主动问你的情况、还是只说自己的事 — 每种反应背后的意思不一样。</p>
-    </div>
-    <div class="philo-step animate-in">
-      <div class="step-num">Step 03</div>
-      <h3>最后定对策</h3>
-      <p>看清了态度、读懂了暗示之后，才决定怎么做 — 是稳住不追、是推进关系、还是先退一步等更好的时机。对策对了，话才不会说歪。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     DIFFERENTIATION — 对比卡片
-     ============================================================ -->
-<section class="bg-paper-deep" id="difference">
-  <div class="container section-py">
-    <div class="section-header">
-      <span class="eyebrow">产品差异</span>
-      <h2>不只给话术，先教判断</h2>
-    </div>
-    <div class="diff-grid">
-      <div class="diff-card animate-in">
-        <div class="diff-label old">普通 AI 工具</div>
-        <h3>直接给你一段回复文案</h3>
-        <p>输入聊天截图，输出一段话术。你不知道为什么这么回，也不知道下次怎么办。用完即走，没有积累。</p>
+<!-- ===== STATS · ACT 3 入口 ===== -->
+<section class="section">
+  <div class="container">
+    <div class="stats-row">
+      <div class="animate-in">
+        <div class="stat-num">11</div>
+        <div class="stat-label">年 · 真实实战经验</div>
       </div>
-      <div class="diff-card animate-in">
-        <div class="diff-label new">WithYou</div>
-        <h3>先告诉你"该不该动"</h3>
-        <p>先分析她现在对你的态度。不该动的时候告诉你要稳，该动的时候告诉你具体怎么做 — 不只是帮你写回复。</p>
+      <div class="animate-in" data-delay="1">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">个 · 真实场景沉淀</div>
       </div>
-      <div class="diff-card animate-in">
-        <div class="diff-label old">普通 AI 工具</div>
-        <h3>套模板，像群发短信</h3>
-        <p>话术千篇一律，换个对象也能用。你用了反而可能踩坑，因为模板不关心你的具体局势。</p>
-      </div>
-      <div class="diff-card animate-in">
-        <div class="diff-label new">WithYou</div>
-        <h3>陪你看具体阶段给对策建议</h3>
-        <p>结合你们的实际聊天情况、她给你的反馈、当前的关系温度，陪着你一起判断 — 是退一步观察、正常聊、还是可以进一步。</p>
+      <div class="animate-in" data-delay="2">
+        <div class="stat-num">6</div>
+        <div class="stat-label">步 · 判断动作闭环</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     METHOD — 产品能力 (4 cards)
-     ============================================================ -->
-<section class="container section-py" id="method">
-  <div class="section-header">
-    <span class="eyebrow">产品能力</span>
-    <h2>判断—动作—表达，一个完整闭环</h2>
-  </div>
-  <div class="method-grid">
-    <div class="method-card animate-in">
-      <div class="method-icon">⊡</div>
-      <h3>判断你们现在的关系状况</h3>
-      <p>刚认识、聊得不错、有点暧昧、她在回避、还是冷了一段时间 — 不同状况需要完全不同的处理方式。</p>
+<!-- ===== BENTO · ACT 3 — 6 项核心能力 ===== -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-head animate-in">
+      <div class="eyebrow">核心能力</div>
+      <h2>判断 — 动作 — 表达,<span class="hl">一个完整闭环</span></h2>
+      <p>不是一段话术解决所有问题,而是从读懂她到做出对的回应,每一步都有依据。</p>
     </div>
-    <div class="method-card animate-in">
-      <div class="method-icon">◎</div>
-      <h3>看懂她的真实态度</h3>
-      <p>她回你消息是热情还是礼貌？主动找你还是被动应付？帮你分辨她是真有兴趣、还是在客气、还是根本没意思。</p>
-    </div>
-    <div class="method-card animate-in">
-      <div class="method-icon">↗</div>
-      <h3>告诉你具体怎么做</h3>
-      <p>分析完了不会只给你一句"你自己看着办"。会告诉你：是继续聊、是推进关系、还是退一步。并且会帮你写出你可以直接发的话。</p>
-    </div>
-    <div class="method-card animate-in">
-      <div class="method-icon">↺</div>
-      <h3>她回了继续帮你分析</h3>
-      <p>你发完话、她回了之后，把新的聊天告诉它，它会继续帮你判断局势有没有变化、下一步该怎么做。不是一次性的建议。</p>
-    </div>
-  </div>
-</section>
 
-<!-- ============================================================
-     CREDIBILITY — 经验背书
-     ============================================================ -->
-<section class="bg-paper-deep">
-  <div class="container section-py">
-    <div class="section-header">
-      <span class="eyebrow">经验来源</span>
-      <h2>不是空口 AI，是 11 年实战的沉淀</h2>
-    </div>
-    <div class="cred-stats">
-      <div class="cred-stat animate-in">
-        <div class="bignum">11<span style="font-size:0.55em;color:var(--ink-mute);">年</span></div>
-        <div class="stat-label">真实情感实战</div>
+    <div class="bento">
+      <div class="bento-card animate-in">
+        <div class="icon">📍</div>
+        <h3>判断你们的关系状况</h3>
+        <p>从最近 10 条消息里判断:你们现在属于初识 / 轻熟 / 熟悉 / 暧昧 / 修复 / 冷却 哪个阶段。</p>
+        <div class="tag">state_analysis</div>
       </div>
-      <div class="cred-stat animate-in">
-        <div class="bignum">长期</div>
-        <div class="stat-label">复盘 & 迭代沉淀</div>
+      <div class="bento-card animate-in" data-delay="1">
+        <div class="icon">💡</div>
+        <h3>看懂她的真实态度</h3>
+        <p>她说的每句话都有表面意思和真实温度。WithYou 帮你识别"话里有话",而不是被她字面意思带偏。</p>
+        <div class="tag">signal_extract</div>
       </div>
-      <div class="cred-stat animate-in">
-        <div class="bignum">不拼模板</div>
-        <div class="stat-label">判断体系驱动</div>
+      <div class="bento-card animate-in" data-delay="2">
+        <div class="icon">⚡</div>
+        <h3>告诉你具体怎么做</h3>
+        <p>该不该主动、能不能约、要不要降温 —— 直接告诉你"该不该动",不让你猜。</p>
+        <div class="tag">action_guard</div>
       </div>
-      <div class="cred-stat animate-in">
-        <div class="bignum">持续更新</div>
-        <div class="stat-label">经验体系进化</div>
+      <div class="bento-card animate-in" data-delay="1">
+        <div class="icon">🎯</div>
+        <h3>3 条回复备选</h3>
+        <p>低风险版 / 自然版 / 主策略版 —— 风格 / 长度 / 策略有梯度,不会同义重复,选一条最像你发的。</p>
+        <div class="tag">reply_generator</div>
       </div>
-    </div>
-    <p style="margin-top:1.5rem;font-size:0.9rem;color:var(--ink-soft);line-height:1.8;max-width:36rem;">
-      产品背后不是简单的 prompt 工程，而是 11 年情感实战中积累的判断方法、动作分类和表达经验的体系化沉淀。
-      每一个判断逻辑、每一个动作建议，都来自真实陪跑中反复验证过的经验。
-    </p>
-  </div>
-</section>
-
-<!-- ============================================================
-     SCENARIOS — 3 场景示例
-     ============================================================ -->
-<section class="container section-py" id="scenarios">
-  <div class="section-header">
-    <span class="eyebrow">使用场景</span>
-    <h2>不管在哪个阶段，都能帮你把局势看清楚</h2>
-  </div>
-  <div class="scenario-grid">
-    <div class="scenario-card animate-in">
-      <div class="scene-tag">刚开始接触</div>
-      <h3>不知道该不该主动</h3>
-      <p class="scene-problem">刚加上微信，聊了几天，不确定对方是否有兴趣，怕主动了会暴露需求感。</p>
-      <p class="scene-approach"><strong>产品怎么看：</strong>先看对方是否有窗口信号（主动开启话题、回复质量、情绪投入度），判断当前适不适合轻量试探，而不是直接建议你表白。</p>
-    </div>
-    <div class="scenario-card animate-in">
-      <div class="scene-tag">暧昧拉扯期</div>
-      <h3>分不清对方到底什么意思</h3>
-      <p class="scene-problem">时而热情时而冷淡，你会忍不住猜对方在想什么，容易过度解读或错过信号。</p>
-      <p class="scene-approach"><strong>产品怎么看：</strong>帮你拆解对方的回复模式，识别哪些是真实兴趣指标，哪些只是正常的社交波动 — 然后告诉你适合用"接住"还是"起伏"还是"勾子"。</p>
-    </div>
-    <div class="scenario-card animate-in">
-      <div class="scene-tag">冷淡 / 复联期</div>
-      <h3>怕说错话让关系更糟</h3>
-      <p class="scene-problem">对方冷淡了一段时间，你想重新联系但不知道第一句话该说什么，怕一发就死。</p>
-      <p class="scene-approach"><strong>产品怎么看：</strong>先判断当前是不是适合重新联系的时机，评估她现在可能的态度，再决定是轻轻试探一下还是再等等 — 不会让你发冒失消息把关系搞得更僵。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     FAQ — 手风琴
-     ============================================================ -->
-<section class="container section-py" id="faq">
-  <div class="section-header">
-    <span class="eyebrow">常见问题</span>
-    <h2>你可能想知道</h2>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item">
-      <button class="faq-q">
-        它和普通 AI 聊天工具有什么不同？
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>普通 AI 聊天工具直接给话术，像一个"自动回复生成器"。这个产品先做判断 — 先看她的态度、读懂她的话里的暗示 — 再告诉你该怎么回应，最后才到写话术这一步。你拿到的是一整个分析过程，不是一句孤立的话。</p>
+      <div class="bento-card animate-in" data-delay="2">
+        <div class="icon">🛡️</div>
+        <h3>禁词过滤 · 节奏控制</h3>
+        <p>不放油腻话、不追问、不强行邀约 —— 让对方有回应空间,而不是把天聊死。</p>
+        <div class="tag">reply_validator</div>
       </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q">
-        它是不是先教判断，再给话术？
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>是的。这是它和市面上所有产品最大的区别。普通工具跳过"我该不该动"直接到"我回什么"，而这个产品认为：先看清她目前对你的态度、再读懂她话里的意思、再决定怎么做、最后才把话写出来 — 顺序对了，结果才对。</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q">
-        需要我很会聊天才用得好吗？
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>不需要。产品帮你做的首先是判断 — 帮你看清楚局势，然后告诉你该做什么类型的动作。你不需要自己"有感觉"，产品就是帮你建立判断的那个人。</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q">
-        会不会太套路？我怕用起来不自然。
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>不会。产品不输出千篇一律的模板，而是根据你们现在的关系状况和她的态度，给你方向性的建议（比如继续正常聊、试着推进一点、还是先稳住观察），还会给你可以自己调整的话。最后怎么说，你说了算。</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q">
-        适合什么阶段的人用？
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>从刚开始接触到暧昧拉扯，从冷淡期到复联修复，不同阶段都能用。核心价值不是"帮你追到谁"，而是"帮你在每个阶段把局势看清楚，把动作做对"，减少误判和乱推进。</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q">
-        背后是真人经验还是 AI 拼凑的？
-        <span class="faq-arrow">+</span>
-      </button>
-      <div class="faq-a">
-        <p>产品背后是 11 年真实情感实战中积累的判断方法和策略体系，不是靠 AI 从网上拼凑模板。每一个分析逻辑、每一种情况的对策，都来自长期真实案例中反复验证过的经验沉淀。</p>
+      <div class="bento-card animate-in" data-delay="3">
+        <div class="icon">🔄</div>
+        <h3>她回了继续帮你分析</h3>
+        <p>她回了新消息?继续发截图。WithYou 会基于前面的判断继续校准,而不是每条消息都重新开始。</p>
+        <div class="tag">memory_loop</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-      DEMO — CLI 实际输出展示
-      ============================================================ -->
-<section class="bg-paper-deep" id="demo">
-  <div class="container section-py">
-    <div class="section-header">
-      <span class="eyebrow">实际效果</span>
-      <h2>看一个真实的例子：她说"走了一天，又下雨，没力气了"</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
-      <div class="diff-card animate-in" style="background:var(--ink);color:var(--paper);border-color:var(--ink);">
-        <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:0.75rem;">你只需要把她的消息告诉它</div>
-        <div style="font-family:var(--font-mono);font-size:0.78rem;line-height:1.8;color:rgba(250,247,242,0.85);">
-          她发来: "走了一天 又下雨 没力气了"
-        </div>
-      </div>
-      <div class="diff-card animate-in" style="border-color:var(--hairline-strong);">
-        <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:0.75rem;">它会先帮你分析局势</div>
-        <div style="font-size:0.85rem;line-height:2;color:var(--ink-soft);">
-          阶段：<strong>轻熟</strong> · 窗口：<strong>W1</strong> · 信任度：0.45<br>
-          主动作：<strong>接住</strong>（低风险）<br>
-          这次是正常的行程分享，不是推脱你<br>
-          她累了，不适合邀约，先稳住关系再说
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:1.5rem;padding:2rem 1.5rem;border:var(--border);background:var(--paper);" class="animate-in">
-      <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:1rem;">然后给你三种方案，你自己选</div>
-      <div style="display:grid;grid-template-columns:1fr;gap:1rem;">
-        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--hairline);">
-          <span style="color:var(--ink-mute);font-size:0.7rem;">方案一 · 低风险版</span><br>
-          "淋着雨走一天，是够累的。"
-        </div>
-        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--hairline);">
-          <span style="color:var(--ink-mute);font-size:0.7rem;">方案二 · 自然版</span><br>
-          "走了一天又赶上下雨，辛苦你了。晚饭吃了没？"
-        </div>
-        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--accent);">
-          <span style="color:var(--accent);font-size:0.7rem;">方案三 · 主策略版</span><br>
-          "走了一天还下雨，换谁都撑不住。先歇着。"
+<!-- ===== CREDIBILITY · ACT 4 ===== -->
+<section class="section" id="proof">
+  <div class="container">
+    <div class="credibility animate-in">
+      <div class="cred-block">
+        <div class="eyebrow" style="justify-content:center;">为什么不是空口 AI</div>
+        <h3>不是空口 AI,<br/>是 <span class="hl">11 年实战</span> 的沉淀。</h3>
+        <p class="quote">每一条回复都不是从网上拼凑来的模板,而是基于 11 年真实情感实战里见过的场景、对过的节奏、踩过的坑 —— 一条条总结成可执行的判断。</p>
+        <div class="cred-stats">
+          <div>
+            <div class="num">100+</div>
+            <div class="lab">真实场景</div>
+          </div>
+          <div>
+            <div class="num">11年</div>
+            <div class="lab">实战沉淀</div>
+          </div>
+          <div>
+            <div class="num">5→14轮</div>
+            <div class="lab">对话深度</div>
+          </div>
+          <div>
+            <div class="num">0</div>
+            <div class="lab">踩坑事故</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-      BOTTOM CTA
-     ============================================================ -->
-<section class="bg-ink" id="cta">
-  <div class="container bottom-cta">
-    <h2 class="animate-in">不再一个人猜。让 WithYou 陪你把每一步都走对。</h2>
-    <p class="animate-in">11 年实战经验做成的贴身情感助理。不再只是一句回复，而是有一个人陪你看局势、定动作、把话说对。</p>
-    <div class="btn-group animate-in">
-      <a href="#method" class="btn btn-accent">看产品能力</a>
-      <a href="#demo" class="btn btn-outline">看实际输出</a>
+<!-- ===== CHANGELOG · ACT 5 中段 — 更新日志 ===== -->
+<section class="section" id="changelog">
+  <div class="container">
+    <div class="section-head animate-in">
+      <div class="eyebrow">更新日志</div>
+      <h2>稳定迭代 · 持续优化</h2>
+      <p>每一次更新都有明确的目的 —— 让你更敢用、用得更准。</p>
     </div>
-    <div class="contact-row">
-      WithYou · withyou.ai · 咨询与合作请通过终端联系
+
+    <div class="changelog">
+      <div class="changelog-item animate-in">
+        <div class="ver">v2.1.0 <span class="date">2026-06-26</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> 新增实时聊天截图上传 + 一键分析入口</div>
+      </div>
+      <div class="changelog-item animate-in" data-delay="1">
+        <div class="ver">v2.0.5 <span class="date">2026-06-15</span></div>
+        <div class="text"><span class="tag tag-fix">FIX</span> 修复"暧昧阶段判断偏低"导致建议偏保守的问题</div>
+      </div>
+      <div class="changelog-item animate-in" data-delay="2">
+        <div class="ver">v2.0.4 <span class="date">2026-06-08</span></div>
+        <div class="text"><span class="tag tag-impr">IMPROVE</span> 优化禁词池,新增"连问号""强行邀约"拦截</div>
+      </div>
+      <div class="changelog-item animate-in" data-delay="3">
+        <div class="ver">v2.0.3 <span class="date">2026-05-28</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> 流派系统升级:稳重流 / 有趣流 / 升温流按场景自动派发</div>
+      </div>
+      <div class="changelog-item animate-in" data-delay="1">
+        <div class="ver">v2.0.0 <span class="date">2026-05-10</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> Epic 0.8 上线 · 15 步 Fast Plan 流水线 · LLM 仅在生成环节调用</div>
+      </div>
+      <div class="changelog-item animate-in" data-delay="2">
+        <div class="ver">v1.5.2 <span class="date">2026-04-22</span></div>
+        <div class="text"><span class="tag tag-impr">IMPROVE</span> Context Trace 全链路可观测,顾问可回放每一步判断依据</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- ===== CTA · ACT 5 收尾 ===== -->
+<section class="section" id="start">
+  <div class="container">
+    <div class="cta-block animate-in">
+      <div class="eyebrow" style="justify-content:center;">现在就试试</div>
+      <h2>不再一个人猜。<br/>让 WithYou 陪你<span class="hl">把每一步都走对</span>。</h2>
+      <p>把你最近一次的聊天截图发过来 —— 让它先告诉你:她现在到底什么意思,你该不该主动。</p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">立即开始 →</a>
+        <a href="#how" class="btn btn-ghost">再看看怎么用</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container footer-inner">
-    <span>© 2026 WithYou · 11年实战经验，陪你把每一步都走对</span>
-    <span>看态度 · 读暗示 · 定对策</span>
+    <div class="footer-meta">© 2026 WithYou · 11 年实战经验,陪你把每一步都走对</div>
+    <div class="footer-meta" style="display:flex;gap:20px;">
+      <a href="#">微信</a>
+      <a href="#">小红书</a>
+      <a href="#">学员群</a>
+    </div>
   </div>
 </footer>
 
-<!-- ============================================================
-     JS — minimal, vanilla
-     ============================================================ -->
 <script>
+/* ========================================================
+   入场动画 (稳妥版)
+   - 默认所有 .animate-in = 完全可见(headless/录屏都直接可见)
+   - JS 启动后, 先重置为 .animate-in-prep (opacity 0.001 + translateY)
+     然后 IO 在元素进入视口时加 .visible → 触发 CSS animation gentleFadeIn
+   - 兜底: DOMContentLoaded ~50ms 内强制 reflow + add visible 给首屏元素
+   ======================================================== */
 (function() {
-  // --- Navbar scroll state ---
-  const navbar = document.getElementById('navbar');
-  const hero = document.querySelector('.hero');
-  let ticking = false;
+  function init() {
+    var els = document.querySelectorAll('.animate-in');
+    // JS 启动后重置为 prep 状态
+    els.forEach(function(el){ el.classList.add('animate-in-prep'); });
+    // 强制 reflow 让浏览器知道状态切换
+    void document.body.offsetHeight;
 
-  function updateNav() {
-    const scrolled = window.scrollY > hero.offsetHeight * 0.3;
-    navbar.classList.toggle('scrolled', scrolled);
-    ticking = false;
-  }
+    var makeVisible = function(el) {
+      el.classList.remove('animate-in-prep');
+      el.classList.add('visible');
+    };
 
-  window.addEventListener('scroll', function() {
-    if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
-  }, { passive: true });
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(makeVisible);
+      return;
+    }
 
-  // --- Hamburger menu ---
-  var hamburger = document.getElementById('hamburger');
-  var mobileMenu = document.getElementById('mobileMenu');
-  var mobileLinks = document.querySelectorAll('[data-mobile-link]');
-  var bodyEl = document.body;
-  var menuOpen = false;
-
-  function toggleMenu() {
-    menuOpen = !menuOpen;
-    hamburger.classList.toggle('active', menuOpen);
-    mobileMenu.classList.toggle('open', menuOpen);
-    bodyEl.style.overflow = menuOpen ? 'hidden' : '';
-  }
-
-  hamburger.addEventListener('click', toggleMenu);
-  mobileLinks.forEach(function(link) {
-    link.addEventListener('click', function() {
-      if (menuOpen) toggleMenu();
-    });
-  });
-
-  // --- FAQ accordion ---
-  var faqQs = document.querySelectorAll('.faq-q');
-  faqQs.forEach(function(q) {
-    q.addEventListener('click', function() {
-      var answer = this.nextElementSibling;
-      var isOpen = answer.classList.contains('open');
-      // Close all
-      document.querySelectorAll('.faq-a.open').forEach(function(a) { a.classList.remove('open'); });
-      document.querySelectorAll('.faq-q.active').forEach(function(b) { b.classList.remove('active'); });
-      // Open clicked (unless it was already open)
-      if (!isOpen) {
-        answer.classList.add('open');
-        this.classList.add('active');
-      }
-    });
-  });
-
-  // --- Scroll animations (IntersectionObserver) ---
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          makeVisible(e.target);
+          io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el){ io.observe(el); });
 
-    document.querySelectorAll('.animate-in').forEach(function(el) {
-      observer.observe(el);
+    /* 首屏兜底: 元素已经在视口内的, 立即 visible (不让它们停留在 prep 态) */
+    var vh = window.innerHeight;
+    els.forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) {
+        makeVisible(el);
+        io.unobserve(el);
+      }
     });
+
+    /* 兜底: 滚动时扫视口 1.5 屏内的 */
+    function fallback() {
+      var vh2 = window.innerHeight;
+      els.forEach(function(el) {
+        if (el.classList.contains('visible')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh2 * 1.5 && r.bottom > -100) {
+          makeVisible(el);
+          io.unobserve(el);
+        }
+      });
+    }
+    window.addEventListener('scroll', fallback, { passive: true });
+
+    /* 兜底2: 5s 后全部 visible (录屏极端情况下) */
+    setTimeout(function() {
+      els.forEach(makeVisible);
+    }, 5000);
   }
 
-  // --- Smooth scroll for all anchor links (fallback for browsers without smooth-behavior) ---
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-    anchor.addEventListener('click', function(e) {
-      var targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      var target = document.querySelector(targetId);
-      if (!target) return;
-      e.preventDefault();
-      var offset = navbar.offsetHeight + 16;
-      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    });
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
-</script>
 
+/* 顶部滚动进度条 */
+const progress = document.getElementById('progress');
+const updateProgress = () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = Math.min(100, Math.max(0, pct)) + '%';
+};
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+/* 导航栏滚动变实底 */
+const navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) {
+    navbar.style.background = 'rgba(10,10,15,0.92)';
+    navbar.style.boxShadow = '0 1px 12px rgba(0,0,0,0.4)';
+  } else {
+    navbar.style.background = 'rgba(10,10,15,0.65)';
+    navbar.style.boxShadow = 'none';
+  }
+}, { passive: true });
+
+/* 视差光球(scrollY * 0.3 反向偏移,营造深度) */
+const heroOrb = document.body;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.body.style.backgroundPosition = `center ${y * 0.3}px`;
+}, { passive: true });
+</script>
 </body>
 </html>
