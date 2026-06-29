@@ -109,7 +109,13 @@ body::after {
 .container {
   max-width: var(--container);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
+}
+@media (min-width: 768px) {
+  .container { padding: 0 40px; }
+}
+@media (min-width: 1280px) {
+  .container { padding: 0 48px; }
 }
 .eyebrow {
   font-family: var(--font-mono);
@@ -154,7 +160,8 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 .nav-brand {
   font-family: var(--font-display);
