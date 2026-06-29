@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WithYou · 11 年实战的贴身情感助理</title>
+<title>WithYou · 实战方法论 + 训练过的情感 AI</title>
 <meta name="description" content="WithYou — 不只给话术。先帮你看清她的态度、读懂她的暗示,再告诉你怎么回。">
 
 <!-- 字体: 沉静黑底主要靠大号无衬线 + 衬线锚定标题 -->
@@ -387,14 +387,14 @@ body::after {
    ======================================================== */
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 32px;
   margin: 0 auto 80px;
-  max-width: 900px;
+  max-width: 1100px;
   text-align: center;
 }
-@media (max-width: 700px) {
-  .stats-row { grid-template-columns: 1fr; gap: 40px; }
+@media (max-width: 800px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 40px; }
 }
 .stat-num {
   font-family: var(--font-display);
@@ -647,6 +647,162 @@ body::after {
 }
 
 /* ========================================================
+   DEMO · 真实样本演示(ACT 4 末: 三段式 输入 → 分析 → 输出)
+   ======================================================== */
+.demo-stack {
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.demo-card {
+  background: linear-gradient(180deg, rgba(20,20,28,0.6) 0%, rgba(13,13,18,0.6) 100%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+}
+.demo-input  { border-color: rgba(110,231,255,0.20); }
+.demo-analyze { border-color: rgba(77,108,255,0.22); }
+.demo-action  { border-color: rgba(167,139,250,0.22); }
+.demo-outputs { border-color: rgba(167,139,250,0.32); }
+
+/* meta strip (Step 0 assumption) */
+.demo-meta {
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--hairline-2);
+  border-radius: var(--radius);
+  padding: 16px 28px;
+}
+.demo-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 8px;
+}
+.demo-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 28px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.demo-meta-row .k {
+  color: var(--ink-mute);
+  margin-right: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+.demo-meta-row .v { color: var(--ink); }
+
+.demo-sub-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+.demo-prose {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.demo-prose strong { color: var(--ink); font-weight: 600; }
+.demo-kv .v-warn { color: #ff8b6a; }
+.demo-reply .r-note {
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+  line-height: 1.5;
+  padding-top: 4px;
+  border-top: 1px dashed var(--hairline);
+}
+.demo-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 14px;
+}
+.demo-bubble {
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid var(--cyan);
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  font-size: 1.05rem;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+.demo-analyze .demo-label { color: var(--blue); }
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 28px;
+}
+@media (max-width: 600px) {
+  .demo-grid { grid-template-columns: 1fr; }
+}
+.demo-kv { display: flex; flex-direction: column; gap: 4px; }
+.demo-kv .k {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+}
+.demo-kv .v {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+.demo-kv .v-accent {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+.demo-outputs .demo-label { color: var(--purple); }
+.demo-replies {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 760px) {
+  .demo-replies { grid-template-columns: 1fr; }
+}
+.demo-reply {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.demo-reply-pick {
+  background: linear-gradient(180deg, rgba(77,108,255,0.10), rgba(167,139,250,0.05));
+  border-color: rgba(167,139,250,0.40);
+}
+.demo-reply .r-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.demo-reply-pick .r-tag { color: var(--purple); }
+.demo-reply .r-text {
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+/* ========================================================
    CHANGELOG 长列表(ACT 5 中间段 — 原视频帧 12-13)
    ======================================================== */
 .changelog {
@@ -722,11 +878,11 @@ body::after {
   <!-- 右浮动对话卡 -->
   <div class="hero-card right">
     <div class="who"><div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#6ee7ff);">你</div>WithYou 给出的判断</div>
-    <div class="msg">她在抱怨,但对你开了"求助信号"。先接住、别给建议,顺手问一句要不要送她回家。</div>
+    <div class="msg">阶段轻熟 · 配合度黄灯 · 小窗口。她是真累,在等你接 —— 不需要建议、不需要接她回家。先把她接住,留话头让对话继续。</div>
   </div>
 
   <div class="container" style="position:relative;z-index:2;">
-    <div class="eyebrow">WITHYOU · 11 年实战</div>
+    <div class="eyebrow">WITHYOU · 训练过的情感 AI</div>
     <h1>不只给话术。<br/>先帮你<span class="hl">看清她的态度</span>。</h1>
     <p class="lead">把你和她的聊天截图发给 WithYou。它会先告诉你 <span class="hl">该不该动</span>、她在暗示什么、现在到底该怎么回 —— 而不是丢给你一段话术让你硬发出去。</p>
     <div class="hero-cta">
@@ -767,21 +923,25 @@ body::after {
   </div>
 </section>
 
-<!-- ===== STATS · ACT 3 入口 ===== -->
+<!-- ===== STATS · ACT 3 入口 — 真实数字 (从项目代码实测挖出) ===== -->
 <section class="section">
   <div class="container">
     <div class="stats-row">
       <div class="animate-in">
-        <div class="stat-num">11</div>
-        <div class="stat-label">年 · 真实实战经验</div>
+        <div class="stat-num">432</div>
+        <div class="stat-label">条 · 实战案例库</div>
       </div>
       <div class="animate-in" data-delay="1">
-        <div class="stat-num">100+</div>
-        <div class="stat-label">个 · 真实场景沉淀</div>
+        <div class="stat-num">30</div>
+        <div class="stat-label">个 · 脱敏真实样本</div>
       </div>
       <div class="animate-in" data-delay="2">
-        <div class="stat-num">6</div>
-        <div class="stat-label">步 · 判断动作闭环</div>
+        <div class="stat-num">26</div>
+        <div class="stat-label">个 · 实战流派模块</div>
+      </div>
+      <div class="animate-in" data-delay="3">
+        <div class="stat-num">194</div>
+        <div class="stat-label">个 · 回归测试用例</div>
       </div>
     </div>
   </div>
@@ -800,7 +960,7 @@ body::after {
       <div class="bento-card animate-in">
         <div class="icon">📍</div>
         <h3>判断你们的关系状况</h3>
-        <p>从最近 10 条消息里判断:你们现在属于初识 / 轻熟 / 熟悉 / 暧昧 / 修复 / 冷却 哪个阶段。</p>
+        <p>从你们最近的对话里,判断现在属于初识 / 轻熟 / 熟悉 / 暧昧 / 冷却 / 修复 哪个阶段。</p>
         <div class="tag">state_analysis</div>
       </div>
       <div class="bento-card animate-in" data-delay="1">
@@ -843,16 +1003,16 @@ body::after {
     <div class="credibility animate-in">
       <div class="cred-block">
         <div class="eyebrow" style="justify-content:center;">为什么不是空口 AI</div>
-        <h3>不是空口 AI,<br/>是 <span class="hl">11 年实战</span> 的沉淀。</h3>
-        <p class="quote">每一条回复都不是从网上拼凑来的模板,而是基于 11 年真实情感实战里见过的场景、对过的节奏、踩过的坑 —— 一条条总结成可执行的判断。</p>
+        <h3>不是空口 AI,<br/>是 <span class="hl">实战方法论</span> 的沉淀。</h3>
+        <p class="quote">每一条回复都不是从网上拼凑来的模板,而是基于真实情感场景里见过的 432 个案例、对过的节奏、踩过的坑,经过 <strong>26 流派模块</strong> + <strong>194 个回归用例</strong>反复验证 —— 一条条总结成可执行的判断。</p>
         <div class="cred-stats">
           <div>
-            <div class="num">100+</div>
-            <div class="lab">真实场景</div>
+            <div class="num">432</div>
+            <div class="lab">实战案例库</div>
           </div>
           <div>
-            <div class="num">11年</div>
-            <div class="lab">实战沉淀</div>
+            <div class="num">26</div>
+            <div class="lab">流派模块</div>
           </div>
           <div>
             <div class="num">5→14轮</div>
@@ -861,6 +1021,90 @@ body::after {
           <div>
             <div class="num">0</div>
             <div class="lab">踩坑事故</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEMO · 真实样本演示(按 songge-state-router + songge-wenzhong 流程走) ===== -->
+<section class="section" id="demo">
+  <div class="container">
+    <div class="section-head animate-in">
+      <div class="eyebrow">实际效果 · state-router → action-router → wenzhong</div>
+      <h2>看一个真实样本:她说<span class="hl">"走了一天,又下雨了,没力气回家了"</span></h2>
+      <p>把这句发过来,系统先按松哥流派走完"L2 状态判断 → L3 动作路由"再给你 3 种回复,选一条最像你发的。</p>
+    </div>
+
+    <div class="demo-stack">
+      <!-- Step 0: 基本假设 -->
+      <div class="demo-meta animate-in">
+        <div class="demo-meta-label">Step 0 · 前提假设</div>
+        <div class="demo-meta-row">
+          <span class="k">认识时长</span><span class="v">约 1 个月</span>
+          <span class="k">见过面</span><span class="v">1 次</span>
+          <span class="k">她最近主动</span><span class="v">2 天前</span>
+        </div>
+      </div>
+
+      <!-- 输入:她发来的消息 -->
+      <div class="demo-card demo-input animate-in" data-delay="1">
+        <div class="demo-label">她发来的消息</div>
+        <div class="demo-bubble">走了一天,又下雨了,没力气回家了</div>
+      </div>
+
+      <!-- L2 状态判断 -->
+      <div class="demo-card demo-analyze animate-in" data-delay="2">
+        <div class="demo-label">songge-state-router · L2 状态判断</div>
+        <div class="demo-grid">
+          <div class="demo-kv"><span class="k">阶段</span><span class="v">轻熟</span></div>
+          <div class="demo-kv"><span class="k">配合度</span><span class="v">黄灯(有回应但不主动)</span></div>
+          <div class="demo-kv"><span class="k">情绪质量</span><span class="v">情绪真高(累 + 等关心)</span></div>
+          <div class="demo-kv"><span class="k">主动度</span><span class="v">被动型</span></div>
+          <div class="demo-kv"><span class="k">配合动机</span><span class="v">被动配合</span></div>
+          <div class="demo-kv"><span class="k">信任度</span><span class="v">0.55(中)</span></div>
+          <div class="demo-kv"><span class="k">窗口等级</span><span class="v">小窗口(有情绪,缺逻辑+信号)</span></div>
+          <div class="demo-kv"><span class="k">诊断置信度</span><span class="v">高</span></div>
+        </div>
+        <div class="demo-sub-label">诊断分析</div>
+        <div class="demo-prose">
+          她没有主动找你、只是发了一句分享 → 被动型。她确实累了,不是推脱,是在等你接。<strong style="color:var(--cyan)">她要的不是建议,是关心</strong>。如果你直接给"打车软件"或"我接你",会暴露需求感太强。
+        </div>
+      </div>
+
+      <!-- L3 动作路由 -->
+      <div class="demo-card demo-action animate-in" data-delay="3">
+        <div class="demo-label">songge-action-router · L3 动作路由</div>
+        <div class="demo-grid">
+          <div class="demo-kv"><span class="k">最终动作</span><span class="v v-accent">接住(温柔托底)</span></div>
+          <div class="demo-kv"><span class="k">匹配流派</span><span class="v">songge-wenzhong</span></div>
+          <div class="demo-kv"><span class="k">备用流派</span><span class="v">songge-huishou</span></div>
+          <div class="demo-kv"><span class="k">禁止动作</span><span class="v v-warn">邀约、解释、油腻、连续追问</span></div>
+        </div>
+        <div class="demo-prose">
+          <strong>心态:</strong> 稳住,不飘,把自己当一个会关心人的成熟男生,不当男朋友,不当跟班。
+        </div>
+      </div>
+
+      <!-- 输出:3 种回复 -->
+      <div class="demo-card demo-outputs animate-in" data-delay="4">
+        <div class="demo-label">3 种回复,选一条最像你发的</div>
+        <div class="demo-replies">
+          <div class="demo-reply">
+            <div class="r-tag">低风险 · 兜底</div>
+            <div class="r-text">淋了一天雨,是够累的。</div>
+            <div class="r-note">一句接住,啥都不做。等她继续</div>
+          </div>
+          <div class="demo-reply">
+            <div class="r-tag">自然 · 推荐</div>
+            <div class="r-text">走了一天又赶上下雨,辛苦你了。饭吃了吗?</div>
+            <div class="r-note">接住 + 轻关心,留她回话空间</div>
+          </div>
+          <div class="demo-reply demo-reply-pick">
+            <div class="r-tag">主策略 · 温柔托底</div>
+            <div class="r-text">一天雨 + 一天累,正常人都撑不住。先回去歇着,到家跟我说一声。</div>
+            <div class="r-note">读了情绪 + 给确定性 + 留尾巴让她主动</div>
           </div>
         </div>
       </div>
@@ -879,28 +1123,28 @@ body::after {
 
     <div class="changelog">
       <div class="changelog-item animate-in">
-        <div class="ver">v2.1.0 <span class="date">2026-06-26</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> 新增实时聊天截图上传 + 一键分析入口</div>
+        <div class="ver">v0.8  <span class="date">2026-06-29</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> 整个分析过程实时显示 · 不用等结果出来再看 · 你能看到它当下在判断哪一步</div>
       </div>
       <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v2.0.5 <span class="date">2026-06-15</span></div>
-        <div class="text"><span class="tag tag-fix">FIX</span> 修复"暧昧阶段判断偏低"导致建议偏保守的问题</div>
+        <div class="ver">v0.8  <span class="date">2026-06-28</span></div>
+        <div class="text"><span class="tag tag-fix">FIX</span> 修复配置加载不到的隐藏问题 · 启动更稳</div>
       </div>
       <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">v2.0.4 <span class="date">2026-06-08</span></div>
-        <div class="text"><span class="tag tag-impr">IMPROVE</span> 优化禁词池,新增"连问号""强行邀约"拦截</div>
+        <div class="ver">v0.5.8 <span class="date">2026-06-28</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> 接入实战经验数据库 · 每条建议都有真实场景做依据,不再是泛泛而谈</div>
       </div>
       <div class="changelog-item animate-in" data-delay="3">
-        <div class="ver">v2.0.3 <span class="date">2026-05-28</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> 流派系统升级:稳重流 / 有趣流 / 升温流按场景自动派发</div>
+        <div class="ver">v0.5.6 <span class="date">2026-06-28</span></div>
+        <div class="text"><span class="tag tag-feat">FEATURE</span> 每一条结论都附上"为什么这么判断" · 顾问可回放你的完整判断过程</div>
       </div>
       <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v2.0.0 <span class="date">2026-05-10</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> Epic 0.8 上线 · 15 步 Fast Plan 流水线 · LLM 仅在生成环节调用</div>
+        <div class="ver">v0.5.4 <span class="date">2026-06-27</span></div>
+        <div class="text"><span class="tag tag-impr">IMPROVE</span> 接入脱敏后的真实学员案例库 · 你遇到的场景,大概率别人也遇到过</div>
       </div>
       <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">v1.5.2 <span class="date">2026-04-22</span></div>
-        <div class="text"><span class="tag tag-impr">IMPROVE</span> Context Trace 全链路可观测,顾问可回放每一步判断依据</div>
+        <div class="ver">v0.5.1 <span class="date">2026-06-27</span></div>
+        <div class="text"><span class="tag tag-fix">FIX</span> 修复网络不稳定时容易断连 · 报告生成更可靠</div>
       </div>
     </div>
   </div>
@@ -924,7 +1168,7 @@ body::after {
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="footer-meta">© 2026 WithYou · 11 年实战经验,陪你把每一步都走对</div>
+    <div class="footer-meta">© 2026 WithYou · 实战方法论沉淀 · 陪你把每一步都走对</div>
     <div class="footer-meta" style="display:flex;gap:20px;">
       <a href="#">微信</a>
       <a href="#">小红书</a>
