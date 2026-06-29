@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WithYou — 你的贴身情感助理 · 11年实战经验</title>
+<meta name="description" content="WithYou，不只给话术。先帮你看清她的态度、读懂她的暗示，再告诉你怎么回。11年真实情感实战经验，做成的贴身情感助理。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — adapted from CodeWhale design system
+   ============================================================ */
+:root {
+  /* Colors — warm & human, not cold AI purple */
+  --ink:        #1a1815;
+  --ink-soft:   #3d3832;
+  --ink-mute:   #8a8278;
+  --paper:      #faf7f2;
+  --paper-deep: #f0ebe0;
+  --accent:     #b8860b;  /* dark goldenrod — warm, credible */
+  --accent-soft:#d4a843;  /* lighter gold for hover */
+  --accent-deep:#8b6508;  /* deeper gold */
+  --warm:       #c77d3a;  /* copper/amber for secondary accent */
+  --hairline:   rgba(26,24,21,0.10);
+  --hairline-strong: rgba(26,24,21,0.18);
+
+  /* Typography */
+  --font-display: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-body:    'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+  /* Spacing */
+  --section-py: 3.5rem;       /* ~56px like CodeWhale py-14 */
+  --container-max: 1400px;
+  --container-px: 1.75rem;
+
+  /* Borders — CodeWhale-style hairline */
+  --border: 0.5px solid var(--hairline);
+  --border-strong: 0.5px solid var(--hairline-strong);
+
+  /* Shadows — minimal, only for depth */
+  --shadow-sm: 0 1px 2px rgba(26,24,21,0.04);
+  --shadow-md: 0 4px 12px rgba(26,24,21,0.06);
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   UTILITY CLASSES — CodeWhale-style
+   ============================================================ */
+.font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+.font-mono   { font-family: var(--font-mono); }
+.tracking-crisp { letter-spacing: -0.01em; }
+.tracking-wide  { letter-spacing: 0.02em; }
+.tracking-widest{ letter-spacing: 0.12em; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+/* Hairline borders — CodeWhale signature */
+.hl-t { border-top: var(--border); }
+.hl-b { border-bottom: var(--border); }
+.hl-l { border-left: var(--border); }
+.hl-r { border-right: var(--border); }
+
+/* Layout */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-px);
+  padding-right: var(--container-px);
+}
+.section-py { padding-top: var(--section-py); padding-bottom: var(--section-py); }
+.bg-paper-deep { background: var(--paper-deep); }
+.bg-ink { background: var(--ink); color: var(--paper); }
+
+/* ============================================================
+   NAVBAR — sticky, backdrop-blur
+   ============================================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(250,247,242,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: var(--border);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.navbar.scrolled {
+  background: rgba(250,247,242,0.95);
+  box-shadow: 0 1px 4px rgba(26,24,21,0.05);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  gap: 1.5rem;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.nav-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+}
+.nav-links {
+  display: none;
+  align-items: center;
+  gap: 1.75rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  transition: color 0.2s;
+  letter-spacing: 0.02em;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--accent); }
+
+/* Hamburger */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 40;
+}
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform 0.25s, opacity 0.25s;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 35;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-subtitle {
+  margin-top: 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  max-width: 32rem;
+}
+.hero-cta-group {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.8rem 1.75rem;
+  border: var(--border-strong);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+  background: transparent;
+  color: var(--ink);
+}
+.btn:hover {
+  background: var(--paper-deep);
+  border-color: var(--hairline-strong);
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.hero-trust {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.hero-visual {
+  display: none;
+  border: var(--border);
+  padding: 1.25rem;
+  background: var(--paper);
+}
+
+/* ============================================================
+   SECTIONS — shared patterns
+   ============================================================ */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: var(--border);
+  margin-bottom: 2rem;
+}
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+}
+.section-header .eyebrow { flex-shrink: 0; }
+
+/* ============================================================
+   PHILOSOPHY — 3-step
+   ============================================================ */
+.philo-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+.philo-step {
+  padding: 2rem 1.25rem;
+  border-bottom: var(--border);
+  transition: background 0.2s;
+}
+.philo-step:last-child { border-bottom: none; }
+.philo-step:hover { background: var(--paper-deep); }
+.philo-step .step-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+.philo-step h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.philo-step p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   DIFFERENTIATION — comparison cards
+   ============================================================ */
+.diff-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.diff-card {
+  padding: 2rem 1.5rem;
+  border: var(--border);
+  transition: all 0.25s;
+  background: var(--paper);
+}
+.diff-card:hover {
+  border-color: var(--hairline-strong);
+  box-shadow: var(--shadow-md);
+}
+.diff-card .diff-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.75rem;
+}
+.diff-card .diff-label.old { color: var(--ink-mute); }
+.diff-card .diff-label.new { color: var(--accent); }
+.diff-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.diff-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.8; }
+
+/* ============================================================
+   METHOD CARDS — judgment / action / expression
+   ============================================================ */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.method-card {
+  padding: 2rem 1.5rem;
+  border: var(--border);
+  transition: all 0.25s;
+}
+.method-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+.method-card .method-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.method-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.method-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.8; }
+
+/* ============================================================
+   CREDIBILITY — stats bar
+   ============================================================ */
+.cred-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+.cred-stat {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-right: var(--border);
+  border-bottom: var(--border);
+}
+.cred-stat:nth-child(even) { border-right: none; }
+.cred-stat .bignum {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.cred-stat .stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   SCENARIOS — 3 example cards
+   ============================================================ */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+.scenario-card {
+  padding: 2rem 1.5rem;
+  border: var(--border);
+  transition: all 0.25s;
+}
+.scenario-card:hover {
+  border-color: var(--hairline-strong);
+  box-shadow: var(--shadow-md);
+}
+.scenario-card .scene-tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.scenario-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.scenario-card .scene-problem { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.75rem; }
+.scenario-card .scene-approach { font-size: 0.85rem; color: var(--ink-mute); border-top: var(--border); padding-top: 0.75rem; }
+
+/* ============================================================
+   FAQ — accordion
+   ============================================================ */
+.faq-list { border-top: var(--border); }
+.faq-item { border-bottom: var(--border); }
+.faq-q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-align: left;
+  color: var(--ink);
+  transition: color 0.2s;
+  gap: 1rem;
+}
+.faq-q:hover { color: var(--accent); }
+.faq-q .faq-arrow {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: transform 0.3s;
+  color: var(--ink-mute);
+}
+.faq-q.active .faq-arrow { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.faq-a.open {
+  max-height: 20rem;
+  padding-bottom: 1.25rem;
+}
+.faq-a p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  padding-right: 2rem;
+}
+
+/* ============================================================
+   BOTTOM CTA
+   ============================================================ */
+.bottom-cta {
+  padding-top: 3rem;
+  padding-bottom: 3.5rem;
+  text-align: center;
+}
+.bottom-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--paper);
+  line-height: 1.3;
+}
+.bottom-cta p {
+  margin-top: 1rem;
+  color: rgba(250,247,242,0.7);
+  max-width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+.bottom-cta .btn-group {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.bottom-cta .btn-outline {
+  background: transparent;
+  color: var(--paper);
+  border-color: rgba(250,247,242,0.3);
+}
+.bottom-cta .btn-outline:hover {
+  background: rgba(250,247,242,0.08);
+  border-color: rgba(250,247,242,0.5);
+}
+.bottom-cta .btn-accent {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.bottom-cta .btn-accent:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+.bottom-cta .contact-row {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: rgba(250,247,242,0.5);
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: 2rem 0;
+  border-top: var(--border);
+  font-size: 0.8rem;
+  color: var(--ink-mute);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.animate-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.animate-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ============================================================
+   RESPONSIVE — Tablet (≥768px)
+   ============================================================ */
+@media (min-width: 768px) {
+  :root {
+    --section-py: 4.5rem;
+    --container-px: 2.25rem;
+  }
+  .nav-links { display: flex; }
+  .nav-cta { display: inline-flex; }
+  .hamburger { display: none; }
+
+  .hero { padding-top: 4rem; padding-bottom: 5rem; }
+  .hero-grid { grid-template-columns: 7fr 5fr; }
+  .hero-visual { display: block; }
+
+  .philo-steps { grid-template-columns: repeat(3, 1fr); }
+  .philo-step { border-bottom: none; border-right: var(--border); padding: 2.5rem 2rem; }
+  .philo-step:last-child { border-right: none; }
+
+  .diff-grid { grid-template-columns: repeat(2, 1fr); }
+  .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .scenario-grid { grid-template-columns: repeat(3, 1fr); }
+  .cred-stats { grid-template-columns: repeat(4, 1fr); }
+  .cred-stat { border-bottom: none; }
+  .cred-stat:nth-child(even) { border-right: var(--border); }
+  .cred-stat:last-child { border-right: none; }
+}
+
+/* ============================================================
+   RESPONSIVE — Desktop (≥1025px)
+   ============================================================ */
+@media (min-width: 1025px) {
+  :root {
+    --section-py: 5rem;
+    --container-px: 2.5rem;
+  }
+  .hero-title { font-size: 3.2rem; }
+  .method-grid { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <div>
+      <div class="nav-brand">WithYou</div>
+      <div class="nav-brand-sub">你的贴身情感助理</div>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#philosophy">设计哲学</a></li>
+        <li><a href="#difference">产品差异</a></li>
+        <li><a href="#method">产品能力</a></li>
+        <li><a href="#scenarios">使用场景</a></li>
+        <li><a href="#demo">实际输出</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <a href="#cta" class="nav-cta">了解产品</a>
+    <button class="hamburger" id="hamburger" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<ul class="mobile-menu" id="mobileMenu">
+  <li><a href="#philosophy" data-mobile-link>设计哲学</a></li>
+  <li><a href="#difference" data-mobile-link>产品差异</a></li>
+  <li><a href="#method" data-mobile-link>产品能力</a></li>
+  <li><a href="#scenarios" data-mobile-link>使用场景</a></li>
+  <li><a href="#demo" data-mobile-link>实际输出</a></li>
+  <li><a href="#faq" data-mobile-link>FAQ</a></li>
+  <li><a href="#cta" data-mobile-link>了解产品</a></li>
+</ul>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero container">
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-title animate-in">
+        <em>WithYou.</em> 11 年实战经验，<br>做成陪你把每一步都走对的<em>贴身情感助理</em>
+      </h1>
+      <p class="hero-subtitle animate-in">
+        不只给你一句回复。先帮你看清：她现在对你是什么态度、<br>
+        你该不该主动、该怎么回。你拿到的是一整套分析，不是一句模板。
+      </p>
+      <div class="hero-cta-group animate-in">
+        <a href="#philosophy" class="btn btn-primary">立即了解产品</a>
+        <a href="#method" class="btn">看看它怎么工作</a>
+      </div>
+      <div class="hero-trust animate-in">
+        <span>✦</span> 基于 11 年真实情感实战经验 · 可持续更新的方法体系
+      </div>
+    </div>
+    <div class="hero-visual animate-in">
+      <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--ink-mute);margin-bottom:0.75rem;">工作方式预览</div>
+      <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-soft);line-height:2;">
+        <span style="color:var(--ink-mute);">01</span> 把聊天内容告诉它<br>
+        <span style="color:var(--ink-mute);">02</span> 分析她现在对你的态度<br>
+        <span style="color:var(--ink-mute);">03</span> 判断你该不该主动<br>
+        <span style="color:var(--accent);">04</span> <strong>告诉你最合适怎么回</strong><br>
+        <span style="color:var(--ink-mute);">05</span> 帮你写出具体的话<br>
+        <span style="color:var(--ink-mute);">06</span> 她回了之后继续帮你分析
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PHILOSOPHY — 三步方法论
+     ============================================================ -->
+<section class="container section-py" id="philosophy">
+  <div class="section-header">
+    <span class="eyebrow">设计哲学</span>
+    <h2>不是替你聊，是教你怎么判断局势</h2>
+  </div>
+  <div class="philo-steps">
+    <div class="philo-step animate-in">
+      <div class="step-num">Step 01</div>
+      <h3>先看态度</h3>
+      <p>她现在是愿意聊，还是在敷衍？是给了窗口让你靠近，还是在礼貌性回应？第一步永远是先看清她当下对你的态度。</p>
+    </div>
+    <div class="philo-step animate-in">
+      <div class="step-num">Step 02</div>
+      <h3>再读暗示</h3>
+      <p>她的话里藏着什么信息？主动找你聊、回得很短、主动问你的情况、还是只说自己的事 — 每种反应背后的意思不一样。</p>
+    </div>
+    <div class="philo-step animate-in">
+      <div class="step-num">Step 03</div>
+      <h3>最后定对策</h3>
+      <p>看清了态度、读懂了暗示之后，才决定怎么做 — 是稳住不追、是推进关系、还是先退一步等更好的时机。对策对了，话才不会说歪。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DIFFERENTIATION — 对比卡片
+     ============================================================ -->
+<section class="bg-paper-deep" id="difference">
+  <div class="container section-py">
+    <div class="section-header">
+      <span class="eyebrow">产品差异</span>
+      <h2>不只给话术，先教判断</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card animate-in">
+        <div class="diff-label old">普通 AI 工具</div>
+        <h3>直接给你一段回复文案</h3>
+        <p>输入聊天截图，输出一段话术。你不知道为什么这么回，也不知道下次怎么办。用完即走，没有积累。</p>
+      </div>
+      <div class="diff-card animate-in">
+        <div class="diff-label new">WithYou</div>
+        <h3>先告诉你"该不该动"</h3>
+        <p>先分析她现在对你的态度。不该动的时候告诉你要稳，该动的时候告诉你具体怎么做 — 不只是帮你写回复。</p>
+      </div>
+      <div class="diff-card animate-in">
+        <div class="diff-label old">普通 AI 工具</div>
+        <h3>套模板，像群发短信</h3>
+        <p>话术千篇一律，换个对象也能用。你用了反而可能踩坑，因为模板不关心你的具体局势。</p>
+      </div>
+      <div class="diff-card animate-in">
+        <div class="diff-label new">WithYou</div>
+        <h3>陪你看具体阶段给对策建议</h3>
+        <p>结合你们的实际聊天情况、她给你的反馈、当前的关系温度，陪着你一起判断 — 是退一步观察、正常聊、还是可以进一步。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     METHOD — 产品能力 (4 cards)
+     ============================================================ -->
+<section class="container section-py" id="method">
+  <div class="section-header">
+    <span class="eyebrow">产品能力</span>
+    <h2>判断—动作—表达，一个完整闭环</h2>
+  </div>
+  <div class="method-grid">
+    <div class="method-card animate-in">
+      <div class="method-icon">⊡</div>
+      <h3>判断你们现在的关系状况</h3>
+      <p>刚认识、聊得不错、有点暧昧、她在回避、还是冷了一段时间 — 不同状况需要完全不同的处理方式。</p>
+    </div>
+    <div class="method-card animate-in">
+      <div class="method-icon">◎</div>
+      <h3>看懂她的真实态度</h3>
+      <p>她回你消息是热情还是礼貌？主动找你还是被动应付？帮你分辨她是真有兴趣、还是在客气、还是根本没意思。</p>
+    </div>
+    <div class="method-card animate-in">
+      <div class="method-icon">↗</div>
+      <h3>告诉你具体怎么做</h3>
+      <p>分析完了不会只给你一句"你自己看着办"。会告诉你：是继续聊、是推进关系、还是退一步。并且会帮你写出你可以直接发的话。</p>
+    </div>
+    <div class="method-card animate-in">
+      <div class="method-icon">↺</div>
+      <h3>她回了继续帮你分析</h3>
+      <p>你发完话、她回了之后，把新的聊天告诉它，它会继续帮你判断局势有没有变化、下一步该怎么做。不是一次性的建议。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CREDIBILITY — 经验背书
+     ============================================================ -->
+<section class="bg-paper-deep">
+  <div class="container section-py">
+    <div class="section-header">
+      <span class="eyebrow">经验来源</span>
+      <h2>不是空口 AI，是 11 年实战的沉淀</h2>
+    </div>
+    <div class="cred-stats">
+      <div class="cred-stat animate-in">
+        <div class="bignum">11<span style="font-size:0.55em;color:var(--ink-mute);">年</span></div>
+        <div class="stat-label">真实情感实战</div>
+      </div>
+      <div class="cred-stat animate-in">
+        <div class="bignum">长期</div>
+        <div class="stat-label">复盘 & 迭代沉淀</div>
+      </div>
+      <div class="cred-stat animate-in">
+        <div class="bignum">不拼模板</div>
+        <div class="stat-label">判断体系驱动</div>
+      </div>
+      <div class="cred-stat animate-in">
+        <div class="bignum">持续更新</div>
+        <div class="stat-label">经验体系进化</div>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem;font-size:0.9rem;color:var(--ink-soft);line-height:1.8;max-width:36rem;">
+      产品背后不是简单的 prompt 工程，而是 11 年情感实战中积累的判断方法、动作分类和表达经验的体系化沉淀。
+      每一个判断逻辑、每一个动作建议，都来自真实陪跑中反复验证过的经验。
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENARIOS — 3 场景示例
+     ============================================================ -->
+<section class="container section-py" id="scenarios">
+  <div class="section-header">
+    <span class="eyebrow">使用场景</span>
+    <h2>不管在哪个阶段，都能帮你把局势看清楚</h2>
+  </div>
+  <div class="scenario-grid">
+    <div class="scenario-card animate-in">
+      <div class="scene-tag">刚开始接触</div>
+      <h3>不知道该不该主动</h3>
+      <p class="scene-problem">刚加上微信，聊了几天，不确定对方是否有兴趣，怕主动了会暴露需求感。</p>
+      <p class="scene-approach"><strong>产品怎么看：</strong>先看对方是否有窗口信号（主动开启话题、回复质量、情绪投入度），判断当前适不适合轻量试探，而不是直接建议你表白。</p>
+    </div>
+    <div class="scenario-card animate-in">
+      <div class="scene-tag">暧昧拉扯期</div>
+      <h3>分不清对方到底什么意思</h3>
+      <p class="scene-problem">时而热情时而冷淡，你会忍不住猜对方在想什么，容易过度解读或错过信号。</p>
+      <p class="scene-approach"><strong>产品怎么看：</strong>帮你拆解对方的回复模式，识别哪些是真实兴趣指标，哪些只是正常的社交波动 — 然后告诉你适合用"接住"还是"起伏"还是"勾子"。</p>
+    </div>
+    <div class="scenario-card animate-in">
+      <div class="scene-tag">冷淡 / 复联期</div>
+      <h3>怕说错话让关系更糟</h3>
+      <p class="scene-problem">对方冷淡了一段时间，你想重新联系但不知道第一句话该说什么，怕一发就死。</p>
+      <p class="scene-approach"><strong>产品怎么看：</strong>先判断当前是不是适合重新联系的时机，评估她现在可能的态度，再决定是轻轻试探一下还是再等等 — 不会让你发冒失消息把关系搞得更僵。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ — 手风琴
+     ============================================================ -->
+<section class="container section-py" id="faq">
+  <div class="section-header">
+    <span class="eyebrow">常见问题</span>
+    <h2>你可能想知道</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q">
+        它和普通 AI 聊天工具有什么不同？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>普通 AI 聊天工具直接给话术，像一个"自动回复生成器"。这个产品先做判断 — 先看她的态度、读懂她的话里的暗示 — 再告诉你该怎么回应，最后才到写话术这一步。你拿到的是一整个分析过程，不是一句孤立的话。</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        它是不是先教判断，再给话术？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>是的。这是它和市面上所有产品最大的区别。普通工具跳过"我该不该动"直接到"我回什么"，而这个产品认为：先看清她目前对你的态度、再读懂她话里的意思、再决定怎么做、最后才把话写出来 — 顺序对了，结果才对。</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        需要我很会聊天才用得好吗？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>不需要。产品帮你做的首先是判断 — 帮你看清楚局势，然后告诉你该做什么类型的动作。你不需要自己"有感觉"，产品就是帮你建立判断的那个人。</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        会不会太套路？我怕用起来不自然。
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>不会。产品不输出千篇一律的模板，而是根据你们现在的关系状况和她的态度，给你方向性的建议（比如继续正常聊、试着推进一点、还是先稳住观察），还会给你可以自己调整的话。最后怎么说，你说了算。</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        适合什么阶段的人用？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>从刚开始接触到暧昧拉扯，从冷淡期到复联修复，不同阶段都能用。核心价值不是"帮你追到谁"，而是"帮你在每个阶段把局势看清楚，把动作做对"，减少误判和乱推进。</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        背后是真人经验还是 AI 拼凑的？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>产品背后是 11 年真实情感实战中积累的判断方法和策略体系，不是靠 AI 从网上拼凑模板。每一个分析逻辑、每一种情况的对策，都来自长期真实案例中反复验证过的经验沉淀。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+      DEMO — CLI 实际输出展示
+      ============================================================ -->
+<section class="bg-paper-deep" id="demo">
+  <div class="container section-py">
+    <div class="section-header">
+      <span class="eyebrow">实际效果</span>
+      <h2>看一个真实的例子：她说"走了一天，又下雨，没力气了"</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
+      <div class="diff-card animate-in" style="background:var(--ink);color:var(--paper);border-color:var(--ink);">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:0.75rem;">你只需要把她的消息告诉它</div>
+        <div style="font-family:var(--font-mono);font-size:0.78rem;line-height:1.8;color:rgba(250,247,242,0.85);">
+          她发来: "走了一天 又下雨 没力气了"
+        </div>
+      </div>
+      <div class="diff-card animate-in" style="border-color:var(--hairline-strong);">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:0.75rem;">它会先帮你分析局势</div>
+        <div style="font-size:0.85rem;line-height:2;color:var(--ink-soft);">
+          她现在跟你处于<strong>聊得还不错</strong>的阶段<br>
+          这次是正常的行程分享，不是在推脱你<br>
+          她累了，不适合邀约，先关心一下
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;padding:2rem 1.5rem;border:var(--border);background:var(--paper);" class="animate-in">
+      <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:1rem;">然后给你三种方案，你自己选</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:1rem;">
+        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--hairline);">
+          <span style="color:var(--ink-mute);font-size:0.7rem;">方案一 · 最稳的</span><br>
+          "淋着雨走一天，是够累的。"
+        </div>
+        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--hairline);">
+          <span style="color:var(--ink-mute);font-size:0.7rem;">方案二 · 自然关心</span><br>
+          "走了一天又赶上下雨，辛苦你了。晚饭吃了没？"
+        </div>
+        <div style="font-size:0.85rem;color:var(--ink-soft);line-height:1.8;padding:0.75rem;border-left:2px solid var(--accent);">
+          <span style="color:var(--accent);font-size:0.7rem;">方案三 · 推荐</span><br>
+          "走了一天还下雨，换谁都撑不住。先歇着。"
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+      BOTTOM CTA
+     ============================================================ -->
+<section class="bg-ink" id="cta">
+  <div class="container bottom-cta">
+    <h2 class="animate-in">不再一个人猜。让 WithYou 陪你把每一步都走对。</h2>
+    <p class="animate-in">11 年实战经验做成的贴身情感助理。不再只是一句回复，而是有一个人陪你看局势、定动作、把话说对。</p>
+    <div class="btn-group animate-in">
+      <a href="#method" class="btn btn-accent">看产品能力</a>
+      <a href="#demo" class="btn btn-outline">看实际输出</a>
+    </div>
+    <div class="contact-row">
+      WithYou · withyou.ai · 咨询与合作请通过终端联系
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <span>© 2026 WithYou · 11年实战经验，陪你把每一步都走对</span>
+    <span>看态度 · 读暗示 · 定对策</span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JS — minimal, vanilla
+     ============================================================ -->
+<script>
+(function() {
+  // --- Navbar scroll state ---
+  const navbar = document.getElementById('navbar');
+  const hero = document.querySelector('.hero');
+  let ticking = false;
+
+  function updateNav() {
+    const scrolled = window.scrollY > hero.offsetHeight * 0.3;
+    navbar.classList.toggle('scrolled', scrolled);
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+  }, { passive: true });
+
+  // --- Hamburger menu ---
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileLinks = document.querySelectorAll('[data-mobile-link]');
+  var bodyEl = document.body;
+  var menuOpen = false;
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    hamburger.classList.toggle('active', menuOpen);
+    mobileMenu.classList.toggle('open', menuOpen);
+    bodyEl.style.overflow = menuOpen ? 'hidden' : '';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  mobileLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (menuOpen) toggleMenu();
+    });
+  });
+
+  // --- FAQ accordion ---
+  var faqQs = document.querySelectorAll('.faq-q');
+  faqQs.forEach(function(q) {
+    q.addEventListener('click', function() {
+      var answer = this.nextElementSibling;
+      var isOpen = answer.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-a.open').forEach(function(a) { a.classList.remove('open'); });
+      document.querySelectorAll('.faq-q.active').forEach(function(b) { b.classList.remove('active'); });
+      // Open clicked (unless it was already open)
+      if (!isOpen) {
+        answer.classList.add('open');
+        this.classList.add('active');
+      }
+    });
+  });
+
+  // --- Scroll animations (IntersectionObserver) ---
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.animate-in').forEach(function(el) {
+      observer.observe(el);
+    });
+  }
+
+  // --- Smooth scroll for all anchor links (fallback for browsers without smooth-behavior) ---
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      var target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      var offset = navbar.offsetHeight + 16;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
