@@ -34,7 +34,7 @@
   /* Spacing */
   --section-py: 3.5rem;       /* ~56px like CodeWhale py-14 */
   --container-max: 1400px;
-  --container-px: 1.75rem;
+  --container-px: 2.25rem;
 
   /* Borders — CodeWhale-style hairline */
   --border: 0.5px solid var(--hairline);
@@ -106,6 +106,14 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(12px);
   border-bottom: var(--border);
   transition: background 0.3s, box-shadow 0.3s;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 768px) {
+  .navbar { padding-left: 2rem; padding-right: 2rem; }
+}
+@media (min-width: 1025px) {
+  .navbar { padding-left: 2.5rem; padding-right: 2.5rem; }
 }
 .navbar.scrolled {
   background: rgba(250,247,242,0.95);
@@ -115,7 +123,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1.5rem;
   gap: 1.5rem;
 }
 .nav-brand {
@@ -221,7 +229,7 @@ a { color: inherit; text-decoration: none; }
 }
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.6rem, 5.5vw, 3.2rem);
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.015em;
@@ -602,7 +610,7 @@ a { color: inherit; text-decoration: none; }
 @media (min-width: 768px) {
   :root {
     --section-py: 4.5rem;
-    --container-px: 2.25rem;
+    --container-px: 3rem;
   }
   .nav-links { display: flex; }
   .nav-cta { display: inline-flex; }
@@ -631,7 +639,7 @@ a { color: inherit; text-decoration: none; }
 @media (min-width: 1025px) {
   :root {
     --section-py: 5rem;
-    --container-px: 2.5rem;
+    --container-px: 3.5rem;
   }
   .hero-title { font-size: 3.2rem; }
   .method-grid { grid-template-columns: repeat(4, 1fr); }
@@ -684,7 +692,7 @@ a { color: inherit; text-decoration: none; }
   <div class="hero-grid">
     <div>
       <h1 class="hero-title animate-in">
-        <em>WithYou.</em> 11 年实战经验，<br>做成陪你把每一步都走对的<em>贴身情感助理</em>
+        <em>WithYou.</em> 11 年实战经验，<br>陪你把每一步都走对的<em>贴身情感助理</em>
       </h1>
       <p class="hero-subtitle animate-in">
         不只给你一句回复。先帮你看清：她现在对你是什么态度、<br>
