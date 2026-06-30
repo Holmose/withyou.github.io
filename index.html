@@ -50,6 +50,27 @@
   --radius-lg:    24px;
 }
 
+/* ========================================================
+   LIGHT THEME — 浅灰玻璃 · Vercel 风格
+   ======================================================== */
+[data-theme="light"] {
+  --space:       #f4f4f5;
+  --space-2:     #e4e4e7;
+  --space-3:     #d4d4d8;
+  --ink:         #18181b;
+  --ink-soft:    #52525b;
+  --ink-mute:    #a1a1aa;
+  --hairline:    rgba(0,0,0,0.08);
+  --hairline-2:  rgba(0,0,0,0.14);
+
+  --blue:        #4f46e5;
+  --purple:      #7c3aed;
+  --cyan:        #0891b2;
+
+  --aurora-1:    linear-gradient(135deg, #6366f1 0%, #7c3aed 35%, #8b5cf6 100%);
+  --aurora-2:    linear-gradient(135deg, #0891b2 0%, #8b5cf6 50%, #db2777 100%);
+}
+
 /* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -103,6 +124,60 @@ body::after {
 @keyframes orbFloat {
   0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.7; }
   50%      { transform: translate(-48%, -52%) scale(1.1); opacity: 1;   }
+}
+
+/* 亮色主题: 光球/极光用更淡的颜色 */
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(99,102,241,0.10) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(139,92,246,0.08) 0%, transparent 45%),
+    radial-gradient(circle at 20% 60%, rgba(8,145,178,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(219,39,119,0.04) 0%, transparent 50%),
+    var(--space);
+}
+[data-theme="light"] body::after {
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.07) 30%, transparent 70%);
+  filter: blur(60px);
+}
+[data-theme="light"] .navbar {
+  background: rgba(244,244,245,0.70);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+[data-theme="light"] .btn-ghost {
+  background: rgba(0,0,0,0.04);
+  color: var(--ink);
+  border: 1px solid var(--hairline-2);
+}
+[data-theme="light"] .btn-ghost:hover {
+  background: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .hero-card {
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 20px 60px rgba(99,102,241,0.12);
+}
+[data-theme="light"] .promise-card,
+[data-theme="light"] .bento-card,
+[data-theme="light"] .demo-card {
+  background: rgba(255,255,255,0.60);
+}
+[data-theme="light"] .cred-block {
+  background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, rgba(139,92,246,0.02) 100%);
+}
+[data-theme="light"] .demo-meta {
+  background: rgba(255,255,255,0.40);
+}
+[data-theme="light"] .demo-bubble,
+[data-theme="light"] .demo-reply {
+  background: rgba(0,0,0,0.03);
+}
+[data-theme="light"] .btn-primary {
+  box-shadow: 0 6px 24px rgba(99,102,241,0.25);
+}
+[data-theme="light"] .btn-primary:hover {
+  box-shadow: 0 10px 30px rgba(99,102,241,0.40);
+}
+[data-theme="light"] .bento-card:hover {
+  box-shadow: 0 20px 50px -20px rgba(99,102,241,0.20);
 }
 
 /* Utility */
@@ -195,6 +270,34 @@ body::after {
   .nav-links { display: none; }
 }
 
+/* 主题切换按钮 */
+.theme-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline-2);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0;
+}
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: var(--blue);
+}
+[data-theme="light"] .theme-toggle {
+  background: rgba(0,0,0,0.04);
+}
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(0,0,0,0.08);
+}
+
 /* ========================================================
    HERO — ACT 1 + ACT 2
    原视频帧 1/2: 极光球体 + 大标题 + 浮动毛玻璃对话卡
@@ -207,6 +310,64 @@ body::after {
   text-align: center;
   position: relative;
   padding: 120px 0 80px;
+}
+/* Hume 风格 SVG 声波 */
+.hero-wave-wrap {
+  margin: 56px auto 0;
+  display: flex;
+  justify-content: center;
+}
+.hero-wave {
+  display: block;
+  width: min(360px, 75vw);
+  height: auto;
+  opacity: 0.75;
+  pointer-events: none;
+  /* viewBox 宽 800 / 条形只占 x=0..414 → SVG 渲染中心 = (414/2) = 207,而非 400
+     整体居中时视觉中心向左偏 (400-207)/400 = 48.25% 
+     修正: 把 viewBox 起始 x 砍到 -193,等比扩大,让条形落在 viewBox 中央 */
+}
+.wbar {
+  transform-origin: center bottom;
+  animation: waveBreathe 2.4s ease-in-out infinite alternate;
+}
+.wbar:nth-child(1)  { animation-delay: 0.00s; }
+.wbar:nth-child(2)  { animation-delay: 0.07s; }
+.wbar:nth-child(3)  { animation-delay: 0.14s; }
+.wbar:nth-child(4)  { animation-delay: 0.21s; }
+.wbar:nth-child(5)  { animation-delay: 0.28s; }
+.wbar:nth-child(6)  { animation-delay: 0.35s; }
+.wbar:nth-child(7)  { animation-delay: 0.42s; }
+.wbar:nth-child(8)  { animation-delay: 0.49s; }
+.wbar:nth-child(9)  { animation-delay: 0.56s; }
+.wbar:nth-child(10) { animation-delay: 0.63s; }
+.wbar:nth-child(11) { animation-delay: 0.70s; }
+.wbar:nth-child(12) { animation-delay: 0.77s; }
+.wbar:nth-child(13) { animation-delay: 0.84s; }
+.wbar:nth-child(14) { animation-delay: 0.91s; }
+.wbar:nth-child(15) { animation-delay: 0.98s; }
+.wbar:nth-child(16) { animation-delay: 1.05s; }
+.wbar:nth-child(17) { animation-delay: 1.12s; }
+.wbar:nth-child(18) { animation-delay: 1.19s; }
+.wbar:nth-child(19) { animation-delay: 1.26s; }
+.wbar:nth-child(20) { animation-delay: 1.33s; }
+.wbar:nth-child(21) { animation-delay: 1.40s; }
+.wbar:nth-child(22) { animation-delay: 1.47s; }
+.wbar:nth-child(23) { animation-delay: 1.54s; }
+.wbar:nth-child(24) { animation-delay: 1.61s; }
+.wbar:nth-child(25) { animation-delay: 1.68s; }
+.wbar:nth-child(26) { animation-delay: 1.75s; }
+.wbar:nth-child(27) { animation-delay: 1.82s; }
+.wbar:nth-child(28) { animation-delay: 1.89s; }
+.wbar:nth-child(29) { animation-delay: 1.96s; }
+.wbar:nth-child(30) { animation-delay: 2.03s; }
+.wbar:nth-child(31) { animation-delay: 2.10s; }
+.wbar:nth-child(32) { animation-delay: 2.17s; }
+.wbar:nth-child(33) { animation-delay: 2.24s; }
+.wbar:nth-child(34) { animation-delay: 2.31s; }
+@keyframes waveBreathe {
+  0%   { transform: scaleY(0.55); opacity: 0.40; }
+  100% { transform: scaleY(1.0);  opacity: 0.85; }
 }
 .hero h1 {
   font-family: var(--font-display);
@@ -865,6 +1026,9 @@ body::after {
       <a href="#changelog">更新</a>
       <a href="#start">开始</a>
     </div>
+    <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗/亮主题">
+      <span class="theme-icon">🌙</span>
+    </button>
   </div>
 </nav>
 
@@ -888,6 +1052,59 @@ body::after {
     <div class="hero-cta">
       <a href="#start" class="btn btn-primary">立即开始 →</a>
       <a href="#how" class="btn btn-ghost">看怎么用</a>
+    </div>
+    <!-- Hume 风格 · 声波动画(放在 CTA 下方、SCROLL 上方) -->
+    <div class="hero-wave-wrap">
+    <svg class="hero-wave" viewBox="-193 0 800 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <linearGradient id="waveGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.35"/>
+          <stop offset="60%" stop-color="var(--purple)" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="var(--cyan)" stop-opacity="0.25"/>
+        </linearGradient>
+        <filter id="waveGlow">
+          <feGaussianBlur stdDeviation="1.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g filter="url(#waveGlow)" fill="url(#waveGrad)">
+        <rect class="wbar" x="0"   y="180" width="6" height="12" rx="3"/>
+        <rect class="wbar" x="12"  y="175" width="6" height="17" rx="3"/>
+        <rect class="wbar" x="24"  y="168" width="6" height="24" rx="3"/>
+        <rect class="wbar" x="36"  y="158" width="6" height="34" rx="3"/>
+        <rect class="wbar" x="48"  y="148" width="6" height="44" rx="3"/>
+        <rect class="wbar" x="60"  y="140" width="6" height="52" rx="3"/>
+        <rect class="wbar" x="72"  y="130" width="6" height="62" rx="3"/>
+        <rect class="wbar" x="84"  y="118" width="6" height="74" rx="3"/>
+        <rect class="wbar" x="96"  y="108" width="6" height="84" rx="3"/>
+        <rect class="wbar" x="108" y="96"  width="6" height="96" rx="3"/>
+        <rect class="wbar" x="120" y="88"  width="6" height="104" rx="3"/>
+        <rect class="wbar" x="132" y="82"  width="6" height="110" rx="3"/>
+        <rect class="wbar" x="144" y="74"  width="6" height="118" rx="3"/>
+        <rect class="wbar" x="156" y="70"  width="6" height="122" rx="3"/>
+        <rect class="wbar" x="168" y="64"  width="6" height="128" rx="3"/>
+        <rect class="wbar" x="180" y="60"  width="6" height="132" rx="3"/>
+        <rect class="wbar" x="192" y="58"  width="6" height="134" rx="3"/>
+        <rect class="wbar" x="204" y="56"  width="6" height="136" rx="3"/>
+        <rect class="wbar" x="216" y="58"  width="6" height="134" rx="3"/>
+        <rect class="wbar" x="228" y="60"  width="6" height="132" rx="3"/>
+        <rect class="wbar" x="240" y="64"  width="6" height="128" rx="3"/>
+        <rect class="wbar" x="252" y="70"  width="6" height="122" rx="3"/>
+        <rect class="wbar" x="264" y="74"  width="6" height="118" rx="3"/>
+        <rect class="wbar" x="276" y="82"  width="6" height="110" rx="3"/>
+        <rect class="wbar" x="288" y="88"  width="6" height="104" rx="3"/>
+        <rect class="wbar" x="300" y="96"  width="6" height="96" rx="3"/>
+        <rect class="wbar" x="312" y="108" width="6" height="84" rx="3"/>
+        <rect class="wbar" x="324" y="118" width="6" height="74" rx="3"/>
+        <rect class="wbar" x="336" y="130" width="6" height="62" rx="3"/>
+        <rect class="wbar" x="348" y="140" width="6" height="52" rx="3"/>
+        <rect class="wbar" x="360" y="148" width="6" height="44" rx="3"/>
+        <rect class="wbar" x="372" y="158" width="6" height="34" rx="3"/>
+        <rect class="wbar" x="384" y="168" width="6" height="24" rx="3"/>
+        <rect class="wbar" x="396" y="175" width="6" height="17" rx="3"/>
+        <rect class="wbar" x="408" y="180" width="6" height="12" rx="3"/>
+      </g>
+    </svg>
     </div>
   </div>
 
@@ -1250,6 +1467,13 @@ body::after {
   }
 })();
 
+/* ===== 入场时强制滚到顶(防 URL hash + 浏览器恢复滚动位置误跳) ===== */
+if (location.hash) {
+  history.replaceState(null, '', location.pathname + location.search);
+}
+window.scrollTo(0, 0);
+window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
+
 /* 顶部滚动进度条 */
 const progress = document.getElementById('progress');
 const updateProgress = () => {
@@ -1262,15 +1486,43 @@ updateProgress();
 
 /* 导航栏滚动变实底 */
 const navbar = document.querySelector('.navbar');
+function isLight() { return document.documentElement.getAttribute('data-theme') === 'light'; }
 window.addEventListener('scroll', () => {
   if (window.scrollY > 40) {
-    navbar.style.background = 'rgba(10,10,15,0.92)';
+    navbar.style.background = isLight() ? 'rgba(244,244,245,0.95)' : 'rgba(10,10,15,0.92)';
     navbar.style.boxShadow = '0 1px 12px rgba(0,0,0,0.4)';
   } else {
-    navbar.style.background = 'rgba(10,10,15,0.65)';
+    navbar.style.background = isLight() ? 'rgba(244,244,245,0.70)' : 'rgba(10,10,15,0.65)';
     navbar.style.boxShadow = 'none';
   }
 }, { passive: true });
+
+/* ===== 暗/亮主题切换 ===== */
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon  = themeToggle.querySelector('.theme-icon');
+const html = document.documentElement;
+
+function setTheme(t) {
+  html.setAttribute('data-theme', t);
+  themeIcon.textContent = t === 'light' ? '☀' : '🌙';
+  localStorage.setItem('withyou-theme', t);
+  // 触 navigation 刷新
+  window.dispatchEvent(new Event('scroll'));
+}
+
+// 初始: localStorage > 系统偏好 > dark
+(function() {
+  const stored = localStorage.getItem('withyou-theme');
+  if (stored === 'light' || stored === 'dark') {
+    setTheme(stored);
+  } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+    setTheme('light');
+  }
+})();
+
+themeToggle.addEventListener('click', () => {
+  setTheme(isLight() ? 'dark' : 'light');
+});
 
 /* 视差光球(scrollY * 0.3 反向偏移,营造深度) */
 const heroOrb = document.body;
