@@ -637,6 +637,46 @@ body::after {
 }
 
 /* ========================================================
+   ORIGIN STORY
+   ======================================================== */
+.story-block {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 64px 56px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline);
+  background:
+    radial-gradient(circle at 15% 5%, rgba(110,231,255,0.10), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
+}
+.story-block h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+  line-height: 1.12;
+  margin-bottom: 26px;
+}
+.story-copy {
+  max-width: 720px;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.9;
+}
+.story-copy p + p { margin-top: 18px; }
+.story-pull {
+  margin: 34px 0;
+  padding: 26px 30px;
+  border-left: 3px solid var(--blue);
+  background: rgba(77,108,255,0.07);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  line-height: 1.35;
+}
+@media (max-width: 700px) {
+  .story-block { padding: 42px 24px; }
+}
+
+/* ========================================================
    CREDIBILITY — ACT 4: 信任建立
    原视频帧 11: 100+ 场景 / 5→14 轮 / 0 bug
    ======================================================== */
@@ -1005,6 +1045,56 @@ body::after {
 .tag-feat   { background: rgba(77,108,255,0.10);  color: var(--blue); }
 .tag-impr   { background: rgba(167,139,250,0.10); color: var(--purple); }
 
+/* ===== PALETTE C · 纯白 + 深灰 + 克制蓝 ===== */
+:root,
+[data-theme="light"] {
+  --space: #ffffff;
+  --space-2: #f5f7fa;
+  --space-3: #e8edf3;
+  --ink: #111827;
+  --ink-soft: #4b5563;
+  --ink-mute: #8a94a6;
+  --hairline: rgba(17,24,39,0.10);
+  --hairline-2: rgba(17,24,39,0.16);
+  --blue: #2563eb;
+  --purple: #3b82f6;
+  --cyan: #0f9fb7;
+  --aurora-1: linear-gradient(135deg, #2563eb 0%, #3b82f6 48%, #0f9fb7 100%);
+  --aurora-2: linear-gradient(135deg, #0f9fb7 0%, #2563eb 56%, #7c9cff 100%);
+}
+body::before,
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(37,99,235,0.10) 0%, transparent 42%),
+    radial-gradient(circle at 86% 28%, rgba(15,159,183,0.08) 0%, transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+}
+body::after,
+[data-theme="light"] body::after {
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(15,159,183,0.06) 34%, transparent 72%);
+}
+.navbar,
+[data-theme="light"] .navbar {
+  background: rgba(255,255,255,0.86);
+  border-bottom: 1px solid rgba(17,24,39,0.08);
+}
+.hero-card,
+.promise-card,
+.bento-card,
+.demo-card,
+.story-block,
+.cred-block,
+[data-theme="light"] .hero-card,
+[data-theme="light"] .promise-card,
+[data-theme="light"] .bento-card,
+[data-theme="light"] .demo-card,
+[data-theme="light"] .story-block,
+[data-theme="light"] .cred-block {
+  background: rgba(255,255,255,0.86);
+  box-shadow: 0 24px 80px rgba(17,24,39,0.06);
+}
+.story-pull { background: rgba(37,99,235,0.06); }
+
 </style>
 </head>
 <body>
@@ -1017,7 +1107,7 @@ body::after {
   <div class="container nav-inner">
     <div class="nav-brand">
       <span class="nav-brand-dot"></span>
-      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 聊天判断系统</span>
+      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 你的情感参谋</span>
     </div>
     <div class="nav-links">
       <a href="#how">怎么判断</a>
@@ -1208,6 +1298,28 @@ body::after {
         <h3>最后才给回复</h3>
         <p>把判断翻译成自然短句,能直接发出去,不像模板,也不会显得过度用力。</p>
         <div class="tag">natural_reply</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STORY · 为什么会有 WithYou ===== -->
+<section class="section" id="story">
+  <div class="container">
+    <div class="story-block animate-in">
+      <div class="eyebrow">为什么会有 WithYou</div>
+      <h2>不是做一个工具,而是把多年经验变成<span class="hl">随时能用的陪伴</span>。</h2>
+      <div class="story-copy">
+        <p>做 WithYou 之前,我做过很多年的情感咨询和实战陪跑。这些年里,我见过太多兄弟卡在同一个地方:不是不会聊天,而是不知道该怎么判断。</p>
+        <p>她回了一句“最近有点忙”,到底是真的忙,还是在降温?她愿意回消息,但从来不主动,是还有机会,还是只是礼貌?一句话该不该发、邀约该不该提、关系该推进还是该收住,很多人真正缺的不是话术,而是判断。</p>
+
+        <div class="story-pull">情感问题表面上是聊天问题,<br/>本质上是关系判断问题。</div>
+
+        <p>普通 AI 可以帮你改一句话,也可以生成很多看起来不错的回复。但真实关系里,值钱的从来不是一句漂亮话,而是知道这句话现在该不该说、该用什么节奏说、说完之后会把关系推向哪里。</p>
+        <p>这背后靠的不是模板,而是经验。很多判断,是多年看案例、陪学员复盘、亲自处理真实关系问题后才会形成的直觉。哪些信号是真的,哪些只是礼貌;什么时候要推进,什么时候要收;什么时候你以为自己在表达关心,其实是在给对方压力。</p>
+        <p>但一个人的精力总是有限的。很多兄弟真正需要帮助的时候,往往就是对方刚回消息的那几分钟,是关系正在升温或降温的那个瞬间。我不可能时时刻刻陪在每个人旁边,帮他看截图、拆局势、定动作、避开错误。</p>
+        <p>于是 WithYou 出现了。它不是一个简单改话术的工具,也不是一个只会陪你聊天的 AI。它更像一个把多年情感实战经验沉淀下来的情感参谋:你把聊天截图或聊天记录发来,它先帮你看懂关系,判断对方态度、当前阶段和下一步动作,再给你自然、能发出去的回复。</p>
+        <p>我希望它解决的,不只是“这句话怎么回”。而是帮你慢慢建立一种更稳的关系判断能力:看懂对方的信号,控制自己的节奏,知道什么时候该主动,什么时候该停,什么时候该给空间,什么时候可以推进。</p>
       </div>
     </div>
   </div>
