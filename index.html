@@ -808,7 +808,7 @@ body::after {
 }
 
 /* ========================================================
-   DEMO · 真实样本演示(ACT 4 末: 三段式 输入 → 分析 → 输出)
+   DEMO · 合成示例
    ======================================================== */
 .demo-stack {
   max-width: 880px;
@@ -964,7 +964,7 @@ body::after {
 }
 
 /* ========================================================
-   CHANGELOG 长列表(ACT 5 中间段 — 原视频帧 12-13)
+   OUTCOME 长列表
    ======================================================== */
 .changelog {
   max-width: 760px;
@@ -1017,14 +1017,13 @@ body::after {
   <div class="container nav-inner">
     <div class="nav-brand">
       <span class="nav-brand-dot"></span>
-      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 你的贴身情感助理</span>
+      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 聊天判断系统</span>
     </div>
     <div class="nav-links">
-      <a href="#how">怎么用</a>
-      <a href="#why">为什么</a>
-      <a href="#proof">实战沉淀</a>
-      <a href="#changelog">更新</a>
-      <a href="#start">开始</a>
+      <a href="#how">怎么判断</a>
+      <a href="#why">为什么不同</a>
+      <a href="#demo">实测样例</a>
+      <a href="#start">开始使用</a>
     </div>
     <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗/亮主题">
       <span class="theme-icon">🌙</span>
@@ -1036,22 +1035,22 @@ body::after {
 <section class="hero">
   <!-- 左浮动对话卡 -->
   <div class="hero-card left">
-    <div class="who"><div class="avatar">她</div>她最近的消息</div>
-    <div class="msg">"走了一天，又下雨了，没力气回家了"</div>
+    <div class="who"><div class="avatar">她</div>对方的消息</div>
+    <div class="msg">“最近有点忙，后面再说吧。”</div>
   </div>
   <!-- 右浮动对话卡 -->
   <div class="hero-card right">
     <div class="who"><div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#6ee7ff);">你</div>WithYou 给出的判断</div>
-    <div class="msg">阶段轻熟 · 配合度黄灯 · 小窗口。她是真累,在等你接 —— 不需要建议、不需要接她回家。先把她接住,留话头让对话继续。</div>
+    <div class="msg">不是先追问，而是先回收压力，暂时别推进。</div>
   </div>
 
   <div class="container" style="position:relative;z-index:2;">
-    <div class="eyebrow">WITHYOU · 训练过的情感 AI</div>
-    <h1>不只给话术。<br/>先帮你<span class="hl">看清她的态度</span>。</h1>
-    <p class="lead">把你和她的聊天截图发给 WithYou。它会先告诉你 <span class="hl">该不该动</span>、她在暗示什么、现在到底该怎么回 —— 而不是丢给你一段话术让你硬发出去。</p>
+    <div class="eyebrow">WITHYOU · 经验型聊天判断</div>
+    <h1>先看懂关系，<br/>再说<span class="hl">下一句</span>。</h1>
+    <p class="lead">把聊天截图或聊天记录发给 WithYou。它会先帮你判断对方态度、关系阶段和下一步动作，再给你自然、能直接发送的回复。</p>
     <div class="hero-cta">
-      <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">立即开始 →</a>
-      <a href="#how" class="btn btn-ghost">看怎么用</a>
+      <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天</a>
+      <a href="#demo" class="btn btn-ghost">看看它怎么判断</a>
     </div>
     <!-- Hume 风格 · 声波动画(放在 CTA 下方、SCROLL 上方) -->
     <div class="hero-wave-wrap">
@@ -1115,50 +1114,50 @@ body::after {
 <section class="section" id="how">
   <div class="container">
     <div class="section-head animate-in">
-      <div class="eyebrow">方法论 · 三步法</div>
-      <h2>不是替你聊,是教你怎么<span class="hl">判断局势</span>。</h2>
-      <p>每一条建议都基于真实情感场景沉淀的判断框架 —— 看态度 → 读暗示 → 定对策。</p>
+      <div class="eyebrow">方法论 · 判断优先</div>
+      <h2>不是先给话术，<br/>而是先帮你<span class="hl">判断局势</span>。</h2>
+      <p>真实聊天里，最难的不是一句话怎么写，而是这句话现在该不该发。</p>
     </div>
 
     <div class="promise-grid">
       <div class="promise-card animate-in" data-delay="1">
         <div class="num">/ 01</div>
-        <h3>先看态度</h3>
-        <p>从她最近的回复速度、字数、主动性判断她现在对你的兴趣温度 —— 是升温、平淡、还是在冷淡,不要凭感觉。</p>
+        <h3>看聊天证据</h3>
+        <p>从主动性、回应长度、话题延展、情绪反馈和回避信号里，看对方是真的有投入，还是只是礼貌回应。</p>
       </div>
       <div class="promise-card animate-in" data-delay="2">
         <div class="num">/ 02</div>
-        <h3>再读暗示</h3>
-        <p>同一句话在她心情好和心情差时是不同的意思。WithYou 会告诉你这句话背后的情绪温度,而不是字面意思。</p>
+        <h3>定下一步动作</h3>
+        <p>判断现在该推进、观察、拉回，还是暂时别动。很多关系不是输在不会说话，而是输在动作错了。</p>
       </div>
       <div class="promise-card animate-in" data-delay="3">
         <div class="num">/ 03</div>
-        <h3>最后定对策</h3>
-        <p>结合你们的实际聊天情况、她给你的反馈、当前的关系温度,决定是退一步观察、正常聊、还是可以进一步。</p>
+        <h3>给自然回复</h3>
+        <p>最后才把判断翻译成一句能发出去的话：短句、口语、不过度解释，不油腻，不尬撩。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== STATS · ACT 3 入口 — 真实数字 (从项目代码实测挖出) ===== -->
+<!-- ===== STATS · ACT 3 入口 ===== -->
 <section class="section">
   <div class="container">
     <div class="stats-row">
       <div class="animate-in">
-        <div class="stat-num">432</div>
-        <div class="stat-label">条 · 实战案例库</div>
+        <div class="stat-num">截图</div>
+        <div class="stat-label">真实高频入口</div>
       </div>
       <div class="animate-in" data-delay="1">
-        <div class="stat-num">30</div>
-        <div class="stat-label">个 · 脱敏真实样本</div>
+        <div class="stat-num">判断</div>
+        <div class="stat-label">先看局势</div>
       </div>
       <div class="animate-in" data-delay="2">
-        <div class="stat-num">26</div>
-        <div class="stat-label">个 · 实战流派模块</div>
+        <div class="stat-num">动作</div>
+        <div class="stat-label">推进 / 观察 / 拉回</div>
       </div>
       <div class="animate-in" data-delay="3">
-        <div class="stat-num">194</div>
-        <div class="stat-label">个 · 回归测试用例</div>
+        <div class="stat-num">回复</div>
+        <div class="stat-label">最后再给</div>
       </div>
     </div>
   </div>
@@ -1169,46 +1168,46 @@ body::after {
   <div class="container">
     <div class="section-head animate-in">
       <div class="eyebrow">核心能力</div>
-      <h2>判断 — 动作 — 表达,<span class="hl">一个完整闭环</span></h2>
-      <p>不是一段话术解决所有问题,而是从读懂她到做出对的回应,每一步都有依据。</p>
+      <h2>普通 AI 可以给回复,<br/>WithYou 更像在帮你<span class="hl">拆局</span>。</h2>
+      <p>简单场景里,普通 AI 也可能判断对。差异在于 WithYou 更稳定地给证据、反证、动作和风险提醒。</p>
     </div>
 
     <div class="bento">
       <div class="bento-card animate-in">
         <div class="icon">📍</div>
-        <h3>判断你们的关系状况</h3>
-        <p>从你们最近的对话里,判断现在属于初识 / 轻熟 / 熟悉 / 暧昧 / 冷却 / 修复 哪个阶段。</p>
-        <div class="tag">state_analysis</div>
+        <h3>不急着给话术</h3>
+        <p>先判断这句话现在该不该发,再决定怎么说。很多时候,不追问比追一句更稳。</p>
+        <div class="tag">judgment_first</div>
       </div>
       <div class="bento-card animate-in" data-delay="1">
         <div class="icon">💡</div>
-        <h3>看懂她的真实态度</h3>
-        <p>她说的每句话都有表面意思和真实温度。WithYou 帮你识别"话里有话",而不是被她字面意思带偏。</p>
-        <div class="tag">signal_extract</div>
+        <h3>看证据,也看反证</h3>
+        <p>不会把一个暧昧信号直接放大成确定结论,也不会把一次冷淡误判成彻底没戏。</p>
+        <div class="tag">counter_signal</div>
       </div>
       <div class="bento-card animate-in" data-delay="2">
         <div class="icon">⚡</div>
-        <h3>告诉你具体怎么做</h3>
-        <p>该不该主动、能不能约、要不要降温 —— 直接告诉你"该不该动",不让你猜。</p>
-        <div class="tag">action_guard</div>
+        <h3>关注真实投入度</h3>
+        <p>不只看她有没有回,还看回应长度、主动性、情绪反馈和话题有没有继续往下走。</p>
+        <div class="tag">engagement</div>
       </div>
       <div class="bento-card animate-in" data-delay="1">
         <div class="icon">🎯</div>
-        <h3>3 条回复备选</h3>
-        <p>低风险版 / 自然版 / 主策略版 —— 风格 / 长度 / 策略有梯度,不会同义重复,选一条最像你发的。</p>
-        <div class="tag">reply_generator</div>
+        <h3>给下一步动作</h3>
+        <p>推进、观察、拉回,还是暂时别动,先把方向定清楚。你知道自己下一步为什么这么做。</p>
+        <div class="tag">next_action</div>
       </div>
       <div class="bento-card animate-in" data-delay="2">
         <div class="icon">🛡️</div>
-        <h3>禁词过滤 · 节奏控制</h3>
-        <p>不放油腻话、不追问、不强行邀约 —— 让对方有回应空间,而不是把天聊死。</p>
-        <div class="tag">reply_validator</div>
+        <h3>提醒不要做什么</h3>
+        <p>很多关系降温,不是因为少说了一句,而是因为多追了一步。WithYou 会把风险动作提前拦住。</p>
+        <div class="tag">risk_guard</div>
       </div>
       <div class="bento-card animate-in" data-delay="3">
         <div class="icon">🔄</div>
-        <h3>她回了继续帮你分析</h3>
-        <p>她回了新消息?继续发截图。WithYou 会基于前面的判断继续校准,而不是每条消息都重新开始。</p>
-        <div class="tag">memory_loop</div>
+        <h3>最后才给回复</h3>
+        <p>把判断翻译成自然短句,能直接发出去,不像模板,也不会显得过度用力。</p>
+        <div class="tag">natural_reply</div>
       </div>
     </div>
   </div>
@@ -1219,25 +1218,25 @@ body::after {
   <div class="container">
     <div class="credibility animate-in">
       <div class="cred-block">
-        <div class="eyebrow" style="justify-content:center;">为什么不是空口 AI</div>
-        <h3>不是空口 AI,<br/>是 <span class="hl">实战方法论</span> 的沉淀。</h3>
-        <p class="quote">每一条回复都不是从网上拼凑来的模板,而是基于真实情感场景里见过的 432 个案例、对过的节奏、踩过的坑,经过 <strong>26 流派模块</strong> + <strong>194 个回归用例</strong>反复验证 —— 一条条总结成可执行的判断。</p>
+        <div class="eyebrow" style="justify-content:center;">真实需求</div>
+        <h3>用户真正需要的,<br/>不是<span class="hl">闲聊</span>。</h3>
+        <p class="quote">匿名使用记录显示,用户最常带来的,是聊天截图、聊天记录和具体对话里的判断问题。大家不是缺一句漂亮话,而是想知道:对方现在什么态度、这段关系处在哪、下一步到底该不该动。</p>
         <div class="cred-stats">
           <div>
-            <div class="num">432</div>
-            <div class="lab">实战案例库</div>
+            <div class="num">截图</div>
+            <div class="lab">最核心入口</div>
           </div>
           <div>
-            <div class="num">26</div>
-            <div class="lab">流派模块</div>
+            <div class="num">回复</div>
+            <div class="lab">常和判断绑定</div>
           </div>
           <div>
-            <div class="num">5→14轮</div>
-            <div class="lab">对话深度</div>
+            <div class="num">动作</div>
+            <div class="lab">推进 / 观察 / 拉回</div>
           </div>
           <div>
-            <div class="num">0</div>
-            <div class="lab">踩坑事故</div>
+            <div class="num">不要</div>
+            <div class="lab">避免错误动作</div>
           </div>
         </div>
       </div>
@@ -1245,83 +1244,72 @@ body::after {
   </div>
 </section>
 
-<!-- ===== DEMO · 真实样本演示(按 songge-state-router + songge-wenzhong 流程走) ===== -->
+<!-- ===== DEMO · 合成示例 ===== -->
 <section class="section" id="demo">
   <div class="container">
     <div class="section-head animate-in">
-      <div class="eyebrow">实际效果 · state-router → action-router → wenzhong</div>
-      <h2>看一个真实样本:她说<span class="hl">"走了一天,又下雨了,没力气回家了"</span></h2>
-      <p>把这句发过来,系统先按松哥流派走完"L2 状态判断 → L3 动作路由"再给你 3 种回复,选一条最像你发的。</p>
+      <div class="eyebrow">实测样例</div>
+      <h2>同一句回复,先看<span class="hl">局势</span>,再决定怎么接。</h2>
+      <p>下面是一个合成示例,用来展示 WithYou 的判断流程;不是用户真实聊天。</p>
     </div>
 
     <div class="demo-stack">
-      <!-- Step 0: 基本假设 -->
       <div class="demo-meta animate-in">
-        <div class="demo-meta-label">Step 0 · 前提假设</div>
+        <div class="demo-meta-label">真实判断流程</div>
         <div class="demo-meta-row">
-          <span class="k">认识时长</span><span class="v">约 1 个月</span>
-          <span class="k">见过面</span><span class="v">1 次</span>
-          <span class="k">她最近主动</span><span class="v">2 天前</span>
+          <span class="k">输入</span><span class="v">聊天消息</span>
+          <span class="k">先做</span><span class="v">判断局势</span>
+          <span class="k">最后</span><span class="v">自然回复</span>
         </div>
       </div>
 
-      <!-- 输入:她发来的消息 -->
       <div class="demo-card demo-input animate-in" data-delay="1">
-        <div class="demo-label">她发来的消息</div>
-        <div class="demo-bubble">走了一天,又下雨了,没力气回家了</div>
+        <div class="demo-label">对方发来的消息</div>
+        <div class="demo-bubble">刚下班,有点累。</div>
       </div>
 
-      <!-- L2 状态判断 -->
       <div class="demo-card demo-analyze animate-in" data-delay="2">
-        <div class="demo-label">songge-state-router · L2 状态判断</div>
+        <div class="demo-label">WithYou 的局势判断</div>
         <div class="demo-grid">
-          <div class="demo-kv"><span class="k">阶段</span><span class="v">轻熟</span></div>
-          <div class="demo-kv"><span class="k">配合度</span><span class="v">黄灯(有回应但不主动)</span></div>
-          <div class="demo-kv"><span class="k">情绪质量</span><span class="v">情绪真高(累 + 等关心)</span></div>
-          <div class="demo-kv"><span class="k">主动度</span><span class="v">被动型</span></div>
-          <div class="demo-kv"><span class="k">配合动机</span><span class="v">被动配合</span></div>
-          <div class="demo-kv"><span class="k">信任度</span><span class="v">0.55(中)</span></div>
-          <div class="demo-kv"><span class="k">窗口等级</span><span class="v">小窗口(有情绪,缺逻辑+信号)</span></div>
-          <div class="demo-kv"><span class="k">诊断置信度</span><span class="v">高</span></div>
+          <div class="demo-kv"><span class="k">态度</span><span class="v">正常回应,投入不高</span></div>
+          <div class="demo-kv"><span class="k">信号</span><span class="v">愿意回复,但没有延展话题</span></div>
+          <div class="demo-kv"><span class="k">风险</span><span class="v">继续追问会变成消耗</span></div>
+          <div class="demo-kv"><span class="k">反证</span><span class="v">也可能只是单纯累了</span></div>
         </div>
         <div class="demo-sub-label">诊断分析</div>
         <div class="demo-prose">
-          她没有主动找你、只是发了一句分享 → 被动型。她确实累了,不是推脱,是在等你接。<strong style="color:var(--cyan)">她要的不是建议,是关心</strong>。如果你直接给"打车软件"或"我接你",会暴露需求感太强。
+          这句话不是明确冷淡,但也不是强窗口。重点不是马上找话题,而是接住她的疲惫,让对话有空间继续。<strong style="color:var(--cyan)">现在更适合轻接住,不适合追问。</strong>
         </div>
       </div>
 
-      <!-- L3 动作路由 -->
       <div class="demo-card demo-action animate-in" data-delay="3">
-        <div class="demo-label">songge-action-router · L3 动作路由</div>
+        <div class="demo-label">下一步动作</div>
         <div class="demo-grid">
-          <div class="demo-kv"><span class="k">最终动作</span><span class="v v-accent">接住(温柔托底)</span></div>
-          <div class="demo-kv"><span class="k">匹配流派</span><span class="v">songge-wenzhong</span></div>
-          <div class="demo-kv"><span class="k">备用流派</span><span class="v">songge-huishou</span></div>
-          <div class="demo-kv"><span class="k">禁止动作</span><span class="v v-warn">邀约、解释、油腻、连续追问</span></div>
+          <div class="demo-kv"><span class="k">建议</span><span class="v v-accent">接住 + 给空间</span></div>
+          <div class="demo-kv"><span class="k">暂时不要</span><span class="v v-warn">追问、邀约、讲长段子</span></div>
         </div>
         <div class="demo-prose">
-          <strong>心态:</strong> 稳住,不飘,把自己当一个会关心人的成熟男生,不当男朋友,不当跟班。
+          <strong>心态:</strong> 不要把她的疲惫当成考题,也不要立刻表现得过度热情。轻轻接住,让她觉得舒服,比继续找话题更重要。
         </div>
       </div>
 
-      <!-- 输出:3 种回复 -->
       <div class="demo-card demo-outputs animate-in" data-delay="4">
-        <div class="demo-label">3 种回复,选一条最像你发的</div>
+        <div class="demo-label">可以直接发送的回复</div>
         <div class="demo-replies">
           <div class="demo-reply">
-            <div class="r-tag">低风险 · 兜底</div>
-            <div class="r-text">淋了一天雨,是够累的。</div>
-            <div class="r-note">一句接住,啥都不做。等她继续</div>
+            <div class="r-tag">低风险</div>
+            <div class="r-text">累了就早点歇,别硬撑。</div>
+            <div class="r-note">短句接住,不给压力</div>
           </div>
           <div class="demo-reply">
-            <div class="r-tag">自然 · 推荐</div>
-            <div class="r-text">走了一天又赶上下雨,辛苦你了。饭吃了吗?</div>
-            <div class="r-note">接住 + 轻关心,留她回话空间</div>
+            <div class="r-tag">自然</div>
+            <div class="r-text">辛苦了,先回去好好放空一下。</div>
+            <div class="r-note">温和关心,不连续追问</div>
           </div>
           <div class="demo-reply demo-reply-pick">
-            <div class="r-tag">主策略 · 温柔托底</div>
-            <div class="r-text">一天雨 + 一天累,正常人都撑不住。先回去歇着,到家跟我说一声。</div>
-            <div class="r-note">读了情绪 + 给确定性 + 留尾巴让她主动</div>
+            <div class="r-tag">推荐</div>
+            <div class="r-text">下班累就先瘫着,啥也别想。</div>
+            <div class="r-note">像真人说话,轻松但不敷衍</div>
           </div>
         </div>
       </div>
@@ -1329,59 +1317,31 @@ body::after {
   </div>
 </section>
 
-<!-- ===== CHANGELOG · ACT 5 中段 — 更新日志 ===== -->
-<section class="section" id="changelog">
+<!-- ===== OUTCOME · ACT 5 中段 ===== -->
+<section class="section" id="outcome">
   <div class="container">
     <div class="section-head animate-in">
-      <div class="eyebrow">更新日志</div>
-      <h2>稳定迭代 · 持续优化</h2>
-      <p>每一次更新都有明确的目的 —— 让你更敢用、用得更准。</p>
+      <div class="eyebrow">你能获得什么</div>
+      <h2>你获得的不是几句模板,<br/>而是更稳的<span class="hl">判断能力</span>。</h2>
+      <p>WithYou 帮你少一点误判,稳一点节奏,最后再给出自然表达。</p>
     </div>
 
     <div class="changelog">
       <div class="changelog-item animate-in">
-        <div class="ver">v1.2  <span class="date">2026-07-14</span></div>
-        <div class="text"><span class="tag tag-impr">能力升级</span> 情感领域知识体系全面接入 · 不只是聊天技巧,是从认识到吸引到长期关系的完整判断框架</div>
+        <div class="ver">更少误判</div>
+        <div class="text"><span class="tag tag-impr">判断</span> 不把冷淡看成绝望,也不把礼貌看成喜欢。先看证据,再下结论。</div>
       </div>
       <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v1.2.5  <span class="date">2026-07-14</span></div>
-        <div class="text"><span class="tag tag-feat">能力扩展</span> 接入每日热点新闻 · 它知道的八卦比你多 · 永远有话题开聊,不尬聊</div>
+        <div class="ver">更稳节奏</div>
+        <div class="text"><span class="tag tag-feat">动作</span> 该推进时推进,该观察时观察,该收住时收住。不是每次都主动,也不是每次都等。</div>
       </div>
       <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">v1.2.4  <span class="date">2026-07-14</span></div>
-        <div class="text"><span class="tag tag-feat">能力扩展</span> 接入实时天气 · 你说"今天去见她"，它会先告诉你那天下不下雨、适不适合出门</div>
+        <div class="ver">更自然表达</div>
+        <div class="text"><span class="tag tag-feat">回复</span> 最后给出的不是模板感话术,而是短、顺、能发出去的真人表达。</div>
       </div>
       <div class="changelog-item animate-in" data-delay="3">
-        <div class="ver">v1.2.3  <span class="date">2026-07-13</span></div>
-        <div class="text"><span class="tag tag-feat">能力优化</span> 多用户会话彻底隔离 · 你的聊天记录、案例、记忆只属于你 · 别人看不到任何一段</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v1.2.2  <span class="date">2026-07-13</span></div>
-        <div class="text"><span class="tag tag-feat">架构升级</span> 思考过程与回复内容完全分流 · 你能看到它在"想什么"再"说什么" · 判断依据不再藏在黑箱里</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">v1.2.1  <span class="date">2026-07-13</span></div>
-        <div class="text"><span class="tag tag-feat">架构升级</span> 工具调用收口 · 只用经过白名单的能力 · 不再担心它乱动文件、跑命令、泄露信息</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="3">
-        <div class="ver">v1.1  <span class="date">2026-07-12</span></div>
-        <div class="text"><span class="tag tag-impr">架构设计重新优化</span></div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v0.8  <span class="date">2026-06-29</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> 整个分析过程实时显示 · 不用等结果出来再看 · 你能看到它当下在判断哪一步</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">v0.5.8 <span class="date">2026-06-28</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> 接入实战经验数据库 · 每条建议都有真实场景做依据,不再是泛泛而谈</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="3">
-        <div class="ver">v0.5.6 <span class="date">2026-06-28</span></div>
-        <div class="text"><span class="tag tag-feat">FEATURE</span> 每一条结论都附上"为什么这么判断" · 顾问可回放你的完整判断过程</div>
-      </div>
-      <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">v0.5.4 <span class="date">2026-06-27</span></div>
-        <div class="text"><span class="tag tag-impr">IMPROVE</span> 接入脱敏后的真实学员案例库 · 你遇到的场景,大概率别人也遇到过</div>
+        <div class="ver">更会复盘</div>
+        <div class="text"><span class="tag tag-impr">成长</span> 看得懂为什么这么判断,下一次遇到相似场景,你会更知道怎么处理。</div>
       </div>
     </div>
   </div>
@@ -1391,12 +1351,12 @@ body::after {
 <section class="section" id="start">
   <div class="container">
     <div class="cta-block animate-in">
-      <div class="eyebrow" style="justify-content:center;">现在就试试</div>
-      <h2>不再一个人猜。<br/>让 WithYou 陪你<span class="hl">把每一步都走对</span>。</h2>
-      <p>把你最近一次的聊天截图发过来 —— 让它先告诉你:她现在到底什么意思,你该不该主动。</p>
+      <div class="eyebrow" style="justify-content:center;">开始使用</div>
+      <h2>先看懂关系,<br/>再说<span class="hl">下一句</span>。</h2>
+      <p>把聊天截图或聊天记录发来,让 WithYou 先帮你判断局势。</p>
       <div class="hero-cta">
-        <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">立即开始 →</a>
-        <a href="#how" class="btn btn-ghost">再看看怎么用</a>
+        <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天 →</a>
+        <a href="#demo" class="btn btn-ghost">查看判断示例</a>
       </div>
     </div>
   </div>
@@ -1405,11 +1365,12 @@ body::after {
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="footer-meta">© 2026 WithYou · 实战方法论沉淀 · 陪你把每一步都走对</div>
+    <div class="footer-meta">© 2026 WithYou · 先看懂关系,再说下一句</div>
     <div class="footer-meta" style="display:flex;gap:20px;">
-      <a href="#">微信</a>
-      <a href="#">小红书</a>
-      <a href="#">学员群</a>
+      <a href="#how">怎么判断</a>
+      <a href="#why">为什么不同</a>
+      <a href="#demo">示例</a>
+      <a href="#start">开始</a>
     </div>
   </div>
 </footer>
