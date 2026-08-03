@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WithYou · 实战方法论 + 训练过的情感 AI</title>
+<title>WithYou · 你的情感参谋</title>
 <meta name="description" content="WithYou — 不只给话术。先帮你看清她的态度、读懂她的暗示,再告诉你怎么回。">
 
 <!-- 字体: 沉静黑底主要靠大号无衬线 + 衬线锚定标题 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 /* ========================================================
@@ -37,6 +37,7 @@
 
   /* Typography */
   --font-display: 'Noto Serif SC', 'Songti SC', serif;
+  --font-serif:   'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
   --font-body:    'Inter', 'PingFang SC', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'SF Mono', monospace;
 
@@ -48,6 +49,58 @@
   --border-2:     1px solid var(--hairline-2);
   --radius:       16px;
   --radius-lg:    24px;
+}
+
+/* ========================================================
+   LIQUID GLASS · 玻璃质感(参考 recreation prompt)
+   ======================================================== */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.serif-em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* 亮色主题下玻璃边框调暗 */
+[data-theme="light"] .liquid-glass::before {
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.20) 0%,
+    rgba(0,0,0,0.08) 20%,
+    rgba(0,0,0,0) 40%,
+    rgba(0,0,0,0) 60%,
+    rgba(0,0,0,0.08) 80%,
+    rgba(0,0,0,0.20) 100%
+  );
 }
 
 /* ========================================================
@@ -1004,6 +1057,58 @@ body::after {
 }
 
 /* ========================================================
+   DEMO · 多场景切换
+   ======================================================== */
+.demo-tabs {
+  max-width: 880px;
+  margin: 0 auto 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.demo-tab {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.demo-tab:hover { color: var(--ink); background: rgba(255,255,255,0.06); }
+.demo-tab.active {
+  color: #0a0a0f;
+  background: var(--aurora-1);
+  border-color: transparent;
+  font-weight: 600;
+}
+[data-theme="light"] .demo-tab { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .demo-tab.active {
+  color: #fff;
+  background: var(--aurora-1);
+  border-color: transparent;
+}
+.demo-stack .demo-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.demo-stack.switching .demo-card {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.demo-req {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+  margin-top: 10px;
+}
+
+/* ========================================================
    OUTCOME 长列表
    ======================================================== */
 .changelog {
@@ -1045,56 +1150,6 @@ body::after {
 .tag-feat   { background: rgba(77,108,255,0.10);  color: var(--blue); }
 .tag-impr   { background: rgba(167,139,250,0.10); color: var(--purple); }
 
-/* ===== PALETTE C · 纯白 + 深灰 + 克制蓝 ===== */
-:root,
-[data-theme="light"] {
-  --space: #ffffff;
-  --space-2: #f5f7fa;
-  --space-3: #e8edf3;
-  --ink: #111827;
-  --ink-soft: #4b5563;
-  --ink-mute: #8a94a6;
-  --hairline: rgba(17,24,39,0.10);
-  --hairline-2: rgba(17,24,39,0.16);
-  --blue: #2563eb;
-  --purple: #3b82f6;
-  --cyan: #0f9fb7;
-  --aurora-1: linear-gradient(135deg, #2563eb 0%, #3b82f6 48%, #0f9fb7 100%);
-  --aurora-2: linear-gradient(135deg, #0f9fb7 0%, #2563eb 56%, #7c9cff 100%);
-}
-body::before,
-[data-theme="light"] body::before {
-  background:
-    radial-gradient(circle at 18% 8%, rgba(37,99,235,0.10) 0%, transparent 42%),
-    radial-gradient(circle at 86% 28%, rgba(15,159,183,0.08) 0%, transparent 38%),
-    linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
-}
-body::after,
-[data-theme="light"] body::after {
-  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(15,159,183,0.06) 34%, transparent 72%);
-}
-.navbar,
-[data-theme="light"] .navbar {
-  background: rgba(255,255,255,0.86);
-  border-bottom: 1px solid rgba(17,24,39,0.08);
-}
-.hero-card,
-.promise-card,
-.bento-card,
-.demo-card,
-.story-block,
-.cred-block,
-[data-theme="light"] .hero-card,
-[data-theme="light"] .promise-card,
-[data-theme="light"] .bento-card,
-[data-theme="light"] .demo-card,
-[data-theme="light"] .story-block,
-[data-theme="light"] .cred-block {
-  background: rgba(255,255,255,0.86);
-  box-shadow: 0 24px 80px rgba(17,24,39,0.06);
-}
-.story-pull { background: rgba(37,99,235,0.06); }
-
 </style>
 </head>
 <body>
@@ -1124,21 +1179,20 @@ body::after,
 <!-- ===== HERO · ACT 1 ===== -->
 <section class="hero">
   <!-- 左浮动对话卡 -->
-  <div class="hero-card left">
+  <div class="hero-card left liquid-glass">
     <div class="who"><div class="avatar">她</div>对方的消息</div>
     <div class="msg">“最近有点忙，后面再说吧。”</div>
   </div>
   <!-- 右浮动对话卡 -->
-  <div class="hero-card right">
+  <div class="hero-card right liquid-glass">
     <div class="who"><div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#6ee7ff);">你</div>WithYou 给出的判断</div>
-    <div class="msg">不是先追问，而是先回收压力，暂时别推进。</div>
+    <div class="msg">不是先追问,而是先<span class="serif-em" style="color:var(--cyan)">回收</span>压力,暂时别推进。</div>
   </div>
 
   <div class="container" style="position:relative;z-index:2;">
     <div class="eyebrow">WITHYOU · 经验型聊天判断</div>
-    <h1>先看懂关系，<br/>再说<span class="hl">下一句</span>。</h1>
-    <p class="lead">把聊天截图或聊天记录发给 WithYou。它会先帮你判断对方态度、关系阶段和下一步动作，再给你自然、能直接发送的回复。</p>
-    <div class="hero-cta">
+    <h1>先看懂关系，<br/>再说<span class="hl serif-em">下一句</span>。</h1>
+    <p class="lead">把聊天截图或聊天记录发给 WithYou。它会先帮你判断对方态度、关系阶段和下一步动作，再给你自然、能直接发送的回复。</p>    <div class="hero-cta">
       <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天</a>
       <a href="#demo" class="btn btn-ghost">看看它怎么判断</a>
     </div>
@@ -1360,14 +1414,16 @@ body::after,
 <section class="section" id="demo">
   <div class="container">
     <div class="section-head animate-in">
-      <div class="eyebrow">实测样例</div>
+      <div class="eyebrow">实测样例 · 真实记录</div>
       <h2>同一句回复,先看<span class="hl">局势</span>,再决定怎么接。</h2>
-      <p>下面是一个合成示例,用来展示 WithYou 的判断流程;不是用户真实聊天。</p>
+      <p>以下 9 个场景来自 WithYou 的真实分析记录,展示完整判断流程:先看态度与反证,再定动作,最后给出能直接发的回复。</p>
     </div>
 
-    <div class="demo-stack">
+    <div class="demo-tabs" id="demoTabs"></div>
+
+    <div class="demo-stack" id="demoStack">
       <div class="demo-meta animate-in">
-        <div class="demo-meta-label">真实判断流程</div>
+        <div class="demo-meta-label">真实判断流程 · 来自实测记录</div>
         <div class="demo-meta-row">
           <span class="k">输入</span><span class="v">聊天消息</span>
           <span class="k">先做</span><span class="v">判断局势</span>
@@ -1377,53 +1433,28 @@ body::after,
 
       <div class="demo-card demo-input animate-in" data-delay="1">
         <div class="demo-label">对方发来的消息</div>
-        <div class="demo-bubble">刚下班,有点累。</div>
+        <div class="demo-bubble" id="d-input">—</div>
+        <div class="demo-req" id="d-req"></div>
       </div>
 
       <div class="demo-card demo-analyze animate-in" data-delay="2">
         <div class="demo-label">WithYou 的局势判断</div>
-        <div class="demo-grid">
-          <div class="demo-kv"><span class="k">态度</span><span class="v">正常回应,投入不高</span></div>
-          <div class="demo-kv"><span class="k">信号</span><span class="v">愿意回复,但没有延展话题</span></div>
-          <div class="demo-kv"><span class="k">风险</span><span class="v">继续追问会变成消耗</span></div>
-          <div class="demo-kv"><span class="k">反证</span><span class="v">也可能只是单纯累了</span></div>
-        </div>
+        <div class="demo-grid" id="d-attitudes"></div>
         <div class="demo-sub-label">诊断分析</div>
-        <div class="demo-prose">
-          这句话不是明确冷淡,但也不是强窗口。重点不是马上找话题,而是接住她的疲惫,让对话有空间继续。<strong style="color:var(--cyan)">现在更适合轻接住,不适合追问。</strong>
-        </div>
+        <div class="demo-prose" id="d-analyze"></div>
       </div>
 
       <div class="demo-card demo-action animate-in" data-delay="3">
         <div class="demo-label">下一步动作</div>
-        <div class="demo-grid">
-          <div class="demo-kv"><span class="k">建议</span><span class="v v-accent">接住 + 给空间</span></div>
-          <div class="demo-kv"><span class="k">暂时不要</span><span class="v v-warn">追问、邀约、讲长段子</span></div>
-        </div>
+        <div class="demo-grid" id="d-action"></div>
         <div class="demo-prose">
-          <strong>心态:</strong> 不要把她的疲惫当成考题,也不要立刻表现得过度热情。轻轻接住,让她觉得舒服,比继续找话题更重要。
+          <strong style="color:var(--cyan)" id="d-mindset"></strong>
         </div>
       </div>
 
       <div class="demo-card demo-outputs animate-in" data-delay="4">
         <div class="demo-label">可以直接发送的回复</div>
-        <div class="demo-replies">
-          <div class="demo-reply">
-            <div class="r-tag">低风险</div>
-            <div class="r-text">累了就早点歇,别硬撑。</div>
-            <div class="r-note">短句接住,不给压力</div>
-          </div>
-          <div class="demo-reply">
-            <div class="r-tag">自然</div>
-            <div class="r-text">辛苦了,先回去好好放空一下。</div>
-            <div class="r-note">温和关心,不连续追问</div>
-          </div>
-          <div class="demo-reply demo-reply-pick">
-            <div class="r-tag">推荐</div>
-            <div class="r-text">下班累就先瘫着,啥也别想。</div>
-            <div class="r-note">像真人说话,轻松但不敷衍</div>
-          </div>
-        </div>
+        <div class="demo-replies" id="d-replies"></div>
       </div>
     </div>
   </div>
@@ -1623,6 +1654,272 @@ window.addEventListener('scroll', () => {
   const y = window.scrollY;
   document.body.style.backgroundPosition = `center ${y * 0.3}px`;
 }, { passive: true });
+
+/* ========================================================
+   DEMO · 9 个真实场景(数据来自 docs/real-analyses 实测记录)
+   ======================================================== */
+var SCENARIOS = [
+  {
+    name: '冷淡 · 疲惫',
+    input: '刚下班，有点累。',
+    req: '认识一个月,约过两次会,最近一周回复变慢',
+    attitudes: [
+      ['态度', '正常回应,投入不高'],
+      ['信号', '愿回复但没延展话题'],
+      ['风险', '追问会变成消耗'],
+      ['反证', '也可能真就是累了'],
+    ],
+    analyze: '这句话不是明确冷淡,但也不是强窗口。她给你最少情绪投入,却愿意告诉你状态,说明信任还在。重点不是找话题,而是接住疲惫。<strong style="color:var(--cyan)">这轮更适合轻接住,给空间观察,不提进度。</strong>',
+    action: [
+      ['建议', '接住 + 给空间', 'accent'],
+      ['暂时不要', '问怎么了、连环追问、升温', 'warn'],
+    ],
+    mindset: '心态: 别把她的累当考题。今晚收住,明天用一个她提过的话题自然开场即可。',
+    replies: [
+      ['低风险', '累了就早点歇,别硬撑。'],
+      ['自然', '辛苦了,先回去好好放空一下。'],
+      ['推荐', '下班累就先瘫着,啥也别想。', 'pick'],
+    ],
+  },
+  {
+    name: '暧昧 · 升温',
+    input: '改天想让你带我去一家你没提过的店',
+    req: '暧昧三个月,她每天主动找你',
+    attitudes: [
+      ['信号', '记得你没提过的店,在意你说过的话'],
+      ['态度', '明确的推进信号,推进度不低'],
+      ['窗口', '她想见面,但把选择权留给你'],
+      ['反证', '也可能只是随口一说想多点交集'],
+    ],
+    analyze: '她记得你没提过的店,说明在意你说过的话;同时主动邀约却把选择权给你——想见面但不想显得太主动。她已经做完她能做的,球在你这边,需要接住而不是继续暧昧式回应。',
+    action: [
+      ['建议', '推进,给一个具体回应', 'accent'],
+      ['暂时不要', '过度兴奋、立刻定死细节', 'warn'],
+    ],
+    mindset: '别装冷。接住她的主动,给一个具体的时间或地点,同时保留你的主导感。',
+    replies: [
+      ['ISTJ', '行啊 周六下午带你 别迟到啊'],
+      ['ESFP', '这咖啡看着不错 周末带你解锁那家 你定时间'],
+      ['推荐', '你连我随口提过的店都记得 那这周我来安排', 'pick'],
+    ],
+  },
+  {
+    name: '情绪 · 低落',
+    input: '我今天心情很差,不想说话。',
+    req: '她说心情差,不想说话',
+    attitudes: [
+      ['信号', '"不想说话"是明确边界'],
+      ['关键', '她要被接住,不是要方案'],
+      ['风险', '讲道理、问怎么了=加压'],
+      ['反证', '也许她只是想静静'],
+    ],
+    analyze: '讲道理、追问"怎么了"等于往她情绪上加压。她要的从来不是解决方案,是有人接住她此刻的状态。把她的情绪还给她,"我在"就够了。',
+    action: [
+      ['建议', '接住,给空间,不要求回应', 'accent'],
+      ['暂时不要', '问怎么了、讲道理、催回复', 'warn'],
+    ],
+    mindset: '&ldquo;我在&rdquo;这个词,胜过十句解决方案。不追问、不消失,让她知道你想接住她但不耗她。',
+    replies: [
+      ['简单', '行 那就别说了 我在'],
+      ['自然', '没事 不想聊就先不聊 我也没事'],
+      ['推荐', '那就安静待着 我不打扰', 'pick'],
+    ],
+  },
+  {
+    name: '已读不回',
+    input: '已读不回 18 小时',
+    req: '聊了十天,前面每天回,见过一次面',
+    attitudes: [
+      ['态度', '轻度降温,中等置信度'],
+      ['信号', '前期每天回,这轮优先级不高'],
+      ['风险', '此时追发=显得催回复'],
+      ['反证', '也可能只是忙、忘回,或不好展开'],
+    ],
+    analyze: '仅凭一次已读 18 小时,还不能断定是拒绝。她的投入只是较前几天有所下降。此时立马补一条最容易暴露需求感,先稳住节奏更稳。',
+    action: [
+      ['建议', '回收:先不补,再等 24–48 小时', 'accent'],
+      ['暂时不要', '问怎么不回、解释自己不着急', 'warn'],
+    ],
+    mindset: '把节奏交回时间。不追发,给对话空间;若之后想重开,只发一条低压力的收口消息,发完不再追加。',
+    replies: [
+      ['简单', '你先忙,空了再聊'],
+      ['自然', '不急,你方便的时候再说'],
+      ['推荐', '先忙你的,回头有空再聊', 'pick'],
+    ],
+  },
+  {
+    name: '聊崩 · 修复',
+    input: '我回消息有点阴阳怪气,她变冷了',
+    req: '本来聊得挺好,第6天你情绪低带刺',
+    attitudes: [
+      ['信号', '连聊5天是真投入,不是客气'],
+      ['态度', '降温+轻微防备,门还没关死'],
+      ['关键', '她不是作,是合理边界'],
+      ['反证', '5天也可能只是新鲜感,得看后续'],
+    ],
+    analyze: '现在不是解释,是修复。先承认那天语气不对,不揶自己情绪,把温度降回正常,等她接。最危险的是一段长解释,那等于把情绪扔给她,只会雪上加霜。',
+    action: [
+      ['建议', '短句承认,不解释、不追问', 'accent'],
+      ['暂时不要', '长段自我辩护、一天内连发两条、急着约', 'warn'],
+    ],
+    mindset: '把她当成敏感但讲理的人。一句干净的承认,比十句辩解有用。发完就收,等她自己过来。',
+    replies: [
+      ['承认', '那条回你的语气是我的问题,你不用在意。'],
+      ['道歉', '上次说话带情绪了,跟你没关系,抱歉。'],
+      ['推荐', '语气不好是我不对,不该带给你,缓过来我们再聊。', 'pick'],
+    ],
+  },
+  {
+    name: '邀约 · 被拒',
+    input: '最近有点忙,后面再说吧。',
+    req: '邀约周末见面,认识两周,微信每天聊',
+    attitudes: [
+      ['态度', '礼貌婉拒,不是绝对拒绝'],
+      ['信号', '缓冲句式,真忙会给替代时间'],
+      ['风险', '急着继续约=亮光底牌'],
+      ['反证', '也可能这周确实有事'],
+    ],
+    analyze: '这是句礼貌婉拒:她给了台阶,没给绿灯。真忙的人会说具体哪天,她却什么都没给,说明不是时间问题,是意愿问题。此刻"停止邀约"才是把主动权交给她的做法。',
+    action: [
+      ['建议', '回收:停邀约,降主动频,做生活展示', 'accent'],
+      ['暂时不要', '追问到底什么时候有空、隔两天再约', 'warn'],
+    ],
+    mindset: '这一周不再提见面, 把重心放回生活切片。观察 1–2 周她是否主动找你, 是留是放就有了答案。',
+    replies: [
+      ['接住', '行 那你先忙 有空了找我'],
+      ['自然', '好嘞 不着急 等你不忙了再说'],
+      ['推荐', '哈哈没事 我正好也忙起来 有空见', 'pick'],
+    ],
+  },
+  {
+    name: '养鱼 · 判断',
+    input: '约见面三次都绕开,说忙或下次吧',
+    req: '认识一个半月,线下只见过一次',
+    attitudes: [
+      ['定位', '大概率是"情绪出口",不是备胎'],
+      ['证据', '深夜倾诉=索取式主动,非推进式'],
+      ['反证', '真正感兴趣,给得出具体时间'],
+      ['置信度', '中:你不是她首选见面对象概率高'],
+    ],
+    analyze: '她没把你当备胎养,但你停在"有需要就找你、没需要你靠后"。三次绕开具体时间说明线下对你不是优先级。最该停的不是"要不要继续",而是你随叫随到的节奏。',
+    action: [
+      ['建议', '回收 + 隐性设界,观察期 2 周', 'accent'],
+      ['暂时不要', '问算什么关系、继续主动约、连环发', 'warn'],
+    ],
+    mindset: '把时间主动权拿回来。不再主动约,她深夜倾诉也别秒回——让"见不到你"从她的默认变成她需要主动解决的事。',
+    replies: [
+      ['设界', '最近有点忙 可能回得慢 先这样吧'],
+      ['自然', '嗯 看到了 我先去忙了'],
+      ['关键一步', '你找我不就行 我又没消失', 'pick'],
+    ],
+  },
+  {
+    name: '闺蜜区',
+    input: '她什么都跟你说,还问别的男生怎么看',
+    req: '每天聊快一个月,没有暧昧',
+    attitudes: [
+      ['定位', '被当成"安全倾听者",不在候选'],
+      ['信号', '什么都跟你说=信任,但问男生看法=没进列表'],
+      ['卡点', '你太稳太配合,没有情绪波动'],
+      ['反证', '也可能只当朋友,但你从没给过信号'],
+    ],
+    analyze: '不是她不喜欢你,是她把你定位成安全倾听者,而不是有张力的男人。她什么都跟你说=信任你,但她问别的男生看法=你不在她的候选名单里。现在不是推进,是"重新定位"。',
+    action: [
+      ['建议', '起一次"起伏",制造反差', 'accent'],
+      ['暂时不要', '直接表白、继续当完美倾听者、追问她看法', 'warn'],
+    ],
+    mindset: '让她先意识到你是男的、是潜在对象, 而不是备胎情绪垃圾桶。慢回 + 偶尔不接话, 把危险感拿回来。',
+    replies: [
+      ['调侃', '你问一圈下来不还是我最靠谱 他们懂什么'],
+      ['自荐', '哦?还搞民意调查呢?那我投我自己一票'],
+      ['推荐', '你问他们干嘛 想听真话还是想听哄你的 ', 'pick'],
+    ],
+  },
+  {
+    name: '初识 · 关心',
+    input: '我今天感冒了。',
+    req: '认识一周,刚建立舒适感',
+    attitudes: [
+      ['信号', '主动分享状态=愿意继续聊'],
+      ['阶段', '初识期,别太重'],
+      ['风险', '过度关心会显得用力过猛'],
+      ['反证', '也可能只是随口一句'],
+    ],
+    analyze: '她主动发消息分享状态,说明有基本舒适感,愿意继续互动。认识一周,这轮关键词是"接住"。最怕的是一周就进入暖男伺候模式,那会让人有压力。控制在一两句, 不追问。',
+    action: [
+      ['建议', '接住 + 轻关心,控制在 1–2 句', 'accent'],
+      ['暂时不要', '连环关心炮、借机暧昧、说要去照顾', 'warn'],
+    ],
+    mindset: '& 关心有度。 让她知道你在, 但不把人家当病人。轻量一句, 温度刚好。',
+    replies: [
+      ['简单', '听到啦,注意休息,最近天凉容易着凉。'],
+      ['自然', '辛苦了,先好好歇着,多喝点水。'],
+      ['推荐', '嗯,身体要紧 快点好起来,等等你精神了我请你喝热的', 'pick'],
+    ],
+  },
+];
+
+(function() {
+  var tabs = document.getElementById('demoTabs');
+  var stack = document.getElementById('demoStack');
+  if (!tabs || !stack) return;
+
+  var attitudesEl = document.getElementById('d-attitudes');
+  var actionEl    = document.getElementById('d-action');
+  var repliesEl   = document.getElementById('d-replies');
+
+  function kv(rows) {
+    return rows.map(function(r) {
+      var cls = r[2] ? ' v-' + r[2] : '';
+      return '<div class="demo-kv"><span class="k">' + r[0] +
+        '</span><span class="v' + cls + '">' + r[1] + '</span></div>';
+    }).join('');
+  }
+  function replies(rows) {
+    return rows.map(function(r) {
+      var pick = r[2] === 'pick' ? ' demo-reply-pick' : '';
+      return '<div class="demo-reply' + pick + '"><div class="r-tag">' +
+        r[0] + '</div><div class="r-text">' + r[1] + '</div></div>';
+    }).join('');
+  }
+
+  function render(i) {
+    var s = SCENARIOS[i];
+
+    tabs.querySelectorAll('.demo-tab').forEach(function(t, idx) {
+      t.classList.toggle('active', idx === i);
+    });
+
+    stack.classList.add('switching');
+    setTimeout(function() {
+      document.getElementById('d-input').textContent = s.input;
+      document.getElementById('d-req').textContent = s.req || '';
+      if (s.req) {
+        document.getElementById('d-req').style.display = '';
+      } else {
+        document.getElementById('d-req').style.display = 'none';
+      }
+      attitudesEl.innerHTML = kv(s.attitudes);
+      document.getElementById('d-analyze').innerHTML = s.analyze;
+      actionEl.innerHTML    = kv(s.action);
+      document.getElementById('d-mindset').innerHTML = s.mindset || '';
+      repliesEl.innerHTML   = replies(s.replies);
+
+      stack.classList.remove('switching');
+    }, 150);
+  }
+
+  SCENARIOS.forEach(function(s, i) {
+    var b = document.createElement('button');
+    b.className = 'demo-tab' + (i === 0 ? ' active' : '');
+    b.type = 'button';
+    b.textContent = s.name;
+    b.addEventListener('click', function(){ render(i); });
+    tabs.appendChild(b);
+  });
+
+  render(0);
+})();
 </script>
 </body>
 </html>
