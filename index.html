@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
 <style>/* ========================================================
    DESIGN TOKENS — Apple-style · 浅色苹果风
@@ -259,16 +261,10 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.5;
   color: var(--ink-soft);
   box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-  opacity: 0;
-  animation: cardFloatIn 1s 0.4s ease-out forwards;
 }
 [data-theme="dark"] .hero-card { background: rgba(22,22,24,0.7); }
 .hero-card.left { top: 24%; left: 5%; transform: rotate(-2deg); }
-.hero-card.right { top: 58%; right: 5%; transform: rotate(2deg); animation-delay: 0.7s; }
-@keyframes cardFloatIn {
-  from { opacity: 0; transform: translateY(24px) rotate(0deg); }
-  to   { opacity: 1; }
-}
+.hero-card.right { top: 58%; right: 5%; transform: rotate(2deg); }
 .hero-card .who {
   display: flex;
   align-items: center;
@@ -397,13 +393,16 @@ a { color: inherit; text-decoration: none; }
    ======================================================== */
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 32px;
   margin: 0 auto 80px;
   max-width: 1100px;
   text-align: center;
 }
-@media (max-width: 800px) { .stats-row { grid-template-columns: repeat(2, 1fr); gap: 40px; } }
+@media (max-width: 800px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .stats-row > :last-child { grid-column: span 2; }
+}
 .stat-num {
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 5vw, 4rem);
@@ -492,6 +491,49 @@ a { color: inherit; text-decoration: none; }
   border-radius: 0 16px 16px 0;
 }
 @media (max-width: 700px) { .story-block { padding: 42px 24px; } }
+
+/* OUTCOME 2×2 grid */
+.outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.outcome-card {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.outcome-card .oc-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+.outcome-card .oc-tag.impr { background: rgba(0,113,227,0.08); color: var(--blue); }
+.outcome-card .oc-tag.feat { background: rgba(0,113,227,0.06); color: var(--blue); }
+.outcome-card .oc-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.outcome-card .oc-desc {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+@media (max-width: 640px) { .outcome-grid { grid-template-columns: 1fr; } }
 
 /* ========================================================
    CREDIBILITY
@@ -609,7 +651,8 @@ a { color: inherit; text-decoration: none; }
 .demo-reply .r-text { font-size: 0.92rem; color: var(--ink); line-height: 1.55; }
 
 /* DEMO 切换 */
-.demo-tabs { max-width: 880px; margin: 0 auto 18px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.demo-tabs { max-width: 880px; margin: 0 auto 18px; display: grid; gap: 8px; justify-items: center; }
+@media (max-width: 700px) { .demo-tabs { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
 .demo-tab {
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -647,6 +690,7 @@ a { color: inherit; text-decoration: none; }
       <a href="#how">怎么判断</a>
       <a href="#why">为什么不同</a>
       <a href="#demo">实测样例</a>
+      <a href="#story">为什么</a>
       <a href="#start">开始使用</a>
     </div>
     <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗/亮主题">
@@ -782,6 +826,10 @@ a { color: inherit; text-decoration: none; }
         <div class="stat-num">回复</div>
         <div class="stat-label">最后再给</div>
       </div>
+      <div class="animate-in" data-delay="4">
+        <div class="stat-num">24H</div>
+        <div class="stat-label">全天候在线</div>
+      </div>
     </div>
   </div>
 </section>
@@ -836,27 +884,6 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
-<!-- ===== STORY · 为什么会有 WithYou ===== -->
-<section class="section" id="story">
-  <div class="container">
-    <div class="story-block animate-in">
-      <div class="eyebrow">为什么会有 WithYou</div>
-      <h2>不是做一个工具 而是把多年经验变成<span class="hl">随时能用的陪伴</span></h2>
-      <div class="story-copy">
-        <p>做 WithYou 之前,我做过很多年的情感咨询和实战陪跑。这些年里,我见过太多兄弟卡在同一个地方:不是不会聊天,而是不知道该怎么判断。</p>
-        <p>她回了一句“最近有点忙”,到底是真的忙,还是在降温?她愿意回消息,但从来不主动,是还有机会,还是只是礼貌?一句话该不该发、邀约该不该提、关系该推进还是该收住,很多人真正缺的不是话术,而是判断。</p>
-
-        <div class="story-pull">情感问题表面上是聊天问题,<br/>本质上是关系判断问题。</div>
-
-        <p>普通 AI 可以帮你改一句话,也可以生成很多看起来不错的回复。但真实关系里,值钱的从来不是一句漂亮话,而是知道这句话现在该不该说、该用什么节奏说、说完之后会把关系推向哪里。</p>
-        <p>这背后靠的不是模板,而是经验。很多判断,是多年看案例、陪学员复盘、亲自处理真实关系问题后才会形成的直觉。哪些信号是真的,哪些只是礼貌;什么时候要推进,什么时候要收;什么时候你以为自己在表达关心,其实是在给对方压力。</p>
-        <p>但一个人的精力总是有限的。很多兄弟真正需要帮助的时候,往往就是对方刚回消息的那几分钟,是关系正在升温或降温的那个瞬间。我不可能时时刻刻陪在每个人旁边,帮他看截图、拆局势、定动作、避开错误。</p>
-        <p>于是 WithYou 出现了。它不是一个简单改话术的工具,也不是一个只会陪你聊天的 AI。它更像一个把多年情感实战经验沉淀下来的情感参谋:你把聊天截图或聊天记录发来,它先帮你看懂关系,判断对方态度、当前阶段和下一步动作,再给你自然、能发出去的回复。</p>
-        <p>我希望它解决的,不只是“这句话怎么回”。而是帮你慢慢建立一种更稳的关系判断能力:看懂对方的信号,控制自己的节奏,知道什么时候该主动,什么时候该停,什么时候该给空间,什么时候可以推进。</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ===== CREDIBILITY · ACT 4 ===== -->
 <section class="section" id="proof">
@@ -864,24 +891,24 @@ a { color: inherit; text-decoration: none; }
     <div class="credibility animate-in">
       <div class="cred-block">
         <div class="eyebrow" style="justify-content:center;">真实需求</div>
-        <h3>用户真正需要的<br/>不是<span class="hl">闲聊</span></h3>
-        <p class="quote">匿名使用记录显示,用户最常带来的,是聊天截图、聊天记录和具体对话里的判断问题。大家不是缺一句漂亮话,而是想知道:对方现在什么态度、这段关系处在哪、下一步到底该不该动。</p>
+        <h3>你真正需要的<br/>不是<span class="hl">找老师</span></h3>
+        <p class="quote">凌晨收到她的消息,想找人帮忙判断——老师已经睡了。人总要休息,任何人工陪跑都绕不开这道坎。WithYou 24 小时全天候,你想判断的时候,它都在。</p>
         <div class="cred-stats">
           <div>
+            <div class="num">24H</div>
+            <div class="lab">随时在线</div>
+          </div>
+          <div>
             <div class="num">截图</div>
-            <div class="lab">最核心入口</div>
+            <div class="lab">随时判断</div>
           </div>
           <div>
             <div class="num">回复</div>
-            <div class="lab">常和判断绑定</div>
+            <div class="lab">不等老师</div>
           </div>
           <div>
-            <div class="num">动作</div>
-            <div class="lab">推进 / 观察 / 拉回</div>
-          </div>
-          <div>
-            <div class="num">不要</div>
-            <div class="lab">避免错误动作</div>
+            <div class="num">不用</div>
+            <div class="lab">等下班再问</div>
           </div>
         </div>
       </div>
@@ -948,22 +975,26 @@ a { color: inherit; text-decoration: none; }
       <p>WithYou 帮你少一点误判,稳一点节奏,最后再给出自然表达。</p>
     </div>
 
-    <div class="changelog">
-      <div class="changelog-item animate-in">
-        <div class="ver">更少误判</div>
-        <div class="text"><span class="tag tag-impr">判断</span> 不把冷淡看成绝望,也不把礼貌看成喜欢。先看证据,再下结论。</div>
+    <div class="outcome-grid">
+      <div class="outcome-card animate-in">
+        <span class="oc-tag impr">判断</span>
+        <div class="oc-title">更少误判</div>
+        <div class="oc-desc">不把冷淡看成绝望,也不把礼貌看成喜欢。先看证据,再下结论。</div>
       </div>
-      <div class="changelog-item animate-in" data-delay="1">
-        <div class="ver">更稳节奏</div>
-        <div class="text"><span class="tag tag-feat">动作</span> 该推进时推进,该观察时观察,该收住时收住。不是每次都主动,也不是每次都等。</div>
+      <div class="outcome-card animate-in" data-delay="1">
+        <span class="oc-tag feat">动作</span>
+        <div class="oc-title">更稳节奏</div>
+        <div class="oc-desc">该推进时推进,该观察时观察,该收住时收住。不是每次都主动,也不是每次都等。</div>
       </div>
-      <div class="changelog-item animate-in" data-delay="2">
-        <div class="ver">更自然表达</div>
-        <div class="text"><span class="tag tag-feat">回复</span> 最后给出的不是模板感话术,而是短、顺、能发出去的真人表达。</div>
+      <div class="outcome-card animate-in" data-delay="2">
+        <span class="oc-tag feat">回复</span>
+        <div class="oc-title">更自然表达</div>
+        <div class="oc-desc">最后给出的不是模板感话术,而是短、顺、能发出去的真人表达。</div>
       </div>
-      <div class="changelog-item animate-in" data-delay="3">
-        <div class="ver">更会复盘</div>
-        <div class="text"><span class="tag tag-impr">成长</span> 看得懂为什么这么判断,下一次遇到相似场景,你会更知道怎么处理。</div>
+      <div class="outcome-card animate-in" data-delay="3">
+        <span class="oc-tag impr">成长</span>
+        <div class="oc-title">更会复盘</div>
+        <div class="oc-desc">看得懂为什么这么判断,下一次遇到相似场景,你会更知道怎么处理。</div>
       </div>
     </div>
   </div>
@@ -984,6 +1015,28 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
+<!-- ===== STORY · 为什么会有 WithYou ===== -->
+<section class="section" id="story">
+  <div class="container">
+    <div class="story-block animate-in">
+      <div class="eyebrow">为什么会有 WithYou</div>
+      <h2>不是做一个工具 而是把多年经验变成<span class="hl">随时能用的陪伴</span></h2>
+      <div class="story-copy">
+        <p>做 WithYou 之前,我做过很多年的情感咨询和实战陪跑。这些年里,我见过太多兄弟卡在同一个地方:不是不会聊天,而是不知道该怎么判断。</p>
+        <p>她回了一句"最近有点忙",到底是真的忙,还是在降温?她愿意回消息,但从来不主动,是还有机会,还是只是礼貌?一句话该不该发、邀约该不该提,关系该推进还是该收住,很多人真正缺的不是话术,而是判断。</p>
+
+        <div class="story-pull">情感问题表面上是聊天问题,<br/>本质上是关系判断问题。</div>
+
+        <p>普通 AI 可以帮你改一句话,也可以生成很多看起来不错的回复。但真实关系里,值钱的从来不是一句漂亮话,而是知道这句话现在该不该说、该用什么节奏说、说完之后会把关系推向哪里。</p>
+        <p>这背后靠的不是模板,而是经验。很多判断,是多年看案例、陪学员复盘、亲自处理真实关系问题后才会形成的直觉。哪些信号是真的,哪些只是礼貌;什么时候要推进,什么时候要收;什么时候你以为自己在表达关心,其实是在给对方压力。</p>
+        <p>但一个人的精力总是有限的。很多兄弟真正需要帮助的时候,往往就是对方刚回消息的那几分钟,是关系正在升温或降温的那个瞬间。我不可能时时刻刻陪在每个人旁边,帮他看截图、拆局势、定动作、避开错误。</p>
+        <p>于是 WithYou 出现了。它不是一个简单改话术的工具,也不是一个只会陪你聊天的 AI。它更像一个把多年情感实战经验沉淀下来的情感参谋:你把聊天截图或聊天记录发来,它先帮你看懂关系,判断对方态度、当前阶段和下一步动作,再给你自然、能发出去的回复。</p>
+        <p>我希望它解决的,不只是"这句话怎么回"。而是帮你慢慢建立一种更稳的关系判断能力:看懂对方的信号,控制自己的节奏,知道什么时候该主动,什么时候该停,什么时候该给空间,什么时候可以推进。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container footer-inner">
@@ -992,6 +1045,7 @@ a { color: inherit; text-decoration: none; }
       <a href="#how">怎么判断</a>
       <a href="#why">为什么不同</a>
       <a href="#demo">示例</a>
+      <a href="#story">为什么</a>
       <a href="#start">开始</a>
     </div>
   </div>
@@ -999,68 +1053,61 @@ a { color: inherit; text-decoration: none; }
 
 <script>
 /* ========================================================
-   入场动画 (稳妥版)
-   - 默认所有 .animate-in = 完全可见(headless/录屏都直接可见)
-   - JS 启动后, 先重置为 .animate-in-prep (opacity 0.001 + translateY)
-     然后 IO 在元素进入视口时加 .visible → 触发 CSS animation gentleFadeIn
-   - 兜底: DOMContentLoaded ~50ms 内强制 reflow + add visible 给首屏元素
+   入场动画 —— GSAP + ScrollTrigger
+   - 注册插件
+   - 用 gsap.matchMedia 尊重 prefers-reduced-motion
+   - 滚动进入视口时淡入 + 上移 (stagger), 覆盖所有 .animate-in
+   - 首屏元素立即入场
+   - Hero 用 timeline 序列: eyebrow → 标题 → lead → CTA → 浮动卡
+   - 浮动卡持续漂浮; hero 内容轻微视差
    ======================================================== */
 (function() {
+  if (typeof gsap === 'undefined') return;
+
   function init() {
-    var els = document.querySelectorAll('.animate-in');
-    // JS 启动后重置为 prep 状态
-    els.forEach(function(el){ el.classList.add('animate-in-prep'); });
-    // 强制 reflow 让浏览器知道状态切换
-    void document.body.offsetHeight;
+    gsap.registerPlugin(ScrollTrigger);
 
-    var makeVisible = function(el) {
-      el.classList.remove('animate-in-prep');
-      el.classList.add('visible');
-    };
+    gsap.matchMedia().add({
+      reduceMotion: '(prefers-reduced-motion: reduce)'
+    }, function(ctx) {
+      var reduce = ctx.conditions.reduceMotion;
+      if (reduce) return; // 全静默: 不动画, 保持默认可见
 
-    if (!('IntersectionObserver' in window)) {
-      els.forEach(makeVisible);
-      return;
-    }
-
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          makeVisible(e.target);
-          io.unobserve(e.target);
-        }
+      /* —— 滚动入场: 通用 .animate-in —— */
+      gsap.utils.toArray('.animate-in').forEach(function(el, i) {
+        gsap.fromTo(el,
+          { autoAlpha: 0, y: 26 },
+          {
+            autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out',
+            delay: (el.dataset.delay || 0) * 1,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true
+            }
+          }
+        );
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(function(el){ io.observe(el); });
 
-    /* 首屏兜底: 元素已经在视口内的, 立即 visible (不让它们停留在 prep 态) */
-    var vh = window.innerHeight;
-    els.forEach(function(el) {
-      var r = el.getBoundingClientRect();
-      if (r.top < vh && r.bottom > 0) {
-        makeVisible(el);
-        io.unobserve(el);
-      }
+      /* —— 2. Hero 进场 timeline (首屏) —— */
+      var tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+      tl.from('.hero .eyebrow',  { autoAlpha: 0, y: 18, duration: 0.5 })
+        .from('.hero h1',        { autoAlpha: 0, y: 24, duration: 0.7 }, '-=0.2')
+        .from('.hero .lead',     { autoAlpha: 0, y: 16, duration: 0.6 }, '-=0.35')
+        .from('.hero .hero-cta', { autoAlpha: 0, y: 14, duration: 0.5 }, '-=0.3')
+        .from('.hero-card.left',  { autoAlpha: 0, y: 30, rotate: -2, duration: 0.7 }, '-=0.4')
+        .from('.hero-card.right', { autoAlpha: 0, y: 30, rotate: 2,  duration: 0.7 }, '-=0.15');
+
+      /* —— 3. 浮动卡持续漂浮 (保留 CSS 里的 rotate) —— */
+      gsap.to('.hero-card.left',  { y: -12, rotate: -2, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.hero-card.right', { y: -10, rotate: 2,  duration: 4,   ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.5 });
+
+      /* —— 4. Hero 内容滚动视差 (轻微) —— */
+      gsap.to('.hero .container', {
+        yPercent: 18, opacity: 0.5, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+      });
     });
-
-    /* 兜底: 滚动时扫视口 1.5 屏内的 */
-    function fallback() {
-      var vh2 = window.innerHeight;
-      els.forEach(function(el) {
-        if (el.classList.contains('visible')) return;
-        var r = el.getBoundingClientRect();
-        if (r.top < vh2 * 1.5 && r.bottom > -100) {
-          makeVisible(el);
-          io.unobserve(el);
-        }
-      });
-    }
-    window.addEventListener('scroll', fallback, { passive: true });
-
-    /* 兜底2: 5s 后全部 visible (录屏极端情况下) */
-    setTimeout(function() {
-      els.forEach(makeVisible);
-    }, 5000);
   }
 
   if (document.readyState === 'loading') {
@@ -1390,6 +1437,12 @@ var SCENARIOS = [
     b.addEventListener('click', function(){ render(i); });
     tabs.appendChild(b);
   });
+
+  var n = SCENARIOS.length, cols = n;
+  for (var c = Math.ceil(Math.sqrt(n)); c < n; c++) {
+    if (n % c === 0) { cols = c; break; }
+  }
+  tabs.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))';
 
   render(0);
 })();
