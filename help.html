@@ -184,12 +184,17 @@ function buildTOC() {
   var toc = document.getElementById('toc-links');
   toc.innerHTML = '';
   h2s.forEach(function(h) {
-    var id = h.id || h.textContent.trim().replace(/\s+/g, '-');
+    var text = h.textContent.trim();
+    /* skip non-section headings */
+    if (text.includes('📚 目录') || text === '文档结束') return;
+    /* strip emoji for clean id */
+    var clean = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').trim();
+    var id = h.id || clean;
     h.id = id;
     var a = document.createElement('a');
     a.className = 'sidebar-link';
     a.href = '#' + id;
-    a.textContent = h.textContent.replace(/^[^\s]+\s*/, '');
+    a.textContent = text.replace(/^[^\s]+\s*/, '').trim();
     toc.appendChild(a);
   });
 }
