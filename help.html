@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>使用帮助 · WithYou 情感 AI 手册</title>
-<meta name="description" content="WithYou 情感 AI 使用手册 — 让 0 基础用户看完就能上手、复制粘贴就能拿到答案。">
+<title>使用帮助 · WithYou 情感教练系统</title>
+<meta name="description" content="WithYou 情感教练系统使用说明书 — 让 0 基础用户看完就能上手、复制粘贴就能拿到答案。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230071e3'/%3E%3Ctext x='32' y='42' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3EW%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
 :root {
   --space:#ffffff;--space-2:#f5f5f7;--space-3:#e8e8ed;--ink:#1d1d1f;--ink-soft:#6e6e73;--ink-mute:#86868b;--hairline:rgba(0,0,0,.08);--hairline-2:rgba(0,0,0,.16);
@@ -31,7 +32,6 @@ a:hover{text-decoration:underline;}
 img{max-width:100%;display:block;}
 button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
 .container{max-width:var(--container);margin:0 auto;padding:0 32px;}
-@media(min-width:768px){.container{padding:0 40px;}}
 
 /* NAV */
 .navbar{position:sticky;top:0;z-index:100;background:var(--space);border-bottom:1px solid var(--hairline);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
@@ -57,55 +57,46 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
 .sidebar-link{display:block;padding:6px 10px;border-radius:8px;font-size:.84rem;color:var(--ink-soft);transition:all .15s;cursor:pointer;}
 .sidebar-link:hover{background:var(--space-2);color:var(--ink);text-decoration:none;}
 .sidebar-link.active{background:rgba(0,113,227,.1);color:var(--blue);font-weight:600;}
-.sidebar-sub{display:none;padding-left:14px;}
 
 /* CONTENT */
 .help-content{max-width:820px;}
+.help-content .doc-header{margin-bottom:48px;}
 .help-content h1{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1.2;margin-bottom:16px;}
 .help-content .doc-meta{font-size:.8rem;color:var(--ink-mute);margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--hairline);}
 
-.part{margin-bottom:64px;}
-.part-title{font-family:var(--font-display);font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--blue);display:flex;align-items:center;gap:12px;}
-.part-title .part-num{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--blue);padding:3px 10px;border-radius:999px;}
+/* MARKDOWN RENDERED STYLES */
+.help-content h2{font-family:var(--font-display);font-size:clamp(1.3rem,2.2vw,1.7rem);font-weight:700;color:var(--ink);letter-spacing:-.02em;margin:48px 0 20px;padding-bottom:12px;border-bottom:2px solid var(--blue);display:flex;align-items:center;gap:10px;}
+.help-content h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--ink);margin:28px 0 12px;}
+.help-content h4{font-family:var(--font-display);font-size:.95rem;font-weight:700;color:var(--ink-soft);margin:20px 0 10px;}
+.help-content p{margin-bottom:14px;color:var(--ink-soft);font-size:.95rem;}
+.help-content ul,.help-content ol{margin:0 0 16px 20px;color:var(--ink-soft);font-size:.95rem;}
+.help-content li{margin-bottom:6px;}
+.help-content blockquote{margin:16px 0;padding:16px 20px;background:rgba(0,113,227,.06);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;color:var(--ink-soft);}
+.help-content table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:.9rem;}
+.help-content th{text-align:left;padding:10px 14px;background:var(--space-2);color:var(--ink);font-weight:600;border-bottom:2px solid var(--hairline);font-size:.82rem;}
+.help-content td{padding:10px 14px;border-bottom:1px solid var(--hairline);color:var(--ink-soft);}
+.help-content tr:hover td{background:var(--space-2);}
+.help-content code{font-family:var(--font-mono);font-size:.84rem;background:var(--space-2);padding:2px 6px;border-radius:4px;color:var(--ink);}
+.help-content pre{background:var(--space-2);border:1px solid var(--hairline);border-radius:10px;padding:16px 18px;margin-bottom:20px;overflow-x:auto;position:relative;}
+.help-content pre code{background:none;padding:0;font-size:.84rem;white-space:pre-wrap;line-height:1.7;}
+.help-content hr{margin:40px 0;border:none;border-top:1px solid var(--hairline);}
+.help-content strong{font-weight:700;color:var(--ink);}
 
-.chapter{margin-bottom:40px;}
-.chapter-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.chapter-title .ch-num{font-size:.72rem;font-weight:700;color:var(--blue);letter-spacing:.06em;min-width:36px;}
-.chapter p{margin-bottom:14px;color:var(--ink-soft);font-size:.95rem;}
-.chapter ul,.chapter ol{margin:0 0 16px 20px;color:var(--ink-soft);font-size:.95rem;}
-.chapter li{margin-bottom:6px;}
+/* COPY BTN */
+.copy-btn{position:absolute;top:10px;right:10px;font-size:.72rem;color:var(--blue);background:var(--space);border:1px solid var(--hairline);border-radius:6px;padding:3px 10px;cursor:pointer;transition:all .15s;}
+.copy-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.copy-btn.copied{background:#34c759;color:#fff;border-color:#34c759;}
 
-.tmpl-card{background:var(--card);border:1px solid var(--hairline);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
-.tmpl-title{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:10px;}
-.tmpl-desc{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px;}
-.tmpl-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
-.tmpl-text{background:var(--space-2);border:1px solid var(--hairline);border-radius:10px;padding:14px 16px;font-family:var(--font-mono);font-size:.84rem;color:var(--ink);line-height:1.7;white-space:pre-wrap;position:relative;}
-.tmpl-text .copy-btn{position:absolute;top:8px;right:8px;font-size:.72rem;color:var(--blue);background:var(--space);border:1px solid var(--hairline);border-radius:6px;padding:3px 10px;cursor:pointer;transition:all .15s;}
-.tmpl-text .copy-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
-.tmpl-text .copy-btn.copied{background:#34c759;color:#fff;border-color:#34c759;}
+/* NOTE BLOCKS */
+.note-block{margin:16px 0;padding:16px 20px;background:rgba(0,113,227,.06);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;}
+.note-block.warn{background:rgba(255,149,0,.06);border-color:#ff9500;}
+.note-block.danger{background:rgba(255,69,58,.06);border-color:#ff453a;}
+.note-block p:last-child{margin-bottom:0;}
 
-.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 10px;border-radius:999px;margin-bottom:14px;}
-.tag-blue{background:rgba(0,113,227,.1);color:var(--blue);}
-.tag-green{background:rgba(52,199,89,.1);color:#34c759;}
-.tag-red{background:rgba(255,69,58,.1);color:#ff453a;}
-.tag-yellow{background:rgba(255,204,0,.1);color:#b78b00;}
+/* LOADING */
+.loading{text-align:center;padding:80px 0;color:var(--ink-mute);font-size:.95rem;}
 
-table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:.9rem;}
-th{text-align:left;padding:10px 14px;background:var(--space-2);color:var(--ink);font-weight:600;border-bottom:2px solid var(--hairline);font-size:.82rem;}
-td{padding:10px 14px;border-bottom:1px solid var(--hairline);color:var(--ink-soft);}
-tr:hover td{background:var(--space-2);}
-
-.note{background:rgba(0,113,227,.06);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:20px;}
-.note.warn{background:rgba(255,149,0,.06);border-color:#ff9500;}
-.note.danger{background:rgba(255,69,58,.06);border-color:#ff453a;}
-.note-title{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:6px;}
-
-.faq-item{border-bottom:1px solid var(--hairline);padding:16px 0;}
-.faq-q{font-weight:700;color:var(--ink);font-size:.95rem;margin-bottom:8px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;}
-.faq-q::before{content:'Q';font-size:.7rem;font-weight:700;color:#fff;background:var(--blue);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;}
-.faq-a{color:var(--ink-soft);font-size:.9rem;padding-left:28px;line-height:1.7;}
-.faq-a p{margin-bottom:8px;}
-
+/* BACK TO TOP */
 .back-to-top{position:fixed;bottom:32px;right:32px;width:42px;height:42px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow-md);opacity:0;transition:opacity .3s;pointer-events:none;z-index:50;}
 .back-to-top.show{opacity:1;pointer-events:auto;cursor:pointer;}
 
@@ -129,7 +120,10 @@ tr:hover td{background:var(--space-2);}
     <div class="nav-links">
       <a href="index.html">首页</a>
       <a href="index.html#how">怎么判断</a>
+      <a href="index.html#why">为什么不同</a>
       <a href="index.html#demo">实测样例</a>
+      <a href="index.html#story">为什么</a>
+      <a href="index.html#start">开始使用</a>
       <a href="help.html" class="active">使用帮助</a>
     </div>
     <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
@@ -142,736 +136,14 @@ tr:hover td{background:var(--space-2);}
 <!-- SIDEBAR -->
 <aside class="help-sidebar" id="sidebar">
   <div class="sidebar-label">目录</div>
-  <a class="sidebar-link" href="#p1">第一部分：使用入门</a>
-  <a class="sidebar-link" href="#p2">第二部分：基础使用方式</a>
-  <a class="sidebar-link" href="#p3">第三部分：核心提问模板</a>
-  <a class="sidebar-link" href="#p4">第四部分：6 大场景</a>
-  <a class="sidebar-link" href="#p5">第五部分：8 大痛点</a>
-  <a class="sidebar-link" href="#p6">第六部分：让 AI 更懂你的技巧</a>
-  <a class="sidebar-link" href="#p7">第七部分：读懂 AI 回复</a>
-  <a class="sidebar-link" href="#p8">第八部分：常见错误示范</a>
-  <a class="sidebar-link" href="#p9">第九部分：FAQ 问答</a>
-  <a class="sidebar-link" href="#p10">第十部分：附录</a>
+  <div id="toc-links"></div>
 </aside>
 
 <!-- CONTENT -->
-<main class="help-content">
-
-<!-- DOC HEADER -->
-<div class="doc-header">
-  <h1>情感关系 AI 使用说明书</h1>
-  <div class="doc-meta">基于松哥撩妹知识库编写 · 用户版 v1.0 &nbsp;|&nbsp; 文档定位：让 0 基础用户看完就能上手、复制粘贴就能拿到答案</div>
-</div>
-
-<!-- ===== PART 1 ===== -->
-<div class="part" id="p1">
-  <div class="part-title"><span class="part-num">第一部分</span>使用入门</div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">1.1</span>这是什么？</div>
-    <p>这是一个帮你解决感情问题的 AI 助手。你可以把它理解成：<strong>一个 24 小时在线、专门帮你看聊天记录、帮你出主意的朋友</strong>。</p>
-    <p>你把聊天记录发给它（截图或者文字都行），告诉它你遇到了什么问题，它会告诉你：</p>
-    <ul>
-      <li>现在是什么情况（判断）</li>
-      <li>你应该怎么做（方向）</li>
-      <li>你可以怎么说（3 条参考话术）</li>
-    </ul>
-    <div class="note"><div class="note-title">它不会替你发消息，也不会替你做决定。</div>它给方向，你来选择。</div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">1.2</span>它能做什么？</div>
-    <ul>
-      <li>✅ 看懂聊天记录（截图和文字都行）</li>
-      <li>✅ 判断对方对你的态度（有兴趣 / 没兴趣 / 在观察）</li>
-      <li>✅ 判断你们现在处于什么阶段（刚认识 / 熟了 / 暧昧 / 冷淡）</li>
-      <li>✅ 给你"该怎么回"的 3 条参考话术</li>
-      <li>✅ 告诉你下一步应该推进还是缓一缓</li>
-      <li>✅ 帮你看邀约时机合不合适</li>
-      <li>✅ 帮你判断她/他是不是在吊着你、养鱼</li>
-      <li>✅ 帮你分析吵架、冷战、忽冷忽热的原因</li>
-    </ul>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">1.3</span>它不能做什么？</div>
-    <ul>
-      <li>❌ <strong>不能替你发消息</strong>——所有回复都是建议，你自己发</li>
-      <li>❌ <strong>不能替你做决定</strong>——特别是"要不要表白""要不要分手"这种大事</li>
-      <li>❌ <strong>不能分析语音/视频通话</strong>——目前只支持文字和截图</li>
-      <li>❌ <strong>不能保证效果</strong>——它给的是"通常情况下效果最好"的方向，不是 100% 有效</li>
-      <li>❌ <strong>不能知道你们之间发生过什么私密事件</strong>——它只能看到你给它的信息</li>
-    </ul>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">1.4</span>它的工作原理（简单版）</div>
-    <p>它有一个<strong>感情知识库</strong>，里面装了大量"通常情况下，什么状态对应什么反应、什么反应对应什么动作"的经验。</p>
-    <p>当你把聊天记录给它时，它会：</p>
-    <ol>
-      <li><strong>读聊天记录</strong>——看谁主动、回复快慢、话题深浅、情绪变化</li>
-      <li><strong>做判断</strong>——你现在处于什么阶段，对方对你什么态度</li>
-      <li><strong>给方向</strong>——下一步应该推进、稳住还是后退</li>
-      <li><strong>出话术</strong>——给你 3 条可以直接复制粘贴的消息（你可以微调、改成自己的风格）</li>
-    </ol>
-    <div class="note"><div class="note-title">它不会瞎猜</div>信息不够时它会问你；信息够了它会直接给判断。</div>
-  </div>
-</div>
-
-<!-- ===== PART 2 ===== -->
-<div class="part" id="p2">
-  <div class="part-title"><span class="part-num">第二部分</span>基础使用方式</div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">2.1</span>三种喂信息的方式</div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">方式一：截图（最常用）</div>
-      <p class="tmpl-desc">操作步骤：打开聊天窗口 → 从头往下截图（至少 15-20 张，覆盖最近 1-2 周）→ 长对话先压缩到 30 张以内 → 按顺序发给 AI，附一句"帮我看看这是什么情况"</p>
-      <div class="note">
-        <div class="note-title">截图技巧</div>
-        <ul style="margin:0 0 0 18px;font-size:.88rem;">
-          <li>✅ 把<strong>对方头像和昵称</strong>也截进去（方便 AI 识别谁是谁）</li>
-          <li>✅ <strong>关键消息要单独截</strong>（特别是表白、吵架、邀约相关）</li>
-          <li>✅ 截图里<strong>不需要打码</strong>（AI 不会泄露）</li>
-          <li>❌ 不要只截一句"哈哈哈"——这种孤立消息没意义</li>
-          <li>❌ 不要截太久以前的（3 周前的没用）</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">方式二：粘贴文字聊天记录</div>
-      <p class="tmpl-desc">在微信里长按消息 → 多选 → 转发到文件传输助手 / 邮箱 → 复制文字，整理成以下格式发给 AI：</p>
-      <div class="tmpl-text">【对方】你好，请问你是？
-【我】我是小红介绍的那个
-【对方】哦哦，想起来了
-【我】对，加你聊聊
-【对方】好的
-...</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">方式三：口头描述（信息不全时）</div>
-      <p class="tmpl-desc">当你只能凭记忆描述时，用这个模板：</p>
-      <div class="tmpl-text">我们是怎么认识的：[例如：朋友介绍/社交软件/同事]
-认识多久了：[例如：3 天/2 周/1 个月]
-最近聊天频率：[例如：每天都聊/隔几天聊一次/最近变少了]
-她最近的态度：[例如：很积极/忽冷忽热/突然不回消息]
-我想解决的问题：[例如：她是不是对我没兴趣/怎么约她出来]</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">2.2</span>一次给够信息，不要挤牙膏</div>
-    <div class="tmpl-card">
-      <div class="note warn"><div class="note-title">❌ 错误做法（挤牙膏式）</div></div>
-      <div class="tmpl-text">帮我看看
-AI: 什么情况？
-她最近回消息变慢了
-AI: 多久没回？
-大概两天
-AI: 之前聊天频率呢？
-……（来回问了 5 轮）</div>
-    </div>
-    <div class="tmpl-card">
-      <div class="note"><div class="note-title">✅ 正确做法（一次给够）</div></div>
-      <div class="tmpl-text">帮我看看，她最近回消息变慢了。
-我们是同事介绍认识的，认识 1 个月。
-之前每天聊，最近一周她回得越来越慢，有时候我发 3 条她回 1 条。
-[附聊天截图]
-我想搞清楚她是不是对我没兴趣了。</div>
-    </div>
-    <div class="note"><div class="note-title">AI 看得到完整信息 → 直接给你判断。</div></div>
-  </div>
-</div>
-
-<!-- ===== PART 3 ===== -->
-<div class="part" id="p3">
-  <div class="part-title"><span class="part-num">第三部分</span>核心提问模板（4 种万能模板）</div>
-
-  <div class="chapter">
-    <div class="tmpl-card">
-      <div class="tmpl-title">模板 A：判断态度（"她对我什么意思？"）</div>
-      <div class="tmpl-desc">适用场景：你不知道对方对你有没有兴趣、在观察你、还是已经拒绝你。</div>
-      <div class="tmpl-text">帮我判断一下她对我的态度。
-【我们怎么认识的】：___
-【认识多久】：___
-【最近一周聊天频率】：每天聊 / 隔几天 / 变少了
-【她最近的表现】：___
-【附聊天截图或文字记录】
-【我想搞清楚】：她现在是有兴趣、没兴趣、还是在观察我？</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">模板 B：给回复建议（"我该怎么回她？"）</div>
-      <div class="tmpl-desc">适用场景：对方刚发了一条消息，你不知道怎么回。</div>
-      <div class="tmpl-text">她刚发了一条消息，我不太会回，帮我看看。
-【她的原话】：___（直接复制粘贴）
-【这句话的上下文】：之前我们在聊 ___
-【我的目标】：___
-（例如：接住她的情绪、逗她一下、推进一下关系、缓和气氛）
-【附聊天截图】</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">模板 C：解决具体问题（"她 XXX 我该怎么办？"）</div>
-      <div class="tmpl-desc">适用场景：对方做了某个具体行为（变冷淡、生气、吵架、不回消息），你不知道怎么处理。</div>
-      <div class="tmpl-text">我遇到了一个问题，帮我出出主意。
-【发生了什么】：___
-【对方做了什么 / 说了什么】：___
-【我之前做错了什么吗】：___（可以空着）
-【我们目前的关系阶段】：初识 / 熟了 / 暧昧 / 冷淡 / 吵架了
-【我的目标】：___
-（例如：让她消气 / 搞清楚原因 / 挽回关系 / 推进关系）
-【附聊天截图】</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">模板 D：邀约求助（"我想约她出来，怎么开口？"）</div>
-      <div class="tmpl-desc">适用场景：你想约对方线下见面，但不知道怎么说合适。</div>
-      <div class="tmpl-text">我想约她出来，帮我看看时机合不合适、怎么说比较好。
-【我们现在的关系】：初识 / 熟了 / 暧昧 / 冷淡
-【之前有没有见过面】：___
-【我打算约什么】：吃饭 / 看电影 / 散步 / 玩剧本杀 / 其他
-【理由是否自然】：节日 / 她感兴趣的事 / 我发现的好店 / 其他
-【对方最近的态度】：积极 / 平淡 / 冷淡
-【附聊天截图】
-【我想确认】：现在邀约合不合适？有没有更稳的时机？话术怎么写？</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PART 4 ===== -->
-<div class="part" id="p4">
-  <div class="part-title"><span class="part-num">第四部分</span>6 大场景使用指南</div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 1</span>男追女</div>
-
-    <table>
-      <thead><tr><th>阶段</th><th>时间锚</th><th>核心任务</th><th>要避免的</th></tr></thead>
-      <tbody>
-        <tr><td><strong>初识</strong></td><td>刚加 1-3 天</td><td>建立舒适感，让对方愿意聊下去</td><td>不要一上来就表白、查户口</td></tr>
-        <tr><td><strong>轻熟</strong></td><td>认识 1-2 周</td><td>增加轻松感，让聊天有来有回</td><td>不要天天打卡式问候</td></tr>
-        <tr><td><strong>熟悉</strong></td><td>认识 2-4 周</td><td>制造情绪起伏，让对方对你有"不一样"的感觉</td><td>不要变成纯聊天朋友</td></tr>
-        <tr><td><strong>暧昧</strong></td><td>认识 1 个月+</td><td>稳住窗口，轻推关系</td><td>不要在该推进时退缩</td></tr>
-        <tr><td><strong>冷淡</strong></td><td>互动突然减少</td><td>降需求，找原因，回收</td><td>不要追问"你为什么冷淡了"</td></tr>
-        <tr><td><strong>修复</strong></td><td>说错话/冒进后</td><td>修复压迫感，重新建立安全感</td><td>不要连续解释、连环追问</td></tr>
-      </tbody>
-    </table>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">男追女 · 刚加微信不知道怎么开场</div>
-      <div class="tmpl-text">我刚加上一个女生的微信，帮我设计一下前 3 天的聊天节奏。
-【我们怎么认识的】：___（朋友介绍/社交软件/活动认识）
-【她的基本信息】：___（年龄/职业/城市/爱好，如果知道的话）
-【她朋友圈最近发的内容】：___（可以挑 1-2 条说说）
-【我想给她的第一印象】：___
-（例如：有点意思 / 靠谱 / 有自己的生活）</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">男追女 · 聊了一周感觉没进展</div>
-      <div class="tmpl-text">我和一个女生聊了一周，感觉没有升温，帮我看看。
-【认识多久】：___
-【目前聊天频率】：___
-【她最近的表现】：___（主动/被动/敷衍/突然变冷）
-【我们聊过的话题】：___
-【她有没有线下见面的意愿】：___
-【附聊天截图】</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">男追女 · 暧昧了想确认关系</div>
-      <div class="tmpl-text">我和一个女生暧昧了一段时间，想确认关系，帮我看看时机。
-【暧昧多久了】：___
-【她给过的暧昧信号】：___（可以列 2-3 条）
-【之前有没有线下见过】：___
-【她最近的态度变化】：___
-【附聊天截图】
-【我想问】：现在表白合适吗？还是再等等？</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 2</span>女追男</div>
-    <p>3 个核心原则：①不要追着聊（男生对"主动的女生"反而有压力）②多用"勾子"少用"直球" ③让他投资</p>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">女追男 · 刚加微信想引起他注意</div>
-      <div class="tmpl-text">我刚加了一个男生的微信，想引起他的注意，帮我设计一下开场。
-【我们怎么认识的】：___
-【他的基本信息】：___（年龄/职业/爱好）
-【他的性格特点（推测）】：___（话多/话少/高冷/暖男/直男）
-【他朋友圈最近发的内容】：___
-【我给他的人设】：___（活泼/温柔/独立/有点小心机）</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 3</span>挽回前任</div>
-    <p>4 个核心原则：①先断联（分手后立刻挽回是最差时机）②改造自己 ③重新建立联系（轻量、无压力）④让他重新喜欢你</p>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">挽回 · 刚分手想挽回</div>
-      <div class="tmpl-text">我和对象分手了，想挽回，帮我看看还有没有机会。
-【分手多久】：___
-【分手原因】：___（吵架/出轨/异地/价值观不合/其他）
-【分手是谁提的】：___
-【分手后有没有联系过】：___
-【对方现在对我的态度】：___（拉黑/冷淡/偶尔回/主动联系我）
-【附聊天截图】
-【我想知道】：还有挽回空间吗？现在该做什么？</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 4</span>维护长期关系</div>
-    <table>
-      <thead><tr><th>问题</th><th>表现</th><th>处理方向</th></tr></thead>
-      <tbody>
-        <tr><td><strong>激情下降</strong></td><td>聊天变平淡，没有新鲜感</td><td>制造共同体验（新活动、新地方、新话题）</td></tr>
-        <tr><td><strong>沟通疲劳</strong></td><td>容易吵架、冷战</td><td>学"非暴力沟通"，先处理情绪再处理问题</td></tr>
-        <tr><td><strong>价值不对等</strong></td><td>一方付出多，一方付出少</td><td>坦诚沟通 + 调整付出比例，避免积怨</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 5</span>已婚沟通</div>
-    <p>3 大禁区：①不要在情绪上头时沟通 ②不要翻旧账 ③不要用"你总是/你从来不"</p>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">场景 6</span>单身脱单</div>
-    <p>3 步路径：①扩大接触面 ②筛选对象（不是每个加的人都值得投入时间）③推进关系（初识→轻熟→熟悉→暧昧→线下）</p>
-  </div>
-</div>
-
-<!-- ===== PART 5 ===== -->
-<div class="part" id="p5">
-  <div class="part-title"><span class="part-num">第五部分</span>8 大痛点专题</div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 1</span>她对我到底有没有意思？</div>
-    <table>
-      <thead><tr><th>信号</th><th>有意思</th><th>没意思</th></tr></thead>
-      <tbody>
-        <tr><td>回复速度</td><td>较快（秒回 / 几分钟）</td><td>很慢（半天 / 不回）</td></tr>
-        <tr><td>回复字数</td><td>长，有延展</td><td>短，"嗯""哦""哈哈"</td></tr>
-        <tr><td>主动性</td><td>她主动找你</td><td>从不主动，全是你找她</td></tr>
-        <tr><td>话题延展</td><td>主动开新话题</td><td>你问一句答一句</td></tr>
-        <tr><td>投入度</td><td>愿意分享生活 / 想法</td><td>不愿透露个人信息</td></tr>
-      </tbody>
-    </table>
-    <div class="tmpl-card">
-      <div class="tmpl-text">帮我判断她对我有没有意思。
-【我们认识多久】：___
-【她最近一周的表现】：主动/被动/忽冷忽热
-【她有没有给过这些信号】：秒回 / 主动找我 / 问我的事 / 延展话题 / 线下见面意愿
-【她有没有给过这些拒绝信号】：回得慢 / 敷衍 / 不接话题 / 拒绝见面
-【附聊天截图】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 2</span>她突然变冷淡了怎么办？</div>
-    <p>冷淡的 5 种原因：①真的忙 ②心态变了 ③测试你 ④情绪波动 ⑤真的想撤</p>
-    <ul>
-      <li><strong>第一周</strong>：不要追问，正常发消息，观察她是否恢复</li>
-      <li><strong>第二周</strong>：还是冷淡，找个自然的理由试探一次</li>
-      <li><strong>第三周</strong>：连续冷淡 3 周以上，降温你自己，主动找她聊一次"最近是不是有什么事？"</li>
-      <li><strong>底线</strong>：如果她明确说"我想静静""我们先别联系了"——<strong>尊重，不追问</strong></li>
-    </ul>
-    <div class="tmpl-card">
-      <div class="tmpl-text">她最近突然变冷淡了，帮我看看原因。
-【之前我们的状态】：每天聊 / 隔几天聊
-【她变冷是从什么时候开始的】：___（有没有什么事件）
-【最近一周她的表现】：回得慢 / 字数变短 / 不主动 / 已读不回
-【之前有没有过类似情况】：___
-【我之前做错了什么吗】：___
-【附最近 2 周聊天截图】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 3</span>她生气了怎么哄？</div>
-    <p>3 个步骤：①先认错（不要解释、不要找借口）②给方案（让她看到你改的诚意）③缓情绪（让她选）</p>
-    <div class="note danger"><div class="note-title">❌ 三个绝对不要做</div>❌ "我又没做错什么" &nbsp; ❌ "你怎么又生气了" &nbsp; ❌ 连环追问"你还在生气吗？"</div>
-    <div class="tmpl-card">
-      <div class="tmpl-text">她生气了，帮我看看怎么哄。
-【她生气的原因】：___
-【我之前说错的话/做的事】：___（可以贴原话）
-【她现在的状态】：不回消息 / 在气头上但愿意回 / 已读不回 / 说狠话
-【她平时生气需要多久能缓过来】：___
-【附相关聊天截图】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 4</span>吵架了怎么修复？</div>
-    <p>3 个阶段：<strong>冷静期</strong>（吵架后 1-3 天，不连环追问）→ <strong>破冰期</strong>（第 3-5 天，轻松话题试水）→ <strong>复盘期</strong>（平静地聊这次吵架，避免翻旧账）</p>
-    <div class="tmpl-card">
-      <div class="tmpl-text">我们吵架了，帮我看看怎么修复。
-【吵架原因】：___
-【吵架到现在多久了】：___
-【她现在的态度】：拉黑 / 不回 / 偶尔回 / 愿意聊但带情绪
-【我之前有没有说过过分的话】：___
-【我们在一起多久】：___（这影响修复难度）
-【附吵架前后聊天截图】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 5</span>第一次见面该怎么安排？</div>
-    <table>
-      <thead><tr><th>场景</th><th>优点</th><th>缺点</th></tr></thead>
-      <tbody>
-        <tr><td>咖啡店下午茶</td><td>时间短、压力小、好聊天</td><td>容易没话题</td></tr>
-        <tr><td>吃饭（中饭/晚饭）</td><td>自然、有仪式感</td><td>容易冷场</td></tr>
-        <tr><td>散步/逛公园</td><td>轻松、有肢体语言机会</td><td>看天气</td></tr>
-        <tr><td>看展/看电影</td><td>有共同话题</td><td>互动少</td></tr>
-      </tbody>
-    </table>
-    <div class="note warn"><div class="note-title">❌ 第一次见面禁忌</div>不要选太远的地方、不要选太贵的餐厅、不要选太冷门的活动、不要安排太满（2-3 小时，留白很重要）</div>
-    <div class="tmpl-card">
-      <div class="tmpl-text">我想约她第一次见面，帮我看看怎么安排。
-【我们现在的关系阶段】：___（熟到什么程度）
-【之前有没有见过】：___
-【她平时喜欢什么】：___（美食/电影/户外/咖啡）
-【我打算约什么】：___
-【时间选择】：工作日晚上 / 周末 / 节假日
-【她最近的态度】：积极 / 平淡 / 不太想见
-【附聊天截图，看邀约时机是否合适】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 6</span>怎么从朋友升级成恋人？</div>
-    <p>升级 3 个关键信号：①她开始主动找你 ②她愿意和你单独相处 ③她对你的私事感兴趣</p>
-    <p>升级 3 个步骤：①创造独处机会 ②制造暧昧（用眼神、轻度肢体接触、暧昧话题试探）③表白/确认关系</p>
-    <div class="tmpl-card">
-      <div class="tmpl-text">我想从朋友升级成恋人，帮我看看时机。
-【我们认识多久】：___
-【她对我和其他朋友有什么不一样】：___
-【她愿不愿意和我单独出来】：___
-【她对我的肢体语言】：___（有没有过轻度接触、眼神接触）
-【我之前有没有暗示过】：___
-【附聊天截图】</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 7</span>她不回我消息怎么办？</div>
-    <table>
-      <thead><tr><th>情况</th><th>应对</th></tr></thead>
-      <tbody>
-        <tr><td>她真的忙</td><td>等半天到一天，正常再发</td></tr>
-        <tr><td>她没看到</td><td>不追问，等她自己回</td></tr>
-        <tr><td>她在测试你</td><td>不追，正常聊其他话题</td></tr>
-        <tr><td>她故意冷你</td><td>暂停，你也冷一下，看她是否主动</td></tr>
-        <tr><td>她不想理你</td><td>不强求，3 天不回，降温你自己</td></tr>
-      </tbody>
-    </table>
-    <div class="note danger"><div class="note-title">❌ 绝对不要做的 4 件事</div>❌ 连环追问 &nbsp; ❌ 60 秒内连发 3 条以上 &nbsp; ❌ 跑到她朋友圈/抖音找她有没有上线 &nbsp; ❌ 质问"你是不是不喜欢我了"</div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">痛点 8</span>怎么判断她是不是在养鱼 / 吊着我？</div>
-    <p>养鱼的 8 个典型信号：①聊天时间不规律 ②从不主动 ③暧昧但拒绝推进 ④对你的事不上心 ⑤朋友圈活跃但你消息她不看 ⑥回复永远"哈哈哈" ⑦只在无聊时找你 ⑧不接受也不拒绝</p>
-    <table>
-      <thead><tr><th>信号数量</th><th>判断</th></tr></thead>
-      <tbody>
-        <tr><td>命中 1-2 条</td><td>可能是性格原因，再观察</td></tr>
-        <tr><td>命中 3-5 条</td><td>警惕，她在养鱼概率高</td></tr>
-        <tr><td>命中 6+ 条</td><td><strong>基本确认在养你，建议撤</strong></td></tr>
-      </tbody>
-    </table>
-    <div class="tmpl-card">
-      <div class="tmpl-text">帮我判断她是不是在养鱼。
-【我们认识多久】：___
-【以上 8 个信号她命中了几条】：___
-【她有没有主动约过你】：___
-【她有没有在你提议见面时推脱】：___
-【她朋友圈更新频率 vs 回复你消息的频率】：___
-【附聊天截图】</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PART 6 ===== -->
-<div class="part" id="p6">
-  <div class="part-title"><span class="part-num">第六部分</span>让 AI 更懂你的 5 个技巧</div>
-
-  <div class="chapter">
-    <div class="tmpl-card">
-      <div class="tmpl-title">技巧 1：信息越完整，判断越准</div>
-      <div class="note warn"><div class="note-title">❌ 差的信息</div></div>
-      <div class="tmpl-text">她不回我消息了，怎么办？</div>
-      <div class="note" style="margin-top:12px;"><div class="note-title">✅ 好的信息</div></div>
-      <div class="tmpl-text">她不回我消息了。我们认识 3 周，之前每天聊，最近 3 天她突然不回了。我最后一条发的是约她周末吃饭，她没回。她朋友圈今天下午发了视频。</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">技巧 2：提供背景，而不是只给当下</div>
-      <p>AI 不了解你们之前的互动，所以要主动补：你们怎么认识的、之前聊得多不多、之前有没有过类似情况、她是个什么样的人。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">技巧 3：说出你的目标</div>
-      <p>AI 不知道你想要什么——是想推进关系？是想搞清楚原因？还是想挽回？<strong>不同目标对应不同建议</strong>。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">技巧 4：不要隐瞒自己的错误</div>
-      <p>如果你之前说错话、做错事，<strong>老实说</strong>。AI 知道真相才能给你正确的建议，隐瞒只会让它误判。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">技巧 5：接受"不确定"的回答</div>
-      <p>AI 在信息不足时会告诉你"我需要更多信息"。这不是 AI 无能，是它在避免给你错误判断。<strong>配合它追问，比逼它给答案更有效。</strong></p>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PART 7 ===== -->
-<div class="part" id="p7">
-  <div class="part-title"><span class="part-num">第七部分</span>怎么读懂 AI 给你的回复</div>
-
-  <div class="chapter">
-    <p>AI 回复的标准结构包含 4 个部分：</p>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">标题 1：先说结论（最重要，先看这里）</div>
-      <p>AI 会在最开头用 2-4 句话说清楚：她/他对你什么态度、现在应该推进/观察/拉回/停止、最重要的风险是什么。<strong>这一段决定你接下来怎么行动。</strong></p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">标题 2：为什么这么判断（看证据）</div>
-      <p>AI 会引用 2-5 条聊天证据，标注消息 ID。<strong>如果你觉得判断不对，看这里</strong>——是不是 AI 漏了什么或误解了什么。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">标题 3：下一步怎么做（执行指南）</div>
-      <p>AI 会给：<strong>1 个主动作</strong>（现在该做的最重要的事）+ <strong>1 个备用动作</strong>（如果主动作不好执行时的备选）+ <strong>暂时不要做的事</strong>（避免犯错）。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">标题 4：回复初稿（3 条话术）</div>
-      <p>AI 会给 3 条同一策略方向的回复，编号 1-3。这 3 条是<strong>方向参考，不是必须用</strong>。你可以挑 1 条微调，改成自己的风格。也可以不直接用，但从中找感觉。</p>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">怎么看置信度？</div>
-      <p>AI 会用"高 / 中 / 低"表示判断的确信程度：</p>
-      <ul>
-        <li><strong>高</strong>：多个证据一致，结论可靠</li>
-        <li><strong>中</strong>：主要证据存在，但缺一些上下文</li>
-        <li><strong>低</strong>：只有孤立消息，建议再补信息</li>
-      </ul>
-      <div class="note warn"><div class="note-title">置信度低时</div>不要急着执行大动作（表白、约会、挽回），先补信息。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PART 8 ===== -->
-<div class="part" id="p8">
-  <div class="part-title"><span class="part-num">第八部分</span>常见错误示范</div>
-
-  <div class="chapter">
-    <div class="tmpl-card">
-      <div class="tmpl-title">错误 1：只贴一句话</div>
-      <div class="note warn"><div class="note-title">❌</div></div>
-      <div class="tmpl-text">她说"哈哈"，帮我看看</div>
-      <div class="note" style="margin-top:10px;"><div class="note-title">✅</div></div>
-      <div class="tmpl-text">附最近 1 周的完整对话 + 背景说明</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">错误 2：让 AI 替你做决定</div>
-      <div class="note warn"><div class="note-title">❌</div></div>
-      <div class="tmpl-text">我要不要和她表白？给我个准话</div>
-      <div class="note" style="margin-top:10px;"><div class="note-title">✅</div></div>
-      <div class="tmpl-text">我现在想表白，帮我看看时机合不合适、风险多大</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">错误 3：隐瞒自己的问题</div>
-      <div class="note warn"><div class="note-title">❌</div></div>
-      <div class="tmpl-text">她突然不理我了（其实是你昨晚说错了话）</div>
-      <div class="note" style="margin-top:10px;"><div class="note-title">✅</div></div>
-      <div class="tmpl-text">她突然不理我了，可能是因为我昨晚说了 ___ 这句话</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">错误 4：截图模糊、关键消息看不清</div>
-      <div class="note warn"><div class="note-title">❌</div></div>
-      <div class="tmpl-text">截图只截了"哈哈哈"，前面的对话没截</div>
-      <div class="note" style="margin-top:10px;"><div class="note-title">✅</div></div>
-      <div class="tmpl-text">截完整的上下文，特别是关键消息</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">错误 5：拿 AI 的回复当圣旨</div>
-      <div class="note warn"><div class="note-title">❌</div></div>
-      <div class="tmpl-text">AI 说你"该表白了"，你就去表白</div>
-      <div class="note" style="margin-top:10px;"><div class="note-title">✅</div></div>
-      <div class="tmpl-text">AI 给的是参考，最终决定权在你。AI 说时机合适，但你自己感受不到她的心意，就别急</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PART 9 ===== -->
-<div class="part" id="p9">
-  <div class="part-title"><span class="part-num">第九部分</span>FAQ 问答</div>
-
-  <div class="faq-item">
-    <div class="faq-q">AI 会不会泄露我的聊天记录？</div>
-    <div class="faq-a">不会。你的聊天记录只用于本次分析，不会被存储或用于其他用途。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 说的话我能信吗？</div>
-    <div class="faq-a">AI 给的是"通常情况下"的参考，不是 100% 准确的答案。它会标注置信度，低置信度时建议你自己再判断。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 是不是能算出她/他到底喜不喜欢我？</div>
-    <div class="faq-a">不能。它只能从聊天记录里推测对方的兴趣度，不能读心。如果你想 100% 确定，只能直接问对方。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">我不想给截图，可以只用文字描述吗？</div>
-    <div class="faq-a">可以，但 AI 的判断准确度会下降。建议优先用截图，文字描述要尽量详细。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 的回复我可以直接复制粘贴发给她吗？</div>
-    <div class="faq-a">可以，但强烈建议微调。直接发会让对方感觉"这不是你的风格"。改成自己的语气、加上你们之间的小梗。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">我能问同一个问题很多次吗？</div>
-    <div class="faq-a">可以，但每次提问建议补充新的信息（比如她的最新反应、你做了什么），AI 才能更新判断。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 适合分析已婚关系吗？</div>
-    <div class="faq-a">可以，但已婚关系的复杂度更高（涉及家庭、经济、孩子），AI 给的方向仅供参考。重大决策建议咨询专业婚恋咨询师。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 能分析多人群聊吗？</div>
-    <div class="faq-a">可以。建议把"她/他说了什么"和"其他人说了什么"分开标注，方便 AI 识别。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 建议我"冷静一下"，但我忍不住想发消息怎么办？</div>
-    <div class="faq-a">先深呼吸，等 30 分钟再回。如果你实在忍不住，至少把消息先打到备忘录里，30 分钟后再决定发不发。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 说我应该"放手"，但我不想放怎么办？</div>
-    <div class="faq-a">AI 给出的是"通常情况下最稳的选择"，但你有权选择不放手。如果你决定继续追，就接受可能失败的结果。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 能不能帮我写表白信？</div>
-    <div class="faq-a">可以。但 AI 不建议长篇大论的表白信——简短、真诚、有具体细节比文采更重要。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 会不会劝分？</div>
-    <div class="faq-a">AI 的立场是"帮你看清局面"，不是劝分或劝合。如果你描述的是糟糕的关系（PUA、出轨、家暴），AI 会建议保护你。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 能分析相亲对象吗？</div>
-    <div class="faq-a">可以。相亲对象的判断框架和普通追求一样，但节奏要更明确——相亲通常不适合慢慢来，前 1-2 周就要确认意向。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 能分析异地恋吗？</div>
-    <div class="faq-a">可以。异地恋的核心问题是"见面机会少"，AI 会重点看你们线下见面的频率、她对见面的态度。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 能分析"我该不该主动"吗？</div>
-    <div class="faq-a">可以。但 AI 的判断标准是"如果你不主动，她会不会主动"。如果你不主动她也不主动，那就轮到你主动了。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 说我"动作太急"，但我怕错过窗口怎么办？</div>
-    <div class="faq-a">窗口不是错过就没的。如果你动作太快让她有压力，窗口会关闭；如果你等一等，她反而会主动靠过来。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">她/他突然变得很热情，是好事还是坏事？</div>
-    <div class="faq-a">不一定。突然的热情可能是：①对你有兴趣；②她最近无聊；③她想找你帮忙；④她对你有所求。AI 需要看具体聊天内容判断。</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">AI 给的回复我都觉得不合适，怎么办？</div>
-    <div class="faq-a">说明你和她/他的沟通风格和 AI 默认的判断有差异。补充信息告诉 AI "我平时说话的风格是 ___"，AI 会调整建议。</div>
-  </div>
-</div>
-
-<!-- ===== PART 10 ===== -->
-<div class="part" id="p10">
-  <div class="part-title"><span class="part-num">第十部分</span>附录</div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">附录 A</span>8 个完整示例</div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">示例 1：男追女 · 初识期开场</div>
-      <div class="tmpl-desc">用户提问：刚加女生微信，帮我设计前 3 天聊天节奏。</div>
-      <div class="tmpl-text">我刚加了一个女生的微信，帮我设计一下前 3 天的聊天节奏。
-【我们怎么认识的】：朋友介绍的
-【她的基本信息】：26 岁，在广告公司做策划，坐标上海
-【她朋友圈最近发的内容】：上周去了趟苏州，发了拙政园的照片；这周发了加班到凌晨的朋友圈
-【我想给她的第一印象】：有点生活情趣、不油腻、有自己节奏的人</div>
-      <div class="note" style="margin-top:14px;"><div class="note-title">AI 回复摘要</div>朋友介绍开局，节奏不要太快。前 3 天核心是建立基础话题 + 让她觉得"这个人有点意思"，不要急着约见面。第 1 天只打招呼；第 2 天从她朋友圈找话题（苏州）；第 3 天观察她回复节奏。</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">示例 2：女追男 · 他回得不积极</div>
-      <div class="tmpl-desc">用户提问：给男生发消息，他回得不积极。</div>
-      <div class="tmpl-text">我给一个男生发消息，他回得不积极，帮我看看。
-【我们认识多久】：1 个月（社交软件认识）
-【最近 3 天我发了几条、他回了几条】：我发了 12 条，他回了 8 条，平均回复字数 5 个字
-【他回消息的特点】：短，但偶尔会主动问一两个问题（比如"你今天忙吗"）
-【我之前的风格】：追着他聊，有点密</div>
-      <div class="note" style="margin-top:14px;"><div class="note-title">AI 回复摘要</div>他对你有兴趣，但你的节奏太快让他有压力。需要降温 + 留钩子，让对话变成"他想找你"而不是"你追着他聊"。未来 3 天降低主动频率。他主动找你时正常回，但回复字数比他更短。</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">示例 3：挽回前任 · 分手 1 个月</div>
-      <div class="tmpl-desc">用户提问：分手 1 个月想挽回。</div>
-      <div class="tmpl-text">我和对象分手了，想挽回。
-【分手多久】：1 个月
-【分手原因】：异地，她觉得我不上心
-【分手是谁提的】：她提的
-【分手后有没有联系过】：前 2 周她还偶尔回，第 3 周开始不回
-【对方现在对我的态度】：第 4 周发了条朋友圈，定位在我们之前常去的餐厅</div>
-      <div class="note" style="margin-top:14px;"><div class="note-title">AI 回复摘要</div>她发那条朋友圈是个信号——她对你还有留恋。但她不回消息说明她还在犹豫。现在不能强求复合，要重新建立吸引力。以"轻松、无压力"的方式重新出现，不提复合、不翻旧账，只展示"我记着你说的话"。</div>
-    </div>
-
-    <div class="tmpl-card">
-      <div class="tmpl-title">示例 4：已婚沟通 · 关于家务分工</div>
-      <div class="tmpl-desc">用户提问：家务分工有分歧怎么沟通。</div>
-      <div class="tmpl-text">我和伴侣在家务分工上有分歧，帮我看看怎么沟通。
-【分歧点】：我觉得我做的家务比她多（做饭、洗碗、倒垃圾），但她觉得她做得更多（拖地、洗衣服、带娃）
-【我的立场】：希望她能分担做饭和洗碗
-【对方的立场（推测）】：她觉得我"只看到自己做的，没看到她做的"
-【我们之前有没有为类似的事吵过】：吵过 3 次，每次都没解决</div>
-      <div class="note" style="margin-top:14px;"><div class="note-title">AI 回复摘要</div>这是典型的"双方都觉得付出更多"的沟通困局。问题不在家务本身，而在互相觉得不被看见。不要在气头上沟通。等双方都冷静后，用"我看到"句式开场——"我看到这周我做了 5 顿饭、倒了 3 次垃圾，但我看到你拖了 4 次地、洗了 3 次衣服。"</div>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title"><span class="ch-num">附录 B</span>术语表</div>
-    <table>
-      <thead><tr><th>术语</th><th>含义</th></tr></thead>
-      <tbody>
-        <tr><td><strong>回收</strong></td><td>降低需求感，不再追问，给对方空间</td></tr>
-        <tr><td><strong>推进</strong></td><td>主动升温关系（暧昧、邀约、表白等）</td></tr>
-        <tr><td><strong>窗口</strong></td><td>对方愿意接受你靠近的时机，有窗口时不推进会关闭</td></tr>
-        <tr><td><strong>养鱼</strong></td><td>对方保持暧昧但不愿推进，占用你的时间精力</td></tr>
-        <tr><td><strong>冷淡</strong></td><td>对方回复变慢、变短、不主动，关系进入冷却期</td></tr>
-        <tr><td><strong>节奏</strong></td><td>聊天的频率和深度，过快会让对方有压力，过慢会让关系降温</td></tr>
-        <tr><td><strong>动作</strong></td><td>下一步该做什么：推进 / 观察 / 回收 / 停止</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
+<main class="help-content" id="helpContent">
+  <div class="loading" id="loading">正在加载使用手册...</div>
 </main>
-</div><!-- /help-layout -->
+</div>
 
 <!-- BACK TO TOP -->
 <div class="back-to-top" id="backToTop">↑</div>
@@ -883,14 +155,17 @@ AI: 之前聊天频率呢？
     <div class="footer-meta">
       <a href="index.html">首页</a>
       <a href="index.html#how">怎么判断</a>
+      <a href="index.html#why">为什么不同</a>
       <a href="index.html#demo">实测样例</a>
+      <a href="index.html#story">为什么</a>
+      <a href="index.html#start">开始使用</a>
       <a href="help.html">使用帮助</a>
     </div>
   </div>
 </footer>
 
 <script>
-/* 主题切换 */
+/* Theme */
 var toggle = document.getElementById('themeToggle');
 toggle.addEventListener('click', function() {
   var dark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -898,51 +173,82 @@ toggle.addEventListener('click', function() {
   toggle.textContent = dark ? '🌙' : '☀️';
 });
 
-/* 侧边栏高亮跟随滚动 */
-var sections = document.querySelectorAll('.part[id]');
-var links = document.querySelectorAll('.sidebar-link');
+/* Back to top */
+var bt = document.getElementById('backToTop');
+window.addEventListener('scroll', function() { bt.classList.toggle('show', window.scrollY > 600); }, { passive: true });
+bt.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+/* TOC: build from h2 */
+function buildTOC() {
+  var h2s = document.querySelectorAll('.help-content h2');
+  var toc = document.getElementById('toc-links');
+  toc.innerHTML = '';
+  h2s.forEach(function(h) {
+    var id = h.id || h.textContent.trim().replace(/\s+/g, '-');
+    h.id = id;
+    var a = document.createElement('a');
+    a.className = 'sidebar-link';
+    a.href = '#' + id;
+    a.textContent = h.textContent.replace(/^[^\s]+\s*/, '');
+    toc.appendChild(a);
+  });
+}
+
+/* Scroll spy */
 function onScroll() {
   var scroll = window.scrollY + 120;
   var cur = null;
-  sections.forEach(function(s) {
-    if (s.offsetTop <= scroll) cur = s.id;
+  document.querySelectorAll('.help-content h2[id]').forEach(function(h) {
+    if (h.offsetTop <= scroll) cur = h.id;
   });
-  links.forEach(function(l) {
+  document.querySelectorAll('.sidebar-link').forEach(function(l) {
     l.classList.toggle('active', l.getAttribute('href') === '#' + cur);
   });
 }
 window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
 
-/* 一键复制 */
-document.querySelectorAll('.tmpl-text').forEach(function(block) {
-  var btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = '复制';
-  block.appendChild(btn);
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    var text = block.textContent.replace('复制', '').trim();
-    navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '已复制';
-      btn.classList.add('copied');
-      setTimeout(function() {
-        btn.textContent = '复制';
-        btn.classList.remove('copied');
-      }, 1800);
-    }).catch(function() {
-      btn.textContent = '失败';
-      setTimeout(function() { btn.textContent = '复制'; }, 1500);
+/* Copy buttons */
+function addCopyButtons() {
+  document.querySelectorAll('pre').forEach(function(pre) {
+    if (pre.querySelector('.copy-btn')) return;
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = '复制';
+    pre.appendChild(btn);
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var text = pre.querySelector('code').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1800);
+      }).catch(function() {
+        btn.textContent = '失败';
+        setTimeout(function() { btn.textContent = '复制'; }, 1500);
+      });
     });
   });
+}
+
+/* Load & render */
+marked.use({
+  breaks: true,
+  gfm: true
 });
 
-/* BACK TO TOP */
-var bt = document.getElementById('backToTop');
-window.addEventListener('scroll', function() {
-  bt.classList.toggle('show', window.scrollY > 600);
-}, { passive: true });
-bt.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+fetch('help.md')
+  .then(function(r) { return r.text(); })
+  .then(function(text) {
+    var html = marked.parse(text);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('helpContent').innerHTML = html;
+    buildTOC();
+    addCopyButtons();
+    onScroll();
+  })
+  .catch(function() {
+    document.getElementById('loading').textContent = '加载失败，请刷新重试。';
+  });
 </script>
 </body>
 </html>
