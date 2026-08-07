@@ -569,6 +569,51 @@ a { color: inherit; text-decoration: none; }
 .cta-block h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.2; margin-bottom: 24px; color: var(--ink); letter-spacing: -0.03em; }
 .cta-block p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 40px; }
 
+.usage-notice {
+  max-width: 580px;
+  margin: 0 auto;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--blue);
+  border-radius: 14px;
+  padding: 22px 26px;
+}
+.usage-notice-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+.usage-points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.usage-points li {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+.usage-points li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-weight: 700;
+}
+.usage-points .u-strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* ========================================================
    FOOTER
    ======================================================== */
@@ -1010,6 +1055,14 @@ a { color: inherit; text-decoration: none; }
       <div class="hero-cta">
         <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天 →</a>
         <a href="#demo" class="btn btn-ghost">查看判断示例</a>
+      </div>
+      <div class="usage-notice animate-in" data-delay="1">
+        <div class="usage-notice-title">它是一个教练,不是有求必应的工具</div>
+        <ul class="usage-points">
+          <li><span class="u-strong">要先提供信息</span>——它会先向你提问,你需要把情况说清楚,它才能帮你判断。</li>
+          <li><span class="u-strong">不是你说了就算</span>——直接丢一句"帮我回一句/来句开场/搞个文案",它不会照单全收。</li>
+          <li><span class="u-strong">它会拦你</span>——会卡、会追问、会阻止不合适的动作,目的是帮你少走弯路。</li>
+        </ul>
       </div>
     </div>
   </div>
