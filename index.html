@@ -223,11 +223,11 @@ a { color: inherit; text-decoration: none; }
 .mobile-nav.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
 .mobile-nav.open span:nth-child(2) { opacity: 0; }
 .mobile-nav.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
-#mobileMenu { display: none; flex-direction: column; width: 100%; background: var(--space); border-top: 1px solid var(--hairline); }
-#mobileMenu a { display: block; padding: 10px 0; font-size: .88rem; color: var(--ink-soft); border-bottom: 1px solid var(--hairline); }
+.mobile-menu-wrap { display: none; width: 100%; background: var(--space); border-top: 1px solid var(--hairline); }
+.mobile-menu-wrap.show { display: block; }
+#mobileMenu a { display: block; padding: 10px 20px; font-size: .88rem; color: var(--ink-soft); border-bottom: 1px solid var(--hairline); }
 #mobileMenu a:last-child { border-bottom: none; }
-#mobileMenu.show { display: flex; }
-@media (min-width: 721px) { .mobile-nav { display: none !important; } #mobileMenu { display: none !important; } }
+@media (min-width: 721px) { .mobile-nav, .mobile-menu-wrap { display: none !important; } }
 .theme-toggle {
   background: none;
   border: none;
@@ -761,13 +761,15 @@ a { color: inherit; text-decoration: none; }
       <span></span><span></span><span></span>
     </button>
   </div>
-  <div id="mobileMenu">
-    <a href="#how">怎么判断</a>
-    <a href="#why">为什么不同</a>
-    <a href="#demo">实测样例</a>
-    <a href="#story">为什么</a>
-    <a href="#start">开始使用</a>
-    <a href="help.html">使用帮助</a>
+  <div class="mobile-menu-wrap" id="mobileMenuWrap">
+    <div id="mobileMenu">
+      <a href="#how">怎么判断</a>
+      <a href="#why">为什么不同</a>
+      <a href="#demo">实测样例</a>
+      <a href="#story">为什么</a>
+      <a href="#start">开始使用</a>
+      <a href="help.html">使用帮助</a>
+    </div>
   </div>
 </nav>
 
@@ -1251,11 +1253,11 @@ themeToggle.addEventListener('click', () => {
 
 /* Mobile nav */
 var mobileNav = document.getElementById('mobileNav');
-var mobileMenu = document.getElementById('mobileMenu');
-if (mobileNav && mobileMenu) {
+var mobileMenuWrap = document.getElementById('mobileMenuWrap');
+if (mobileNav && mobileMenuWrap) {
   mobileNav.addEventListener('click', function() {
     mobileNav.classList.toggle('open');
-    mobileMenu.classList.toggle('show');
+    mobileMenuWrap.classList.toggle('show');
   });
 }
 

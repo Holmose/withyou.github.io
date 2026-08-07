@@ -52,10 +52,10 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
 .mobile-nav.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px);}
 .mobile-nav.open span:nth-child(2){opacity:0;}
 .mobile-nav.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px);}
-#mobileMenu{display:none;flex-direction:column;gap:2px;width:100%;background:var(--space);border-top:1px solid var(--hairline);}
-#mobileMenu a{display:block;padding:10px 0;font-size:.88rem;color:var(--ink-soft);border-bottom:1px solid var(--hairline);}
+.mobile-menu-wrap{display:none;width:100%;background:var(--space);border-top:1px solid var(--hairline);}
+.mobile-menu-wrap.show{display:block;}
+#mobileMenu a{display:block;padding:10px 20px;font-size:.88rem;color:var(--ink-soft);border-bottom:1px solid var(--hairline);}
 #mobileMenu a:last-child{border-bottom:none;}
-#mobileMenu.show{display:flex;}
 @media(min-width:701px){
   .mobile-nav{display:none !important;}
   #mobileMenu{display:none !important;}
@@ -152,6 +152,7 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
       <span></span><span></span><span></span>
     </button>
   </div>
+  <div class="mobile-menu-wrap" id="mobileMenuWrap">
   <div id="mobileMenu">
     <a href="index.html">首页</a>
     <a href="index.html#how">怎么判断</a>
@@ -160,6 +161,7 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
     <a href="index.html#story">为什么</a>
     <a href="index.html#start">开始使用</a>
     <a href="help.html">使用帮助</a>
+  </div>
   </div>
 </nav>
 
@@ -208,11 +210,13 @@ toggle.addEventListener('click', function() {
 
 /* Mobile nav */
 var mobileNav = document.getElementById('mobileNav');
-var mobileMenu = document.getElementById('mobileMenu');
-mobileNav.addEventListener('click', function() {
-  mobileNav.classList.toggle('open');
-  mobileMenu.classList.toggle('show');
-});
+var mobileMenuWrap = document.getElementById('mobileMenuWrap');
+if (mobileNav && mobileMenuWrap) {
+  mobileNav.addEventListener('click', function() {
+    mobileNav.classList.toggle('open');
+    mobileMenuWrap.classList.toggle('show');
+  });
+}
 
 /* Back to top */
 var bt = document.getElementById('backToTop');
