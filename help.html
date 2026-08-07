@@ -184,17 +184,21 @@ function buildTOC() {
   var toc = document.getElementById('toc-links');
   toc.innerHTML = '';
   h2s.forEach(function(h) {
-    var text = h.textContent.trim();
+    var raw = h.textContent.trim();
     /* skip non-section headings */
-    if (text.includes('📚 目录') || text === '文档结束') return;
-    /* strip emoji for clean id */
-    var clean = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').trim();
+    if (raw.includes('📚 目录') || raw === '文档结束') return;
+    /* extract display text: strip "第X部分：" prefix and any parenthetical suffix */
+    var display = raw
+      .replace(/^第[^：\n]+：/, '')       /* remove "第X部分：" */
+      .replace(/\s*\([^)]*\)$/, '')        /* remove trailing "(xxx)" like "（⭐ 必读）" */
+      .trim();
+    var clean = display.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').trim();
     var id = h.id || clean;
     h.id = id;
     var a = document.createElement('a');
     a.className = 'sidebar-link';
     a.href = '#' + id;
-    a.textContent = text.replace(/^[^\s]+\s*/, '').trim();
+    a.textContent = display;
     toc.appendChild(a);
   });
 }
