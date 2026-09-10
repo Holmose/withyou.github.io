@@ -8,7 +8,8 @@
 <link rel="icon" href="assets/fox-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/harmonyos-sans-sc-webfont-splitted@1.1.0/dist/index.min.css">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>/* ========================================================
    HELP · Neumorphism (新拟物派) · 品牌配色
@@ -22,8 +23,8 @@
   --sh-inset-md:inset 6px 6px 12px #b8bcc2,inset -6px -6px 12px #ffffff;
   --ink:#1A535C; --ink-soft:#46656c; --ink-mute:#64828a;
   --accent:#E67E22; --accent-soft:rgba(230,126,34,.12);
-  --font-display:'Nunito','PingFang SC',-apple-system,system-ui,sans-serif;
-  --font-body:'Nunito','PingFang SC',system-ui,sans-serif;
+  --font-display:'HarmonyOS Sans SC','PingFang SC',-apple-system,system-ui,sans-serif;
+  --font-body:'HarmonyOS Sans SC','PingFang SC',system-ui,sans-serif;
   --font-mono:'JetBrains Mono','SF Mono',monospace;
   --container:1280px; --radius:16px;
 }
@@ -36,6 +37,8 @@ a:hover{text-decoration:underline;}
 img{max-width:100%;display:block;}
 button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
 .container{max-width:var(--container);margin:0 auto;padding:0 32px;}
+@media(min-width:768px){.container{padding:0 40px;}}
+@media(min-width:1280px){.container{padding:0 48px;}}
 
 /* NAV */
 .navbar{position:sticky;top:0;z-index:100;background:var(--bg);}
@@ -66,11 +69,14 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
   .nav-links{display:none !important;}
   .nav-inner{flex-wrap:nowrap;}
   .nav-brand{margin-right:auto;}
+  .mobile-nav{display:flex;}
 }
 
 /* LAYOUT */
-.help-layout{display:grid;grid-template-columns:240px 1fr;gap:48px;max-width:1280px;margin:0 auto;padding:48px 32px;align-items:start;}
-@media(max-width:900px){.help-layout{grid-template-columns:1fr;padding:24px 20px;gap:24px;}}
+.help-layout{display:grid;grid-template-columns:240px 1fr;gap:48px;max-width:var(--container);margin:0 auto;padding:48px 32px;align-items:start;}
+@media(min-width:768px){.help-layout{padding:48px 40px;}}
+@media(min-width:1280px){.help-layout{padding:48px 48px;}}
+@media(max-width:900px){.help-layout{grid-template-columns:1fr;padding:24px 32px;gap:24px;}}
 
 /* SIDEBAR */
 .help-sidebar{position:sticky;top:80px;display:flex;flex-direction:column;gap:4px;}
