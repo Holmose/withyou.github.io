@@ -135,6 +135,36 @@ button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
 .footer-meta{font-size:.78rem;color:var(--ink-mute);}
 .footer-meta a{color:var(--ink-soft);margin-right:16px;transition:color .3s ease-in-out;}
 .footer-meta a:hover{color:var(--accent);}
+
+/* ========================================================
+   DOC CARDS — 分节卡片化
+   ======================================================== */
+.help-content h2{scroll-margin-top:90px;}
+.doc-hero{background:var(--bg);border-radius:20px;box-shadow:var(--sh-lg);padding:32px 36px;margin-bottom:28px;}
+.doc-hero h1{margin-bottom:14px;}
+.doc-meta{display:flex;flex-direction:column;gap:8px;}
+.meta-pill{display:flex;gap:8px;align-items:baseline;font-size:.82rem;line-height:1.6;color:var(--ink-soft);background:var(--bg);box-shadow:var(--sh-inset-sm);border-radius:10px;padding:8px 14px;}
+.doc-part{background:var(--bg);border-radius:24px;box-shadow:var(--sh-lg);padding:28px 32px;margin-bottom:28px;}
+.part-head{display:flex;align-items:center;gap:12px;margin:0 0 20px;padding-bottom:14px;box-shadow:0 1px 0 rgba(184,188,194,.4);}
+.part-badge{font-family:var(--font-mono);font-size:.7rem;font-weight:600;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:4px 12px;white-space:nowrap;}
+.part-head h2{margin:0;padding-bottom:0;border-bottom:none;font-size:clamp(1.15rem,2vw,1.45rem);display:block;}
+.doc-part h3{margin-top:32px;}
+.doc-part h4{margin-top:24px;}
+.doc-part ul li,.doc-part ol li{margin-bottom:8px;}
+.table-wrap{background:var(--bg);box-shadow:var(--sh-inset-sm);border-radius:12px;padding:6px;overflow-x:auto;margin:16px 0;}
+.table-wrap table{margin:0;min-width:520px;}
+.doc-toc .toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;list-style:none;margin:0;padding:0;}
+.doc-toc .toc-grid li{margin:0;}
+.doc-toc .toc-grid a{display:block;font-size:.85rem;color:var(--ink-soft);background:var(--bg);box-shadow:var(--sh-sm);border-radius:12px;padding:10px 14px;transition:box-shadow .3s ease-in-out,color .3s ease-in-out;}
+.doc-toc .toc-grid a:hover{color:var(--accent);box-shadow:2px 2px 4px #b8bcc2,-2px -2px 4px #ffffff;text-decoration:none;}
+.doc-faq p strong.q-badge{color:var(--accent);}
+.help-content pre{padding:42px 18px 16px;}
+.help-content pre::before{content:'📋 复制即用';position:absolute;top:12px;left:18px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;color:var(--ink-mute);}
+@media(max-width:700px){
+  .doc-hero{padding:24px 20px;border-radius:18px;}
+  .doc-part{padding:22px 18px;border-radius:20px;}
+  .doc-toc .toc-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -222,6 +252,110 @@ var bt = document.getElementById('backToTop');
 window.addEventListener('scroll', function() { bt.classList.toggle('show', window.scrollY > 600); }, { passive: true });
 bt.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
+/* 分节卡片化: h2 切片 → doc-part 卡片, 表格包井, meta 胶囊, 目录网格 */
+function enhanceDoc() {
+  var content = document.getElementById('helpContent');
+  var nodes = Array.prototype.slice.call(content.children);
+  var headEls = [], parts = [], cur = null, seen = false;
+  nodes.forEach(function(el) {
+    if (el.tagName === 'H2') { seen = true; cur = { h: el, els: [] }; parts.push(cur); }
+    else if (!seen) headEls.push(el);
+    else cur.els.push(el);
+  });
+  content.innerHTML = '';
+
+  /* 徽章 → 锚点 id 映射 (供目录跳转) */
+  var idByBadge = {};
+  parts.forEach(function(part) {
+    var raw2 = part.h.textContent.trim();
+    var m2 = raw2.match(/^(第[^：]+)：/);
+    if (m2) idByBadge[m2[1]] = raw2.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '');
+  });
+
+  /* 文档头横幅 */
+  var hero = document.createElement('div');
+  hero.className = 'doc-hero';
+  headEls.forEach(function(el) {
+    if (el.tagName === 'HR') return;
+    hero.appendChild(el);
+  });
+  var bq = hero.querySelector('blockquote');
+  if (bq) {
+    var meta = document.createElement('div');
+    meta.className = 'doc-meta';
+    bq.innerHTML.split(/<br\s*\/?>/i).forEach(function(line) {
+      var t = line.replace(/<[^>]+>/g, '').replace(/\*\*/g, '').trim();
+      if (!t) return;
+      var pill = document.createElement('div');
+      pill.className = 'meta-pill';
+      pill.textContent = t;
+      meta.appendChild(pill);
+    });
+    bq.parentNode.replaceChild(meta, bq);
+  }
+  content.appendChild(hero);
+
+  /* 部分卡片 */
+  parts.forEach(function(part) {
+    var h = part.h;
+    var raw = h.textContent.trim();
+    var sec = document.createElement('section');
+    sec.className = 'doc-part';
+    if (/目录/.test(raw)) sec.classList.add('doc-toc');
+    if (/FAQ/.test(raw)) sec.classList.add('doc-faq');
+    var m = raw.match(/^(第[^：]+)：\s*(.*)$/);
+    var head = document.createElement('div');
+    head.className = 'part-head';
+    var hn = document.createElement('h2');
+    hn.id = raw.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '');
+    if (m) {
+      var badge = document.createElement('span');
+      badge.className = 'part-badge';
+      badge.textContent = m[1];
+      head.appendChild(badge);
+      hn.textContent = m[2].replace(/（[^）]*）$/, '');
+    } else {
+      hn.textContent = raw.replace(/📚\s*/, '');
+    }
+    head.appendChild(hn);
+    sec.appendChild(head);
+    part.els.forEach(function(el) {
+      if (el.tagName === 'HR') return;
+      if (sec.classList.contains('doc-toc') && el.tagName === 'UL') {
+        el.classList.add('toc-grid');
+        el.querySelectorAll('li').forEach(function(li) {
+          var t = li.textContent.trim();
+          var mm = t.match(/^([^：（]+)：/);
+          var a = document.createElement('a');
+          a.href = mm && idByBadge[mm[1]] ? '#' + idByBadge[mm[1]] : '#';
+          a.textContent = t.replace(/^([^：（]+)：/, '').replace(/（[^）]*）$/, '');
+          li.innerHTML = '';
+          li.appendChild(a);
+        });
+        sec.appendChild(el);
+        return;
+      }
+      if (el.tagName === 'TABLE') {
+        var w = document.createElement('div');
+        w.className = 'table-wrap';
+        w.appendChild(el);
+        sec.appendChild(w);
+        return;
+      }
+      sec.appendChild(el);
+    });
+    content.appendChild(sec);
+  });
+
+  /* FAQ 问题徽章 */
+  var faq = content.querySelector('.doc-faq');
+  if (faq) {
+    faq.querySelectorAll('p > strong').forEach(function(st) {
+      if (/^Q\d+/.test(st.textContent)) st.classList.add('q-badge');
+    });
+  }
+}
+
 /* TOC: build from h2 */
 function buildTOC() {
   var h2s = document.querySelectorAll('.help-content h2');
@@ -230,7 +364,7 @@ function buildTOC() {
   h2s.forEach(function(h) {
     var raw = h.textContent.trim();
     /* skip non-section headings */
-    if (raw.includes('📚 目录') || raw === '文档结束') return;
+    if (raw === '目录' || raw === '文档结束') return;
     /* extract display text: strip "第X部分：" prefix and any parenthetical suffix */
     var display = raw
       .replace(/^第[^：\n]+：/, '')       /* remove "第X部分：" */
@@ -295,6 +429,7 @@ fetch('help.md')
     var html = marked.parse(text);
     document.getElementById('loading').style.display = 'none';
     document.getElementById('helpContent').innerHTML = html;
+    enhanceDoc();
     buildTOC();
     addCopyButtons();
     onScroll();
