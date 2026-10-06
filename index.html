@@ -1,1331 +1,353 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WithYou · 你的情感参谋</title>
-<meta name="description" content="WithYou — 把聊天截图发给它，先帮你看懂对方是什么意思、该怎么办，再给你一句能直接发出去的回复。">
-<link rel="icon" href="assets/fox-logo.png">
-
-<!-- 字体: 苹果风无衬线 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/harmonyos-sans-sc-webfont-splitted@1.1.0/dist/index.min.css">
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-<style>/* ========================================================
-   DESIGN TOKENS — Neumorphism (新拟物派) · 品牌配色
-   暖阳橙 #E67E22 + 深青墨 #1A535C · 底色 #e0e5ec
-   光源固定左上: 亮影 #ffffff (-x,-y) / 暗影 #b8bcc2 (+x,+y)
-   ======================================================== */
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WithYou · 先看懂关系，再说下一句</title>
+<meta name="description" content="WithYou 是你的关系智能助理：还原语境、判断阶段、拆解边界，再给出自然的下一句。">
+<link rel="icon" href="assets/fox-logo-128.png">
+<link rel="preload" as="image" href="assets/fox-logo-128.png">
+<link rel="stylesheet" href="assets/fonts/harmonyos/index.css">
+<link rel="stylesheet" href="assets/fonts/jetbrains/jetbrains-mono.css">
+<style>
 :root {
-  --bg:          #e0e5ec;
-  --bg-soft:     #f0f0f3;
-  --sh-dark:     #b8bcc2;
-  --sh-light:    #ffffff;
-
-  --sh-sm:       4px 4px 8px #b8bcc2, -4px -4px 8px #ffffff;
-  --sh-md:       6px 6px 12px #b8bcc2, -6px -6px 12px #ffffff;
-  --sh-lg:       8px 8px 16px #b8bcc2, -8px -8px 16px #ffffff;
-  --sh-xl:       12px 12px 24px #b8bcc2, -12px -12px 24px #ffffff;
-  --sh-inset-sm: inset 4px 4px 8px #b8bcc2, inset -4px -4px 8px #ffffff;
-  --sh-inset-md: inset 6px 6px 12px #b8bcc2, inset -6px -6px 12px #ffffff;
-
-  --ink:         #1A535C;
-  --ink-soft:    #46656c;
-  --ink-mute:    #64828a;
-  --accent:      #E67E22;
-  --accent-soft: rgba(230,126,34,0.12);
-
-  --font-display: 'HarmonyOS Sans SC', 'PingFang SC', -apple-system, system-ui, sans-serif;
-  --font-body:    'HarmonyOS Sans SC', 'PingFang SC', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', 'SF Mono', monospace;
-
-  --container:    1280px;
-  --section-py:   110px;
-  --radius:       16px;
-  --radius-lg:    28px;
+  --stage: oklch(.982 .005 95);
+  --stage-2: oklch(.958 .011 95);
+  --stage-3: oklch(.925 .018 95);
+  --ink: oklch(.25 .027 95.7);
+  --ink-2: oklch(.48 .025 95);
+  --primary: oklch(.55 .19 252);
+  --primary-soft: oklch(.67 .16 245);
+  --emerald: oklch(.58 .14 165);
+  --gold: oklch(.62 .13 75);
+  --coral: oklch(.62 .17 27);
+  --line: oklch(.55 .19 252 / .15);
+  --grid-line: oklch(.55 .19 252 / .10);
+  --display: 'Avenir Next', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --ease-cine: cubic-bezier(.16, 1, .3, 1);
+  --ease-flip: cubic-bezier(.34, 1.4, .64, 1);
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+  --container: 1200px;
 }
-
-/* Reset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--ink);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  color: var(--ink);
+  background: var(--stage);
+  font-family: var(--display);
+  -webkit-font-smoothing: antialiased;
 }
-img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
-::selection { background: rgba(230,126,34,0.25); }
-
-/* Utility */
-.container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
-@media (min-width: 768px) { .container { padding: 0 40px; } }
-@media (min-width: 1280px) { .container { padding: 0 48px; } }
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+button { font: inherit; }
+::selection { color: var(--stage); background: var(--primary); }
+.container { width: min(var(--container), calc(100% - 64px)); margin: auto; }
+.mono { font-family: var(--mono); }
+.eyebrow { display: flex; align-items: center; gap: 10px; color: var(--primary); font: 600 11px/1 var(--mono); letter-spacing: .15em; text-transform: uppercase; }
+.eyebrow::before { width: 26px; height: 1px; content: ''; background: currentColor; }
+.navbar { position: fixed; inset: 0 0 auto; z-index: 30; border-bottom: 1px solid transparent; transition: background .3s, border-color .3s, backdrop-filter .3s; }
+.navbar.scrolled { background: oklch(.982 .005 95 / .78); border-color: var(--line); backdrop-filter: blur(18px); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; min-height: 74px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 750; letter-spacing: -.03em; }
+.brand-mark { width: 30px; height: 30px; border-radius: 9px; object-fit: cover; box-shadow: 0 6px 16px oklch(.55 .19 252 / .2); }
+.nav-links { display: flex; align-items: center; gap: 29px; color: var(--ink-2); font-size: 13px; }
+.nav-links a { transition: color .2s; }
+.nav-links a:hover { color: var(--primary); }
+.nav-cta, .button-primary { display: inline-flex; align-items: center; justify-content: center; gap: 9px; color: var(--stage); border: 0; border-radius: 999px; background: linear-gradient(115deg, var(--primary), var(--emerald)); box-shadow: 0 12px 28px oklch(.55 .19 252 / .18); cursor: pointer; transition: transform .25s var(--ease-cine), box-shadow .25s; }
+.nav-cta { padding: 10px 17px; font-size: 12px; font-weight: 700; }
+.nav-cta:hover, .button-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 32px oklch(.55 .19 252 / .27); }
+.mobile-toggle { display: none; width: 38px; height: 38px; color: var(--ink); border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; }
+.mobile-menu { display: none; padding: 12px 32px 18px; border-bottom: 1px solid var(--line); background: oklch(.982 .005 95 / .94); backdrop-filter: blur(18px); }
+.mobile-menu.open { display: grid; gap: 13px; }
+.mobile-menu a { color: var(--ink-2); font-size: 14px; }
+.hero { position: relative; display: grid; min-height: 820px; overflow: hidden; place-items: center; isolation: isolate; perspective: 1100px; perspective-origin: 50% 42%; }
+.space-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.space-bg::before { position: absolute; inset: 0; content: ''; background: radial-gradient(circle at 50% 37%, oklch(.55 .19 252 / .11), transparent 30%), radial-gradient(circle at 73% 28%, oklch(.58 .14 165 / .10), transparent 22%), radial-gradient(circle at 26% 70%, oklch(.62 .13 75 / .10), transparent 25%); }
+.floor { position: absolute; left: -35%; right: -35%; bottom: -22%; height: 65%; background: linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/100% 56px, linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/56px 100%; transform: perspective(800px) rotateX(64deg); transform-origin: 50% 0; mask-image: linear-gradient(to top, #000 10%, transparent 82%); animation: floor-run 9s linear infinite; }
+@keyframes floor-run { to { background-position: 0 56px, 56px 0; } }
+.dust { position: absolute; inset: 0; opacity: .48; background-image: radial-gradient(circle, oklch(.55 .19 252 / .45) 0 1px, transparent 1.5px), radial-gradient(circle, oklch(.58 .14 165 / .33) 0 1px, transparent 1.5px); background-size: 103px 127px, 181px 151px; background-position: 12px 32px, 71px 18px; animation: drift 20s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translateY(-28px); } }
+.beam { position: absolute; inset: -30%; background: linear-gradient(115deg, transparent 43%, oklch(.55 .19 252 / .08) 50%, transparent 57%); transform: translateX(-70%); animation: beam 2.2s var(--ease-cine) .7s forwards; }
+@keyframes beam { to { transform: translateX(70%); } }
+.hero-inner { position: relative; z-index: 2; width: min(1060px, calc(100% - 64px)); padding: 120px 0 90px; text-align: center; transform-style: preserve-3d; animation: cam-push 14s var(--ease-out) forwards; } @keyframes cam-push { 0% { transform: translateZ(-140px) translateY(18px); } 60% { transform: translateZ(0) translateY(0); } 100% { transform: translateZ(30px) translateY(-4px); } }
+.hero-inner::after { position: absolute; z-index: -1; inset: 8% 12% 0; content: ''; border: 1px solid oklch(.55 .19 252 / .09); border-radius: 50%; transform: perspective(900px) rotateX(69deg); opacity: .7; }
+.logo-lockup { display: inline-flex; align-items: center; gap: 2px; font-weight: 800; font-size: 44px; letter-spacing: .04em; perspective: 800px; }
+.logo-row { display: inline-flex; gap: 2px; }
+.logo-row span { display: inline-block; opacity: 0; filter: blur(10px); transform: translate3d(var(--fx, 0), 46px, -220px) rotateX(50deg); }
+.hero.play .logo-row span { animation: glyph-in 1.1s var(--ease-cine) forwards; animation-delay: calc(var(--i) * 70ms); }
+@keyframes glyph-in { 60% { filter: blur(0); } to { opacity: 1; transform: none; filter: blur(0); } }
+.logo-lockup strong { font-size: inherit; letter-spacing: inherit; }
+.hero.play .logo-lockup { animation: logo-in 1.1s var(--ease-cine) .1s forwards; }
+.w-underline { height: 2px; width: 0; margin: 14px auto 0; background: linear-gradient(90deg, transparent, var(--primary), var(--emerald), transparent); }
+.hero.play .w-underline { animation: underline-in 1s var(--ease-cine) 1s forwards; }
+@keyframes underline-in { to { width: 240px; } }
+@keyframes logo-in { to { opacity: 1; transform: none; } }
+.hero h1 { max-width: 780px; margin: 35px auto 18px; font-size: clamp(42px, 6.1vw, 78px); font-weight: 760; line-height: 1.08; letter-spacing: -.075em; opacity: 0; transform: rotateX(-92deg) translateZ(-40px); transform-origin: 50% 100%; animation: title-in 1s var(--ease-flip) 1.25s forwards; }
+@keyframes title-in { to { opacity: 1; transform: none; } }
+.hero h1 em { color: var(--primary); font-style: normal; }
+.hero-lead { max-width: 570px; min-height: 27px; margin: auto; color: var(--ink-2); font-size: 16px; line-height: 1.8; opacity: 0; animation: rise-in .8s var(--ease-cine) 1.75s forwards; } .caret { display: inline-block; width: 1px; height: 16px; margin-left: 3px; vertical-align: -2px; background: var(--primary); animation: caret-blink .8s step-end infinite; } @keyframes caret-blink { 50% { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.hero-actions { display: flex; justify-content: center; gap: 12px; margin-top: 29px; opacity: 0; animation: rise-in .8s var(--ease-cine) 2.1s forwards; }
+.button-primary { position: relative; overflow: hidden; padding: 14px 25px; font-size: 14px; font-weight: 700; }
+.button-primary::after { position: absolute; top: 0; bottom: 0; left: -70px; width: 45px; content: ''; background: linear-gradient(105deg, transparent, oklch(1 0 0 / .6), transparent); transform: skewX(-18deg); animation: shine 2.7s ease-in-out 2.8s infinite; }
+@keyframes shine { 0%, 45% { left: -70px; } 75%, 100% { left: 120%; } }
+.button-ghost { display: inline-flex; align-items: center; justify-content: center; padding: 13px 24px; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; background: oklch(1 0 0 / .42); font-size: 14px; transition: border-color .2s, color .2s, transform .2s; }
+.button-ghost:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
+.hero-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; margin-top: 72px; text-align: left; }
+.capability { position: relative; min-height: 145px; padding: 19px 17px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, oklch(1 0 0 / .73), oklch(.95 .01 95 / .65)); box-shadow: 0 16px 36px oklch(.35 .06 95 / .08); opacity: 0; transform: translate3d(0, 60px, -460px) rotateX(24deg); backdrop-filter: blur(10px); animation: card-in .85s var(--ease-cine) calc(2.3s + var(--i) * .22s) forwards; transition: transform .3s var(--ease-cine), border-color .3s; }
+.capability:hover { border-color: var(--primary); transform: translateY(-8px); }
+.capability::before { position: absolute; inset: 0 0 auto; height: 1px; content: ''; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: .7; }
+.capability .step { color: var(--primary); font: 500 10px var(--mono); letter-spacing: .1em; }
+.capability h3 { margin: 12px 0 6px; font-size: 16px; }
+.capability p { color: var(--ink-2); font-size: 12px; line-height: 1.75; }
+@keyframes card-in { to { opacity: 1; transform: none; } }
+.ticker { margin-top: 30px; min-height: 20px; color: var(--ink-2); font-size: 13px; opacity: 0; animation: rise-in .8s var(--ease-cine) 3.5s forwards; transition: opacity .4s; } .ticker b { color: var(--emerald); font-weight: 650; }
+.scroll-cue { position: absolute; bottom: 28px; left: 50%; display: grid; gap: 9px; justify-items: center; color: var(--ink-2); font: 10px var(--mono); letter-spacing: .16em; transform: translateX(-50%); }
+.scroll-cue i { display: block; width: 1px; height: 38px; background: linear-gradient(var(--primary), transparent); animation: cue 1.8s ease-in-out infinite; }
+@keyframes cue { 50% { transform: translateY(8px); opacity: .35; } }
+.section { position: relative; padding: 145px 0; }
+.section-heading { max-width: 680px; margin-bottom: 60px; }
+.section-heading h2 { margin-top: 21px; font-size: clamp(32px, 4.4vw, 58px); line-height: 1.15; letter-spacing: -.065em; }
+.section-heading h2 em { color: var(--primary); font-style: normal; }
+.section-heading p { max-width: 550px; margin-top: 19px; color: var(--ink-2); font-size: 16px; line-height: 1.9; }
+.tint-section { background: linear-gradient(180deg, var(--stage), var(--stage-2) 55%, var(--stage)); }
+.tint-section::before { position: absolute; inset: 0; content: ''; opacity: .5; background: linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/100% 64px, linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/64px 100%; mask-image: linear-gradient(to bottom, #000, transparent 72%); }
+.method-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.method-card { padding: 25px 21px 23px; border: 1px solid var(--line); border-radius: 17px; background: oklch(1 0 0 / .45); transition: transform .35s var(--ease-cine), border-color .35s, background .35s; }
+.method-card:hover { border-color: var(--primary); background: oklch(1 0 0 / .7); transform: translateY(-9px) rotateX(3deg); }
+.method-index { color: var(--primary); font: 600 12px var(--mono); }
+.method-card h3 { margin: 36px 0 9px; font-size: 19px; }
+.method-card p { color: var(--ink-2); font-size: 13px; line-height: 1.8; }
+.method-card p { color: var(--ink-2); }
+.method-arrow { margin-top: 28px; color: var(--primary); font: 18px var(--mono); }
+.gallery-section { overflow: hidden; padding-bottom: 170px; }
+.gallery-stage { position: relative; min-height: 590px; perspective: 1200px; }
+.gallery-stage::before { position: absolute; inset: 16% 10% 0; content: ''; border: 1px solid var(--grid-line); border-radius: 50%; transform: rotateX(66deg); }
+.gallery-floor { position: absolute; right: -25%; bottom: 8%; left: -25%; height: 45%; background: linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/100% 45px, linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/45px 100%; transform: rotateX(67deg); mask-image: linear-gradient(to top, #000, transparent 75%); }
+.gallery-track { position: relative; z-index: 1; display: flex; min-height: 560px; align-items: center; justify-content: center; transform-style: preserve-3d; }
+.gallery-panel { position: absolute; width: min(490px, 42vw); overflow: hidden; border: 1px solid oklch(.55 .19 252 / .26); border-radius: 18px; background: oklch(1 0 0 / .72); box-shadow: 0 30px 70px oklch(.25 .027 95 / .18); transform-style: preserve-3d; transition: transform .5s var(--ease-cine), box-shadow .5s; }
+.gallery-panel:hover { z-index: 5 !important; box-shadow: 0 40px 90px oklch(.25 .027 95 / .27); transform: translate3d(0, -16px, 50px) rotateY(0) rotateX(0) !important; }
+.gallery-panel:nth-child(1) { z-index: 3; transform: translate3d(-255px, 32px, -80px) rotateY(22deg) rotateX(3deg); }
+.gallery-panel:nth-child(2) { z-index: 4; transform: translate3d(0, -18px, 40px) rotateY(0) rotateX(0); }
+.gallery-panel:nth-child(3) { z-index: 2; transform: translate3d(255px, 32px, -80px) rotateY(-22deg) rotateX(3deg); }
+.panel-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--line); background: oklch(1 0 0 / .58); }
+.panel-title { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; }
+.panel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 0 4px oklch(.58 .14 165 / .12); }
+.panel-meta { color: var(--ink-2); font: 10px var(--mono); }
+.panel-body { min-height: 275px; padding: 21px; background: linear-gradient(145deg, oklch(1 0 0 / .78), oklch(.95 .012 95 / .67)); }
+.chat-window { display: grid; gap: 13px; }
+.bubble { width: 72%; padding: 12px 14px; border-radius: 13px 13px 13px 4px; background: oklch(.93 .02 95); color: var(--ink-2); font-size: 12px; line-height: 1.7; }
+.bubble.self { justify-self: end; border-radius: 13px 13px 4px 13px; color: white; background: var(--primary); }
+.analysis-lines { display: grid; gap: 11px; }
+.analysis-line { display: grid; grid-template-columns: 76px 1fr; gap: 10px; align-items: center; font-size: 11px; }
+.analysis-line b { color: var(--primary); font: 500 10px var(--mono); }
+.analysis-line span { height: 7px; overflow: hidden; border-radius: 10px; background: oklch(.55 .19 252 / .1); }
+.analysis-line i { display: block; width: var(--w); height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--emerald)); }
+.reply-box { padding: 14px; border: 1px solid oklch(.58 .14 165 / .28); border-radius: 13px; background: oklch(.58 .14 165 / .08); }
+.analysis-lines + .reply-box { margin-top: 22px; }
+.reply-box small { color: var(--emerald); font: 600 10px var(--mono); letter-spacing: .08em; }
+.reply-box p { margin-top: 9px; font-size: 13px; line-height: 1.7; }
+.panel-foot { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; color: var(--ink-2); border-top: 1px solid var(--line); font-size: 11px; }
+.panel-foot strong { color: var(--primary); font: 600 11px var(--mono); }
+.gallery-caption { position: relative; z-index: 2; margin-top: 25px; text-align: center; color: var(--ink-2); font-size: 13px; }
+.gallery-caption b { color: var(--primary); }
+.feature-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }
+.feature-card { min-height: 285px; padding: 29px; overflow: hidden; border: 1px solid var(--line); border-radius: 19px; background: linear-gradient(145deg, oklch(1 0 0 / .68), oklch(.95 .012 95 / .58)); }
+.feature-card.large { position: relative; }
+.feature-card.large::after { position: absolute; right: -8%; bottom: -30%; width: 310px; height: 310px; content: ''; border: 1px solid oklch(.55 .19 252 / .2); border-radius: 50%; box-shadow: 0 0 0 35px oklch(.55 .19 252 / .035), 0 0 0 70px oklch(.55 .19 252 / .025); }
+.feature-card h3 { margin: 38px 0 11px; font-size: 25px; letter-spacing: -.04em; }
+.feature-card p { max-width: 420px; color: var(--ink-2); font-size: 14px; line-height: 1.9; }
+.feature-list { display: grid; gap: 12px; }
+.feature-item { display: flex; gap: 14px; padding: 17px; border-bottom: 1px solid var(--line); }
+.feature-item:last-child { border-bottom: 0; }
+.feature-item b { display: grid; width: 31px; height: 31px; flex: none; place-items: center; color: var(--primary); border: 1px solid var(--line); border-radius: 9px; font: 600 12px var(--mono); }
+.feature-item h4 { font-size: 14px; }
+.feature-item p { margin-top: 4px; font-size: 12px; line-height: 1.65; }
+.cta-section { padding: 150px 0 165px; text-align: center; }
+.cta-orbit { position: absolute; left: 50%; width: 540px; height: 540px; border: 1px solid var(--grid-line); border-radius: 50%; transform: translateX(-50%) rotateX(65deg); pointer-events: none; }
+.cta-section .section-heading { position: relative; z-index: 1; margin: auto; }
+.cta-section .section-heading p { margin-right: auto; margin-left: auto; }
+.cta-section .button-primary { margin-top: 30px; }
+.footer { padding: 29px 0; border-top: 1px solid var(--line); }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; color: var(--ink-2); font-size: 12px; }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a:hover { color: var(--primary); }
+.reveal { opacity: 0; transform: translateY(35px); }
+.reveal.is-visible { opacity: 1; transform: none; transition: opacity .8s var(--ease-cine), transform .8s var(--ease-cine); }
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .hero { min-height: 900px; }
+  .hero-cards, .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-panel { width: min(430px, 58vw); }
+  .gallery-panel:nth-child(1) { transform: translate3d(-22vw, 34px, -80px) rotateY(18deg) rotateX(3deg); }
+  .gallery-panel:nth-child(3) { transform: translate3d(22vw, 34px, -80px) rotateY(-18deg) rotateX(3deg); }
 }
-.hl { color: var(--accent); font-weight: 600; }
-.font-display { font-family: var(--font-display); }
-
-/* ========================================================
-   NAVBAR — 同色系贴面, 滚动后底部软阴影
-   ======================================================== */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--bg);
-  transition: box-shadow 0.3s ease-in-out;
+@media (max-width: 620px) {
+  .container, .hero-inner { width: min(100% - 40px, var(--container)); }
+  .nav-inner { min-height: 64px; }
+  .navbar .nav-cta { display: none; }
+  .hero { min-height: auto; }
+  .hero-inner { padding: 126px 0 94px; }
+  .hero-inner::after { inset: 13% -10% -10%; }
+  .logo-lockup strong { font-size: 24px; }
+  .hero h1 { font-size: clamp(40px, 13vw, 62px); }
+  .hero-lead { font-size: 14px; }
+  .hero-actions { flex-direction: column; width: min(260px, 100%); margin-right: auto; margin-left: auto; }
+  .button-primary, .button-ghost { width: 100%; }
+  .hero-cards, .method-grid, .feature-grid { grid-template-columns: 1fr; }
+  .capability { min-height: 0; }
+  .section { padding: 92px 0; }
+  .section-heading { margin-bottom: 38px; }
+  .section-heading h2 { font-size: 39px; }
+  .section-heading p { font-size: 14px; }
+  .gallery-stage { min-height: 680px; }
+  .gallery-track { min-height: 620px; }
+  .gallery-panel { position: absolute; width: 92vw; }
+  .gallery-panel:nth-child(1) { transform: translate3d(-2vw, 105px, -80px) rotateY(8deg) rotateX(3deg) scale(.88); }
+  .gallery-panel:nth-child(2) { transform: translate3d(0, -10px, 40px) scale(.94); }
+  .gallery-panel:nth-child(3) { transform: translate3d(2vw, 220px, -80px) rotateY(-8deg) rotateX(3deg) scale(.88); }
+  .feature-card { min-height: 0; padding: 23px; }
+  .cta-orbit { width: 350px; height: 350px; }
+  .footer-inner { align-items: flex-start; flex-direction: column; gap: 14px; }
 }
-.navbar.scrolled { box-shadow: 0 6px 14px rgba(184,188,194,0.45); }
-.nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-.nav-brand {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink);
-}
-.nav-brand img { mix-blend-mode: multiply; }
-.nav-links { display: flex; gap: 28px; }
-.nav-links a {
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-  transition: color 0.3s ease-in-out;
-}
-.nav-links a:hover { color: var(--accent); }
-@media (max-width: 720px) {
-  .nav-links { display: none !important; }
-  .nav-inner { flex-wrap: nowrap; }
-  .nav-brand { margin-right: auto; }
-  .mobile-nav { display: flex; }
-}
-.mobile-nav { display: none; width: 36px; height: 36px; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; padding: 4px; border-radius: 10px; background: none; border: none; }
-.mobile-nav:hover { background: rgba(184,188,194,0.25); }
-.mobile-nav span { display: block; width: 20px; height: 2px; background: var(--ink); border-radius: 2px; transition: all .3s ease-in-out; }
-.mobile-nav.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
-.mobile-nav.open span:nth-child(2) { opacity: 0; }
-.mobile-nav.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
-.mobile-menu-wrap { display: none; width: 100%; background: var(--bg); }
-.mobile-menu-wrap.show { display: block; }
-#mobileMenu a { display: block; padding: 10px 20px; font-size: .88rem; color: var(--ink-soft); border-bottom: 1px solid rgba(184,188,194,0.35); }
-#mobileMenu a:last-child { border-bottom: none; }
-@media (min-width: 721px) { .mobile-nav, .mobile-menu-wrap { display: none !important; } }
-
-/* ========================================================
-   HERO
-   ======================================================== */
-.hero {
-  min-height: 88vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
-  padding: 120px 0 80px;
-}
-.hero-card {
-  position: absolute;
-  width: 280px;
-  padding: 20px;
-  background: var(--bg);
-  border-radius: 20px;
-  box-shadow: var(--sh-lg);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-.hero-card.left { top: 24%; left: 5%; transform: rotate(-2deg); }
-.hero-card.right { top: 58%; right: 5%; transform: rotate(2deg); }
-.hero-card .who {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: var(--ink);
-}
-.hero-card .avatar {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: var(--sh-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem; color: #fff;
-}
-.hero-card .msg { color: var(--ink-soft); font-size: 0.82rem; }
-@media (max-width: 900px) { .hero-card { display: none; } }
-
-.hero h1 {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.04em;
-  margin: 20px auto 26px;
-  max-width: 900px;
-  color: var(--ink);
-}
-.hero p.lead {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: var(--ink-soft);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.65;
-}
-.hero-cta {
-  margin-top: 40px;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.hero-wave-wrap { display: none; }
-
-.scroll-hint {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: var(--ink-mute);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-transform: uppercase;
-}
-.scroll-hint::after {
-  content: "";
-  width: 2px;
-  height: 40px;
-  border-radius: 2px;
-  background: var(--accent);
-  opacity: .6;
-  animation: scrollHint 2s ease-in-out infinite;
-}
-@keyframes scrollHint {
-  0%   { transform: scaleY(0);   transform-origin: top; }
-  50%  { transform: scaleY(1);   transform-origin: top; }
-  100% { transform: scaleY(0);   transform-origin: bottom; }
-}
-
-/* ========================================================
-   SECTION 通用
-   ======================================================== */
-.section { padding: var(--section-py) 0; position: relative; }
-.section-head { text-align: center; margin-bottom: 70px; }
-.section-head h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.3;
-  margin: 16px auto 20px;
-  max-width: 800px;
-  color: var(--ink);
-}
-.section-head p {
-  font-size: 1.05rem;
-  color: var(--ink-soft);
-  max-width: 620px;
-  margin: 0 auto;
-}
-
-/* ========================================================
-   PROMISE — 三步法
-   ======================================================== */
-.promise-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-}
-@media (max-width: 900px) { .promise-grid { grid-template-columns: 1fr; } }
-.promise-card {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
-  padding: 36px 30px;
-  box-shadow: var(--sh-lg);
-  transition: box-shadow 0.3s ease-in-out;
-}
-.promise-card:hover { box-shadow: var(--sh-md); }
-.promise-card .num {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 20px;
-}
-.promise-card h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; color: var(--ink); }
-.promise-card p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.65; }
-
-/* ========================================================
-   STATS
-   ======================================================== */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 28px;
-  margin: 0 auto 70px;
-  max-width: 1100px;
-  text-align: center;
-}
-@media (max-width: 800px) {
-  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 40px; }
-  .stats-row > :last-child { grid-column: span 2; }
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--ink);
-  letter-spacing: -0.02em;
-}
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--ink-mute);
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  letter-spacing: 0.05em;
-}
-
-/* ========================================================
-   BENTO GRID
-   ======================================================== */
-.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-@media (max-width: 900px) { .bento { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 600px) { .bento { grid-template-columns: 1fr; } }
-.bento-card {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
-  padding: 32px 28px;
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--sh-lg);
-  transition: box-shadow 0.3s ease-in-out;
-}
-.bento-card:hover { box-shadow: var(--sh-md); }
-.bento-card .icon {
-  width: 48px; height: 48px;
-  border-radius: 14px;
-  background: var(--bg);
-  box-shadow: var(--sh-inset-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
-}
-.bento-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--ink); }
-.bento-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.65; flex: 1; }
-.bento-card .tag {
-  margin-top: 16px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-
-/* ========================================================
-   STORY
-   ======================================================== */
-.story-block {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 52px;
-  border-radius: var(--radius-lg);
-  background: var(--bg);
-  box-shadow: var(--sh-xl);
-}
-.story-block h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  line-height: 1.3;
-  margin-bottom: 26px;
-  color: var(--ink);
-}
-.story-copy { max-width: 720px; color: var(--ink-soft); font-size: 1.02rem; line-height: 1.9; }
-.story-copy p + p { margin-top: 18px; }
-.story-copy strong { color: var(--ink); font-weight: 600; }
-.story-pull {
-  margin: 34px 0;
-  padding: 26px 30px;
-  border-radius: var(--radius);
-  background: var(--bg);
-  box-shadow: var(--sh-inset-md);
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.25rem, 2.4vw, 1.8rem);
-  line-height: 1.4;
-}
-@media (max-width: 700px) { .story-block { padding: 42px 26px; } }
-
-/* OUTCOME 2×2 grid */
-.outcome-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 820px;
-  margin: 0 auto;
-}
-.outcome-card {
-  background: var(--bg);
-  border-radius: var(--radius);
-  padding: 24px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  box-shadow: var(--sh-md);
-  transition: box-shadow 0.3s ease-in-out;
-}
-.outcome-card:hover { box-shadow: var(--sh-sm); }
-.outcome-card .oc-tag {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 12px;
-  border-radius: 999px;
-  width: fit-content;
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-.outcome-card .oc-title {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.2;
-}
-.outcome-card .oc-desc {
-  font-size: 0.88rem;
-  color: var(--ink-soft);
-  line-height: 1.65;
-}
-@media (max-width: 640px) { .outcome-grid { grid-template-columns: 1fr; } }
-
-/* ========================================================
-   CREDIBILITY
-   ======================================================== */
-.credibility { text-align: center; }
-.cred-block {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
-  padding: 60px 40px;
-  max-width: 880px;
-  margin: 0 auto;
-  box-shadow: var(--sh-xl);
-}
-.cred-block h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  font-weight: 600;
-  line-height: 1.3;
-  margin-bottom: 28px;
-  color: var(--ink);
-}
-.cred-block .quote { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.8; max-width: 640px; margin: 0 auto 40px; }
-.cred-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  padding-top: 32px;
-  box-shadow: 0 -1px 0 rgba(184,188,194,0.45);
-}
-@media (max-width: 700px) { .cred-stats { grid-template-columns: 1fr 1fr; } }
-.cred-stats .num { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
-.cred-stats .lab { font-size: 0.82rem; color: var(--ink-mute); margin-top: 6px; font-family: var(--font-mono); }
-
-/* ========================================================
-   CTA
-   ======================================================== */
-.cta-block { text-align: center; padding: 90px 24px; max-width: 800px; margin: 0 auto; }
-.cta-block h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 600; line-height: 1.25; margin-bottom: 24px; color: var(--ink); letter-spacing: -0.04em; }
-.cta-block p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 40px; }
-
-.usage-notice {
-  max-width: 580px;
-  margin: 0 auto;
-  text-align: left;
-  background: var(--bg);
-  border-radius: var(--radius);
-  padding: 24px 28px;
-  box-shadow: var(--sh-inset-md);
-}
-.usage-notice-title {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 14px;
-}
-.usage-points {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.usage-points li {
-  font-size: 0.86rem;
-  color: var(--ink-soft);
-  line-height: 1.6;
-  padding-left: 16px;
-  position: relative;
-}
-.usage-points li::before {
-  content: '·';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: 600;
-}
-.usage-points .u-strong {
-  font-weight: 600;
-  color: var(--ink);
-}
-
-/* ========================================================
-   FOOTER
-   ======================================================== */
-.footer { padding: 56px 0 40px; background: var(--bg-soft); font-size: 0.85rem; color: var(--ink-mute); }
-.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-.footer-meta { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; }
-.footer-inner a { color: var(--ink-soft); transition: color 0.3s ease-in-out; }
-.footer-inner a:hover { color: var(--accent); }
-
-/* ========================================================
-   BUTTONS — 凸起→hover缩影→active凹陷, 无位移
-   ======================================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 30px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  border: none;
-  background: var(--bg);
-  color: var(--ink);
-  box-shadow: var(--sh-md);
-  transition: box-shadow 0.3s ease-in-out;
-  font-family: var(--font-body);
-}
-.btn:hover { box-shadow: var(--sh-sm); }
-.btn:active { box-shadow: var(--sh-inset-sm); }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-ghost { color: var(--accent); }
-
-/* ========================================================
-   REVEAL 入场动画
-   ======================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .animate-in { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
+  .reveal { opacity: 1; transform: none; }
 }
-.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 100; transition: width 0.1s linear; border-radius: 0 3px 3px 0; }
-
-/* ========================================================
-   DEMO
-   ======================================================== */
-.demo-stack { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-.demo-card { background: var(--bg); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--sh-lg); }
-.demo-meta { background: var(--bg); border-radius: var(--radius); padding: 18px 28px; box-shadow: var(--sh-inset-sm); }
-.demo-meta-label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 8px; }
-.demo-meta-row { display: flex; flex-wrap: wrap; gap: 6px 28px; font-size: 0.85rem; color: var(--ink-soft); }
-.demo-meta-row .k { color: var(--ink-mute); margin-right: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; }
-.demo-meta-row .v { color: var(--ink); font-weight: 600; }
-.demo-sub-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-top: 18px; margin-bottom: 8px; }
-.demo-prose { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.65; }
-.demo-prose strong { color: var(--ink); font-weight: 600; }
-.demo-kv .v-warn { color: var(--accent); font-weight: 600; }
-.demo-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 14px; }
-.demo-bubble { background: var(--bg); box-shadow: var(--sh-inset-md); padding: 16px 20px; border-radius: var(--radius); font-size: 1.05rem; color: var(--ink); font-weight: 600; }
-.demo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
-@media (max-width: 600px) { .demo-grid { grid-template-columns: 1fr; } }
-.demo-kv { display: flex; flex-direction: column; gap: 4px; }
-.demo-kv .k { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-mute); letter-spacing: 0.06em; }
-.demo-kv .v { font-size: 0.95rem; color: var(--ink); font-weight: 600; }
-.demo-kv .v-accent { color: var(--accent); font-weight: 600; }
-.demo-outputs .demo-label { color: var(--accent); }
-.demo-replies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-@media (max-width: 760px) { .demo-replies { grid-template-columns: 1fr; } }
-.demo-reply { background: var(--bg); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--sh-sm); transition: box-shadow 0.3s ease-in-out; }
-.demo-reply:hover { box-shadow: 2px 2px 4px #b8bcc2, -2px -2px 4px #ffffff; }
-.demo-reply-pick { box-shadow: var(--sh-inset-sm); }
-.demo-reply .r-tag { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-mute); }
-.demo-reply-pick .r-tag { color: var(--accent); font-weight: 600; }
-.demo-reply .r-text { font-size: 0.92rem; color: var(--ink); line-height: 1.55; font-weight: 600; }
-
-/* DEMO 切换 */
-.demo-tabs { max-width: 880px; margin: 0 auto 18px; display: grid; gap: 10px; justify-items: center; }
-@media (max-width: 700px) { .demo-tabs { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
-.demo-tab {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  background: var(--bg);
-  border: none;
-  border-radius: 999px;
-  padding: 9px 20px;
-  cursor: pointer;
-  box-shadow: var(--sh-sm);
-  transition: box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
-  white-space: nowrap;
-}
-.demo-tab:hover { box-shadow: 2px 2px 4px #b8bcc2, -2px -2px 4px #ffffff; color: var(--ink); }
-.demo-tab.active { box-shadow: var(--sh-inset-sm); color: var(--accent); font-weight: 600; }
-.demo-stack .demo-card { transition: opacity 0.3s ease, transform 0.3s ease; }
-.demo-stack.switching .demo-card { opacity: 0; transform: translateY(8px); }
-.demo-req { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-mute); letter-spacing: 0.04em; margin-top: 12px; }
 </style>
 </head>
 <body>
-
-<!-- 顶部滚动进度条(原视频可录制看到这个发光条) -->
-<div class="scroll-progress" id="progress"></div>
-
-<!-- ===== NAV ===== -->
-<nav class="navbar">
+<header class="navbar" id="navbar">
   <div class="container nav-inner">
-    <div class="nav-brand">
-      <img src="assets/fox-logo.png" alt="WithYou" style="width:32px;height:32px;border-radius:8px;object-fit:contain;">
-      WithYou <span style="color:var(--ink-mute);font-weight:400;margin-left:6px;">· 你的情感参谋</span>
-    </div>
-    <div class="nav-links">
-      <a href="#how">怎么判断</a>
-      <a href="#why">为什么不同</a>
-      <a href="#demo">实测样例</a>
-      <a href="#story">为什么</a>
-      <a href="#start">开始使用</a>
+    <a class="brand" href="#top"><img class="brand-mark" src="assets/fox-logo-128.png" alt="WithYou"><span>WithYou</span></a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#method">怎么判断</a>
+      <a href="#gallery">空间画廊</a>
+      <a href="#capabilities">核心能力</a>
       <a href="help.html">使用帮助</a>
-    </div>
-    <button class="mobile-nav" id="mobileNav" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
+    </nav>
+    <a class="nav-cta" href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">开始分析 <span>↗</span></a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="打开菜单" aria-expanded="false">☰</button>
   </div>
-  <div class="mobile-menu-wrap" id="mobileMenuWrap">
-    <div id="mobileMenu">
-      <a href="#how">怎么判断</a>
-      <a href="#why">为什么不同</a>
-      <a href="#demo">实测样例</a>
-      <a href="#story">为什么</a>
-      <a href="#start">开始使用</a>
-      <a href="help.html">使用帮助</a>
-    </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#method">怎么判断</a>
+    <a href="#gallery">空间画廊</a>
+    <a href="#capabilities">核心能力</a>
+    <a href="help.html">使用帮助</a>
   </div>
-</nav>
-
-<!-- ===== HERO · ACT 1 ===== -->
-<section class="hero">
-  <!-- 左浮动对话卡 -->
-  <div class="hero-card left">
-    <div class="who"><div class="avatar">她</div>对方的消息</div>
-    <div class="msg">“最近有点忙，后面再说吧。”</div>
-  </div>
-  <!-- 右浮动对话卡 -->
-  <div class="hero-card right">
-    <div class="who"><div class="avatar" style="background:#1A535C;">你</div>WithYou 给出的判断</div>
-    <div class="msg">不是先追问，而是先<span style="color:var(--accent);font-weight:700;">退一步</span>，给彼此留点空间。</div>
-  </div>
-
-  <div class="container" style="position:relative;z-index:2;">
-    <div class="eyebrow">WITHYOU · 帮你看懂每一条消息</div>
-    <h1>先看懂关系<br/>再说<span class="hl">下一句</span></h1>
-    <p class="lead">把聊天截图或记录发给 WithYou。它会先帮你看懂对方是什么意思、现在该怎么办，再给你一句自然、能直接发出去的回复。</p>    <div class="hero-cta">
-      <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天</a>
-      <a href="#demo" class="btn btn-ghost">看看它怎么判断</a>
-    </div>
-  </div>
-
-  <div class="scroll-hint">SCROLL</div>
-</section>
-
-<!-- ===== PROMISE · ACT 2 — 三步法 ===== -->
-<section class="section" id="how">
-  <div class="container">
-    <div class="section-head animate-in">
-      <div class="eyebrow">方法论 · 判断优先</div>
-      <h2>不是急着教你怎么回<br/>而是先帮你<span class="hl">看明白情况</span></h2>
-      <p>真实聊天里，最难的不是一句话怎么写，而是这句话现在该不该发。</p>
-    </div>
-
-    <div class="promise-grid">
-      <div class="promise-card animate-in" data-delay="1">
-        <div class="num">/ 01</div>
-        <h3>看你们聊得怎么样</h3>
-        <p>看她回消息的样子——是愿意接着聊，还是只在客气应付。</p>
+</header>
+<main id="top">
+  <section class="hero play">
+    <div class="space-bg"><div class="dust"></div><div class="floor"></div><div class="beam"></div></div>
+    <div class="hero-inner">
+      <div class="logo-lockup"><div class="logo-row" aria-label="WithYou"><span style="--i:0;--fx:-60px">W</span><span style="--i:1;--fx:-24px">i</span><span style="--i:2;--fx:-6px">t</span><span style="--i:3;--fx:0">h</span><span style="--i:4;--fx:6px">Y</span><span style="--i:5;--fx:24px">o</span><span style="--i:6;--fx:60px">u</span></div></div>
+      <div class="w-underline"></div>
+      <h1>先看懂关系<br>再说<em>下一句</em></h1>
+      <p class="hero-lead"><span id="typeTarget"></span><span class="caret"></span></p>
+      <div class="hero-actions"><a class="button-primary" href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">开始分析聊天 <span>→</span></a><a class="button-ghost" href="#gallery">看看它怎么工作</a></div>
+      <div class="hero-cards">
+        <article class="capability" style="--i:0"><div class="step">STEP 01 · CONTEXT</div><h3>还原真实语境</h3><p>不只看最后一句，把聊天、背景和之前发生的事放在一起。</p></article>
+        <article class="capability" style="--i:1"><div class="step">STEP 02 · STAGE</div><h3>判断关系阶段</h3><p>识别初识、熟悉、暧昧、冷却和修复，而不是凭感觉猜。</p></article>
+        <article class="capability" style="--i:2"><div class="step">STEP 03 · BOUNDARY</div><h3>拆解情绪边界</h3><p>分清对方的情绪、边界和真实投入，避免过度解读。</p></article>
+        <article class="capability" style="--i:3"><div class="step">STEP 04 · ACTION</div><h3>给出下一步策略</h3><p>知道该接住、起伏、推进，还是先收一收。</p></article>
       </div>
-      <div class="promise-card animate-in" data-delay="2">
-        <div class="num">/ 02</div>
-        <h3>告诉你下一步怎么办</h3>
-        <p>是往前走、先等等、还是退一步。很多关系不是输在不会说话，而是输在节奏错了。</p>
-      </div>
-      <div class="promise-card animate-in" data-delay="3">
-        <div class="num">/ 03</div>
-        <h3>给自然回复</h3>
-        <p>最后才给你一句能直接发出去的话：短、口语、不装、不油腻。</p>
+      <div class="ticker" id="ticker"></div>
+    </div>
+    <div class="scroll-cue"><span>SCROLL TO EXPLORE</span><i></i></div>
+  </section>
+  <section class="section tint-section" id="method">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">判断优先 · METHOD</div><h2>不是急着教你怎么回<br>而是先帮你看<em>明白情况</em></h2><p>每一次建议，都从语境开始。WithYou 会先把局面拆开，再决定这一轮该做什么。</p></div>
+      <div class="method-grid">
+        <article class="method-card reveal"><div class="method-index">01 / 04</div><h3>把信息放回现场</h3><p>聊天记录、对方画像、过去的互动，都属于同一个真实现场。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">02 / 04</div><h3>判断双方状态</h3><p>区分你的焦虑和对方的回应，不让单一情绪替你做决定。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">03 / 04</div><h3>找到核心矛盾</h3><p>她是在试探、犹豫、冷却，还是只是需要一点空间。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">04 / 04</div><h3>选择合适动作</h3><p>接住、起伏、勾子、推进或回收，每一步都有边界。</p><div class="method-arrow">→</div></article>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ===== STATS · ACT 3 入口 ===== -->
-<section class="section">
-  <div class="container">
-    <div class="stats-row">
-      <div class="animate-in">
-        <div class="stat-num">截图</div>
-        <div class="stat-label">发截图就能开始</div>
-      </div>
-      <div class="animate-in" data-delay="1">
-        <div class="stat-num">判断</div>
-        <div class="stat-label">先看懂情况</div>
-      </div>
-      <div class="animate-in" data-delay="2">
-        <div class="stat-num">动作</div>
-        <div class="stat-label">该怎么办有建议</div>
-      </div>
-      <div class="animate-in" data-delay="3">
-        <div class="stat-num">回复</div>
-        <div class="stat-label">最后再给</div>
-      </div>
-      <div class="animate-in" data-delay="4">
-        <div class="stat-num">24H</div>
-        <div class="stat-label">全天候在线</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== BENTO · ACT 3 — 6 项核心能力 ===== -->
-<section class="section" id="why">
-  <div class="container">
-    <div class="section-head animate-in">
-      <div class="eyebrow">核心能力</div>
-      <h2>普通 AI 教你怎么回<br/>WithYou 先帮你看<span class="hl">明白</span></h2>
-      <p>简单的情况，普通 AI 也能答对。但情况一复杂，WithYou 会把为什么讲清楚，也会提醒你别做什么。</p>
-    </div>
-
-    <div class="bento">
-      <div class="bento-card animate-in">
-        <div class="icon">📍</div>
-        <h3>不急着教你回话</h3>
-        <p>先看这句话现在该不该发，再决定怎么说。很多时候，不追问比追问一句更稳。</p>
-        <div class="tag">judgment_first</div>
-      </div>
-      <div class="bento-card animate-in" data-delay="1">
-        <div class="icon">💡</div>
-        <h3>不轻易下结论</h3>
-        <p>不会把一句暧昧就当成TA喜欢你，也不会把一次冷淡就当成彻底没戏。</p>
-        <div class="tag">counter_signal</div>
-      </div>
-      <div class="bento-card animate-in" data-delay="2">
-        <div class="icon">⚡</div>
-        <h3>看TA有多愿意聊</h3>
-        <p>不只看回没回，还看回得长不长、会不会主动找你、话题有没有往下走。</p>
-        <div class="tag">engagement</div>
-      </div>
-      <div class="bento-card animate-in" data-delay="1">
-        <div class="icon">🎯</div>
-        <h3>告诉你接下来怎么办</h3>
-        <p>往前走、先等等、还是退一步，先把方向定清楚。你知道自己每一步为什么这么做。</p>
-        <div class="tag">next_action</div>
-      </div>
-      <div class="bento-card animate-in" data-delay="2">
-        <div class="icon">🛡️</div>
-        <h3>提醒不要做什么</h3>
-        <p>很多关系变冷，不是因为少说了一句，而是因为多追了一步。容易搞砸的操作，WithYou 会提前拦住。</p>
-        <div class="tag">risk_guard</div>
-      </div>
-      <div class="bento-card animate-in" data-delay="3">
-        <div class="icon">🔄</div>
-        <h3>最后才给回复</h3>
-        <p>最后给你的是能直接发出去的自然短句，不像模板，也不会显得用力过猛。</p>
-        <div class="tag">natural_reply</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===== CREDIBILITY · ACT 4 ===== -->
-<section class="section" id="proof">
-  <div class="container">
-    <div class="credibility animate-in">
-      <div class="cred-block">
-        <div class="eyebrow" style="justify-content:center;">真实需求</div>
-        <h3>你真正需要的<br/>不是<span class="hl">找老师</span></h3>
-        <p class="quote">凌晨收到她的消息，想找人帮你看看——可顾问也要睡觉。人总要休息，人工服务绕不开这道坎。WithYou 24 小时都在，你想问的时候它就在。</p>
-        <div class="cred-stats">
-          <div>
-            <div class="num">24H</div>
-            <div class="lab">随时在线</div>
-          </div>
-          <div>
-            <div class="num">截图</div>
-            <div class="lab">随时判断</div>
-          </div>
-          <div>
-            <div class="num">回复</div>
-            <div class="lab">不用等谁</div>
-          </div>
-          <div>
-            <div class="num">不用</div>
-            <div class="lab">半夜也能问</div>
-          </div>
+  </section>
+  <section class="section gallery-section" id="gallery">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">空间画廊 · SPATIAL CHAT</div><h2>把复杂的关系<br>放进一个<em>可理解的空间</em></h2><p>从一句消息，到完整的判断链路。你看到的不只是答案，而是 WithYou 如何陪你走完这一次分析。</p></div>
+      <div class="gallery-stage reveal">
+        <div class="gallery-floor"></div>
+        <div class="gallery-track">
+          <article class="gallery-panel"><div class="panel-head"><div class="panel-title"><span class="panel-dot"></span>聊天输入</div><span class="panel-meta">WITHYOU / 2.3</span></div><div class="panel-body"><div class="chat-window"><div class="bubble">她最近回复越来越短，我不知道是不是哪里做错了。</div><div class="bubble self">把你们最近的对话发给我，我先帮你看语境。</div><div class="bubble">好，我想知道现在应该继续聊还是先停一下。</div></div></div><div class="panel-foot"><span>语境还原中</span><strong>01 / 04</strong></div></article>
+          <article class="gallery-panel"><div class="panel-head"><div class="panel-title"><span class="panel-dot"></span>关系判断</div><span class="panel-meta">ANALYSIS / LIVE</span></div><div class="panel-body"><div class="analysis-lines"><div class="analysis-line"><b>回复频率</b><span><i style="--w:58%"></i></span></div><div class="analysis-line"><b>话题延展</b><span><i style="--w:39%"></i></span></div><div class="analysis-line"><b>情绪浓度</b><span><i style="--w:72%"></i></span></div><div class="analysis-line"><b>主动投入</b><span><i style="--w:46%"></i></span></div></div><div class="reply-box"><small>当前判断 · 黄灯</small><p>不是明确拒绝，更像是最近压力高、回应能量下降。先降低推进感。</p></div></div><div class="panel-foot"><span>阶段：轻熟 / 冷却边缘</span><strong>02 / 04</strong></div></article>
+          <article class="gallery-panel"><div class="panel-head"><div class="panel-title"><span class="panel-dot"></span>下一步策略</div><span class="panel-meta">ACTION / READY</span></div><div class="panel-body"><div class="reply-box"><small>推荐回复</small><p>“感觉你最近有点忙，先忙你的。等你有空了再聊。”</p></div><div class="analysis-lines" style="margin-top:18px"><div class="analysis-line"><b>动作</b><span><i style="--w:88%"></i></span></div><div class="analysis-line"><b>风险</b><span><i style="--w:22%"></i></span></div></div></div><div class="panel-foot"><span>动作：回收 · 给空间</span><strong>03 / 04</strong></div></article>
         </div>
       </div>
+      <p class="gallery-caption"><b>一条消息</b> 只是入口，真正重要的是它背后的关系现场。</p>
     </div>
-  </div>
-</section>
-
-<!-- ===== DEMO · 合成示例 ===== -->
-<section class="section" id="demo">
-  <div class="container">
-    <div class="section-head animate-in">
-      <div class="eyebrow">实测样例 · 真实记录</div>
-      <h2>同一句话 先看<span class="hl">懂情况</span> 再决定怎么接</h2>
-      <p>以下 9 个场景来自 WithYou 的真实分析记录：先看懂对方的意思，再决定怎么办，最后给你能直接发出去的话。</p>
-    </div>
-
-    <div class="demo-tabs" id="demoTabs"></div>
-
-    <div class="demo-stack" id="demoStack">
-      <div class="demo-meta animate-in">
-        <div class="demo-meta-label">WithYou 的判断流程 · 来自真实记录</div>
-        <div class="demo-meta-row">
-          <span class="k">输入</span><span class="v">聊天消息</span>
-          <span class="k">先做</span><span class="v">看懂情况</span>
-          <span class="k">最后</span><span class="v">自然回复</span>
-        </div>
-      </div>
-
-      <div class="demo-card demo-input animate-in" data-delay="1">
-        <div class="demo-label">对方发来的消息</div>
-        <div class="demo-bubble" id="d-input">—</div>
-        <div class="demo-req" id="d-req"></div>
-      </div>
-
-      <div class="demo-card demo-analyze animate-in" data-delay="2">
-        <div class="demo-label">WithYou 的分析</div>
-        <div class="demo-grid" id="d-attitudes"></div>
-        <div class="demo-sub-label">为什么这么判断</div>
-        <div class="demo-prose" id="d-analyze"></div>
-      </div>
-
-      <div class="demo-card demo-action animate-in" data-delay="3">
-        <div class="demo-label">下一步建议</div>
-        <div class="demo-grid" id="d-action"></div>
-        <div class="demo-prose">
-          <strong style="color:var(--accent)" id="d-mindset"></strong>
-        </div>
-      </div>
-
-      <div class="demo-card demo-outputs animate-in" data-delay="4">
-        <div class="demo-label">可以直接发送的回复</div>
-        <div class="demo-replies" id="d-replies"></div>
+  </section>
+  <section class="section" id="capabilities">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">核心能力 · CAPABILITIES</div><h2>你得到的不只是几句话<br>而是更会<em>看懂人</em></h2></div>
+      <div class="feature-grid">
+        <article class="feature-card large reveal"><div class="eyebrow">LONG MEMORY</div><h3>记住关系的来路</h3><p>每一次分析都不悬空。对方的节奏、你们的经历、上次没有说完的事，会成为下一次判断的一部分。</p></article>
+        <article class="feature-card reveal"><div class="feature-list"><div class="feature-item"><b>01</b><div><h4>画像管理</h4><p>把零散信息沉淀成能用的关系档案。</p></div></div><div class="feature-item"><b>02</b><div><h4>时间线</h4><p>回看变化，而不是被当下的一句话带走。</p></div></div><div class="feature-item"><b>03</b><div><h4>安全边界</h4><p>重要判断留给你，建议不替你承诺现实行动。</p></div></div></div></article>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ===== OUTCOME · ACT 5 中段 ===== -->
-<section class="section" id="outcome">
-  <div class="container">
-    <div class="section-head animate-in">
-      <div class="eyebrow">你能获得什么</div>
-      <h2>你得到的不只是几句话<br/>而是更会<span class="hl">看懂人</span></h2>
-      <p>WithYou 帮你少一点误会，稳一点节奏，最后给你一句自然的表达。</p>
-    </div>
-
-    <div class="outcome-grid">
-      <div class="outcome-card animate-in">
-        <span class="oc-tag impr">判断</span>
-        <div class="oc-title">更少误判</div>
-        <div class="oc-desc">不把冷淡看成没戏，也不把客气看成喜欢。先看清楚，再下结论。</div>
-      </div>
-      <div class="outcome-card animate-in" data-delay="1">
-        <span class="oc-tag feat">动作</span>
-        <div class="oc-title">心里有谱</div>
-        <div class="oc-desc">该主动时主动，该等时等，该退时退。不瞎猜，也不瞎等。</div>
-      </div>
-      <div class="outcome-card animate-in" data-delay="2">
-        <span class="oc-tag feat">回复</span>
-        <div class="oc-title">更自然表达</div>
-        <div class="oc-desc">最后给你的不是模板，而是短、顺、像真人说出来的话。</div>
-      </div>
-      <div class="outcome-card animate-in" data-delay="3">
-        <span class="oc-tag impr">成长</span>
-        <div class="oc-title">越用越明白</div>
-        <div class="oc-desc">看得懂它为什么这么建议，下次遇到类似的事，你自己就知道怎么办。</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== CTA · ACT 5 收尾 ===== -->
-<section class="section" id="start">
-  <div class="container">
-    <div class="cta-block animate-in">
-      <div class="eyebrow" style="justify-content:center;">开始使用</div>
-      <h2>先看懂关系<br/>再说<span class="hl">下一句</span></h2>
-      <p>把聊天截图或记录发来，让 WithYou 先帮你看懂情况。</p>
-      <div class="hero-cta">
-        <a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer" class="btn btn-primary">开始分析聊天 →</a>
-        <a href="#demo" class="btn btn-ghost">查看判断示例</a>
-      </div>
-      <div class="usage-notice animate-in" data-delay="1">
-        <div class="usage-notice-title">它是一个教练,不是有求必应的工具</div>
-        <ul class="usage-points">
-          <li><span class="u-strong">要先提供信息</span>——它会先向你提问,你需要把情况说清楚,它才能帮你判断。</li>
-          <li><span class="u-strong">不是你说了就算</span>——直接丢一句"帮我回一句/来句开场/搞个文案",它不会照单全收。</li>
-          <li><span class="u-strong">它会拦你</span>——会卡你、会追问，不该发的话会拦着，目的是帮你少走弯路。</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== STORY · 为什么会有 WithYou ===== -->
-<section class="section" id="story">
-  <div class="container">
-    <div class="story-block animate-in">
-      <div class="eyebrow">为什么会有 WithYou</div>
-      <h2>不是做一个工具 而是把多年经验变成<span class="hl">随时能用的陪伴</span></h2>
-      <div class="story-copy">
-        <p>做 WithYou 之前,我做了很多年的情感咨询，陪很多人走过真实的感情问题。这些年里,我见过太多兄弟卡在同一个地方:不是不会聊天,而是不知道该怎么判断。</p>
-        <p>她回了一句"最近有点忙",到底是真的忙,还是在降温?她愿意回消息,但从来不主动,是还有机会,还是只是礼貌?一句话该不该发、邀约该不该提,关系该推进还是该收住,很多人真正缺的不是话术,而是判断。</p>
-
-        <div class="story-pull">感情的事，看起来是聊天问题，<br/>其实是你看不看得懂这段关系。</div>
-
-        <p>普通 AI 可以帮你改一句话,也可以生成很多看起来不错的回复。但真实关系里,值钱的从来不是一句漂亮话,而是知道这句话现在该不该说、该用什么节奏说、说完之后会把关系推向哪里。</p>
-        <p>这背后靠的不是模板,而是经验。很多判断,是多年看案例、陪学员复盘、亲自处理真实关系问题后才会形成的直觉。哪些信号是真的,哪些只是礼貌;什么时候要推进,什么时候要收;什么时候你以为自己在表达关心,其实是在给对方压力。</p>
-        <p>但一个人的精力总是有限的。很多兄弟真正需要帮助的时候,往往就是对方刚回消息的那几分钟,是关系正在升温或降温的那个瞬间。我不可能时时刻刻陪在每个人旁边,帮他看截图、理情况、想办法、避开错误。</p>
-        <p>于是 WithYou 出现了。它不是一个简单改话术的工具,也不是一个只会陪你聊天的 AI。它更像一个把多年经验沉淀下来的情感参谋：你把聊天截图或记录发来，它先帮你看懂关系，再告诉你现在该怎么办，最后给你一句自然、能发出去的回复。</p>
-        <p>我希望它解决的,不只是"这句话怎么回"。而是帮你慢慢学会看懂一段关系：明白对方的信号，掌握自己的节奏，知道什么时候该主动、什么时候该停、什么时候给空间、什么时候可以往前走。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer class="footer">
-  <div class="container footer-inner">
-    <div class="footer-meta">© 2026 WithYou · 先看懂关系,再说下一句</div>
-    <div class="footer-meta" style="display:flex;gap:20px;">
-      <a href="#how">怎么判断</a>
-      <a href="#why">为什么不同</a>
-      <a href="#demo">实测样例</a>
-      <a href="#story">为什么</a>
-      <a href="#start">开始使用</a>
-      <a href="help.html">使用帮助</a>
-    </div>
-  </div>
-</footer>
-
+  </section>
+  <section class="section cta-section">
+    <div class="cta-orbit"></div>
+    <div class="container"><div class="section-heading reveal"><div class="eyebrow" style="justify-content:center">START WITH CONTEXT</div><h2>下一句之前<br>先把<em>这一句看懂</em></h2><p>把聊天发给 WithYou。你不需要先想好问题，真实的语境就是最好的开始。</p><a class="button-primary" href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">开始使用 WithYou <span>↗</span></a></div></div>
+  </section>
+</main>
+<footer class="footer"><div class="container footer-inner"><span>© 2026 WithYou · 你的关系智能助理</span><div class="footer-links"><a href="help.html">使用帮助</a><a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">进入产品 ↗</a></div></div></footer>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script>
-/* ========================================================
-   入场动画 —— GSAP + ScrollTrigger
-   - 注册插件
-   - 用 gsap.matchMedia 尊重 prefers-reduced-motion
-   - 滚动进入视口时淡入 + 上移 (stagger), 覆盖所有 .animate-in
-   - 首屏元素立即入场
-   - Hero 用 timeline 序列: eyebrow → 标题 → lead → CTA → 浮动卡
-   - 浮动卡持续漂浮; hero 内容轻微视差
-   ======================================================== */
-(function() {
-  if (typeof gsap === 'undefined') return;
-
-  function init() {
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.matchMedia().add({
-      reduceMotion: '(prefers-reduced-motion: reduce)'
-    }, function(ctx) {
-      var reduce = ctx.conditions.reduceMotion;
-      if (reduce) return; // 全静默: 不动画, 保持默认可见
-
-      /* —— 滚动入场: 通用 .animate-in —— */
-      gsap.utils.toArray('.animate-in').forEach(function(el, i) {
-        gsap.fromTo(el,
-          { autoAlpha: 0, y: 26 },
-          {
-            autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out',
-            delay: (el.dataset.delay || 0) * 1,
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              once: true
-            }
-          }
-        );
-      });
-
-      /* —— 2. Hero 进场 timeline (首屏) —— */
-      var tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-      tl.from('.hero .eyebrow',  { autoAlpha: 0, y: 18, duration: 0.5 })
-        .from('.hero h1',        { autoAlpha: 0, y: 24, duration: 0.7 }, '-=0.2')
-        .from('.hero .lead',     { autoAlpha: 0, y: 16, duration: 0.6 }, '-=0.35')
-        .from('.hero .hero-cta', { autoAlpha: 0, y: 14, duration: 0.5 }, '-=0.3')
-        .from('.hero-card.left',  { autoAlpha: 0, y: 30, rotate: -2, duration: 0.7 }, '-=0.4')
-        .from('.hero-card.right', { autoAlpha: 0, y: 30, rotate: 2,  duration: 0.7 }, '-=0.15');
-
-      /* —— 3. 浮动卡持续漂浮 (保留 CSS 里的 rotate) —— */
-      gsap.to('.hero-card.left',  { y: -12, rotate: -2, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-      gsap.to('.hero-card.right', { y: -10, rotate: 2,  duration: 4,   ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.5 });
-
-      /* —— 4. Hero 内容滚动视差 (轻微) —— */
-      gsap.to('.hero .container', {
-        yPercent: 18, opacity: 0.5, ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
-      });
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-
-/* ===== 入场时强制滚到顶(防 URL hash + 浏览器恢复滚动位置误跳) ===== */
-if (location.hash) {
-  history.replaceState(null, '', location.pathname + location.search);
+const navbar = document.getElementById('navbar');
+const toggle = document.getElementById('mobileToggle');
+const menu = document.getElementById('mobileMenu');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 18), { passive: true });
+toggle.addEventListener('click', () => {
+  const open = menu.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.textContent = open ? '×' : '☰';
+});
+menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+  menu.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.textContent = '☰';
+}));
+const welcomeText = '把聊天记录发给 WithYou——先看懂对方的意思，再决定怎么回。';
+const tips = [['记忆', '上次的对话脉络已带入本轮分析。'], ['画像', '对方慢热、压力大，建议放缓节奏。'], ['边界', '连续追问会形成压迫——先接住情绪。'], ['策略', '先关心一句，再给空间，不急着推进。']];
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const typeTarget = document.getElementById('typeTarget');
+const ticker = document.getElementById('ticker');
+let tipIndex = 0;
+function showTip() {
+  const [label, text] = tips[tipIndex++ % tips.length];
+  ticker.style.opacity = '0';
+  setTimeout(() => { ticker.innerHTML = `<b>${label}</b> · ${text}`; ticker.style.opacity = '1'; }, 380);
 }
-window.scrollTo(0, 0);
-window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
-
-/* 顶部滚动进度条 */
-const progress = document.getElementById('progress');
-const updateProgress = () => {
-  const h = document.documentElement;
-  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  progress.style.width = Math.min(100, Math.max(0, pct)) + '%';
-};
-window.addEventListener('scroll', updateProgress, { passive: true });
-updateProgress();
-
-/* 导航栏滚动变实底 */
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
-
-/* Mobile nav */
-var mobileNav = document.getElementById('mobileNav');
-var mobileMenuWrap = document.getElementById('mobileMenuWrap');
-if (mobileNav && mobileMenuWrap) {
-  mobileNav.addEventListener('click', function() {
-    mobileNav.classList.toggle('open');
-    mobileMenuWrap.classList.toggle('show');
-  });
+if (reducedMotion) {
+  typeTarget.textContent = welcomeText;
+  ticker.innerHTML = `<b>${tips[0][0]}</b> · ${tips[0][1]}`;
+} else {
+  let charIndex = 0;
+  setTimeout(() => {
+    const type = () => {
+      typeTarget.textContent = welcomeText.slice(0, charIndex++);
+      if (charIndex <= welcomeText.length) setTimeout(type, 34);
+    };
+    type();
+  }, 1600);
+  setTimeout(showTip, 3600);
+  setInterval(showTip, 3400);
 }
-
-/* ========================================================
-   DEMO · 9 个真实场景(数据来自 docs/real-analyses 实测记录)
-   ======================================================== */
-var SCENARIOS = [
-  {
-    name: '冷淡 · 疲惫',
-    input: '刚下班，有点累。',
-    req: '认识一个月,约过两次会,最近一周回复变慢',
-    attitudes: [
-      ['态度', '她在降温，先别往前冲'],
-      ['信号', '最近一周回得越来越慢，消息短、不接话题'],
-      ['风险', '这时候追问或约她，只会让她更想躲'],
-      ['另一种可能', '也可能真的只是累，先别急着下结论'],
-    ],
-    analyze: '她现在是在降温，不是想靠近。关键不是"累"这句话，而是最近一周回消息越来越慢——趋势在往下走。这句"刚下班有点累"又短、又不接话题，是典型的想收尾。现在最好的做法是：顺着她回应一句，不追问、不施压，给她空间。最容易犯的错是你因为着急去追问、去约她，那只会把人推得更远。',
-    action: [
-      ['建议', '顺着她的累回应一句，给空间，别追问', 'accent'],
-      ['暂时不要', '追问工作细节、连发消息、约第三次见面', 'warn'],
-    ],
-    mindset: '别把她的累当考题。今晚收住，明天用她提过的话题自然开场就行。',
-    replies: [
-      ['推荐', '刚下班就别硬撑了,早点歇', 'pick'],
-      ['自然', '行,那你先歇,改天聊', ''],
-      ['简短', '辛苦,晚上好好睡一觉', ''],
-    ],
-  },
-  {
-    name: '暧昧 · 升温',
-    input: '改天想让你带我去一家你没提过的店',
-    req: '暧昧三个月,她每天主动找你',
-    attitudes: [
-      ['态度', '好时机，她在给你机会'],
-      ['信号', '"想让你带我去"=把安排权交到你手上'],
-      ['时机', '她记得你提过的店，想看你不一样的那一面'],
-      ['另一种可能', '"改天"是留了缓冲，也可能只想维持这种氛围'],
-    ],
-    analyze: '她不是随口说说——"想让你带我去"是把主动权交给你，"你没提过的店"说明她记得你聊过的店、想看你没展示过的一面。三个月暧昧加每天主动，这是很明确的想进一步见面的信号。你要做的是接住这个话题、把"改天"往具体的日子引，但别把时间定死。',
-    action: [
-      ['建议', '接住话题，把"改天"往具体时间引', 'accent'],
-      ['暂时不要', '直接定死时间地点，也别问"你是认真的吗"', 'warn'],
-    ],
-    mindset: '接住她的主动，给一个具体的时间或地方，同时保住你的主导感。',
-    replies: [
-      ['推荐', '行啊,不过店得保密——说出来就不叫惊喜了,改天我带你去', 'pick'],
-      ['有趣', '那我得先列个清单,看看哪家够格带你去', ''],
-      ['留退路', '行,那就记在账上,改天先带你去一家,剩下的慢慢去', ''],
-    ],
-  },
-  {
-    name: '情绪 · 低落',
-    input: '我今天心情很差,不想说话。',
-    req: '她说心情差,不想说话',
-    attitudes: [
-      ['态度', '她在说不舒服，需要空间'],
-      ['信号', '愿意告诉你状态，说明她信任你'],
-      ['风险', '追问"怎么了"会让她压力更大'],
-      ['方向', '回应她的情绪，然后别打扰'],
-    ],
-    analyze: '她是在向你展示真实的糟糕状态，同时划了条线——"不想说话"不是冲你，是她现在需要空间。你们才认识一周，她愿意跟你说"我今天心情很差"，这本身就是信任。现在最好的做法是：轻轻回应一句，让她缓着，然后立刻收住，不追问。',
-    action: [
-      ['建议', '轻轻回应一句，给足空间，说完就收', 'accent'],
-      ['暂时不要', '追问原因、问"是不是因为你"、连发消息', 'warn'],
-    ],
-    mindset: '"我在"两个字，比十句解决方案都管用。不追问、也不消失，让她知道你想陪着她，但不打扰她。',
-    replies: [
-      ['推荐', '好,那你先缓缓,想说的时候我都在', 'pick'],
-      ['自然', '行,不打扰你,缓过来了随时找我', ''],
-      ['关心', '嗯,难受就别硬撑,早点休息', ''],
-    ],
-  },
-  {
-    name: '已读不回',
-    input: '已读不回 18 小时',
-    req: '聊了十天,前面每天回,见过一次面',
-    attitudes: [
-      ['态度', '可能有点降温，但还说不准'],
-      ['信号', '18 小时没回 ≠ 拒绝你'],
-      ['风险', '马上补发，会显得你在催她'],
-      ['另一种可能', '可能真在忙，也可能昨晚的话题没接上'],
-    ],
-    analyze: '光凭一次 18 小时没回，还不能说她在拒绝你——只是比前几天慢了。这时候立刻补一条消息，最容易显得你很急、很需要她。先稳住节奏更稳。单次信号，别往最坏的方向猜。',
-    action: [
-      ['建议', '先别追发，等 24-48 小时再说', 'accent'],
-      ['暂时不要', '追问、解释自己、连发消息', 'warn'],
-    ],
-    mindset: '把节奏交还给时间。之后想重新开口，就发一条轻松、没压力的消息，发完不再追加。',
-    replies: [
-      ['简单', '你先忙,空了再聊', ''],
-      ['自然', '不急,你方便的时候再说', ''],
-      ['推荐', '先忙你的,回头有空再聊', 'pick'],
-    ],
-  },
-  {
-    name: '聊崩 · 修复',
-    input: '我回消息有点阴阳怪气,她变冷了',
-    req: '本来聊得挺好,第6天你情绪低带刺',
-    attitudes: [
-      ['态度', '她是不知所措，不是讨厌你'],
-      ['信号', '她不知道你那句话是针对她，还是你自己情绪不好'],
-      ['风险', '急着解释像在求原谅，坐实你"情绪不稳"'],
-      ['另一种可能', '你们还在互相了解，一次失控不是死刑'],
-    ],
-    analyze: '她的"冷"多半不是讨厌你，而是不知道怎么接——你之前给她的印象一直挺平稳，突然阴阳怪气，她没有上下文。对一个还在观察你的女生来说，最省力的反应就是退一步看看。所以她的冷更多是懵和观望，不一定是想放弃。',
-    action: [
-      ['建议', '承认那句话语气不对，别解释别追问，等她回来', 'accent'],
-      ['暂时不要', '长篇自我辩护、一天连发两条、急着约见面', 'warn'],
-    ],
-    mindset: '把她当成敏感但讲道理的人。一句干干净净的承认，比十句辩解有用。发完就收，等她自己过来。',
-    replies: [
-      ['承认', '那条回你的语气是我的问题,你不用在意', ''],
-      ['道歉', '上次说话带情绪了,跟你没关系,抱歉', ''],
-      ['推荐', '语气不好是我不对,不该带给你,缓过来我们再聊', 'pick'],
-    ],
-  },
-  {
-    name: '邀约 · 被拒',
-    input: '最近有点忙,后面再说吧。',
-    req: '邀约周末见面,认识两周,微信每天聊',
-    attitudes: [
-      ['态度', '礼貌拒绝，没留门'],
-      ['信号', '只说忙，没给任何别的时间'],
-      ['风险', '继续追问，会把还有余地的关系推冷'],
-      ['另一种可能', '也可能真忙——但真忙的人会说"这周不行下周可以"'],
-    ],
-    analyze: '这是句客气的拒绝：她给了台阶，但没给绿灯。"再说吧"的意思是，她现在不想把见面这件事定下来。真忙的人通常会补一句具体时间，她没有。',
-    action: [
-      ['建议', '停止约见面，少主动找她，先过好自己的生活', 'accent'],
-      ['暂时不要', '追问具体时间、发解释、连续发消息', 'warn'],
-    ],
-    mindset: '这一周别再提见面。把心思放回自己的生活。观察一两周她会不会主动找你，是留是放，到时候自然有答案。',
-    replies: [
-      ['接住', '行,那你先忙,有空找我', ''],
-      ['自然', '好嘞,不着急,等你不忙了再说', ''],
-      ['推荐', '哈哈没事,我正好也忙起来,有空见', 'pick'],
-    ],
-  },
-  {
-    name: '养鱼 · 判断',
-    input: '约见面三次都绕开,说忙或下次吧',
-    req: '认识一个半月,线下只见过一次',
-    attitudes: [
-      ['态度', '她拿你当情绪出口，没把你放在首选'],
-      ['信号', '三次避开见面 + 深夜才找你倾诉 = 有需要才出现'],
-      ['判断', '你大概率不是她想见面的第一人选'],
-      ['把握', '中等'],
-    ],
-    analyze: '她可能没把你当备胎，但你的位置是"她需要时就找你、不需要时你靠后"。三次都避开具体时间，说明线下见面对她不是优先级。最该停的不是"要不要继续"，而是你随叫随到的节奏。',
-    action: [
-      ['建议', '退一步，少主动，先观察两周', 'accent'],
-      ['暂时不要', '问"我们算什么"、继续主动约、连发消息', 'warn'],
-    ],
-    mindset: '把时间的主动权拿回来。不再主动约，她深夜找你倾诉也别秒回——让"见不到你"从默认变成她需要自己解决的事。',
-    replies: [
-      ['设界', '最近有点忙,可能回得慢,先这样吧', ''],
-      ['自然', '嗯,看到了,我先去忙了', ''],
-      ['关键', '你找我不就行,我又没消失', 'pick'],
-    ],
-  },
-  {
-    name: '闺蜜区',
-    input: '她什么都跟你说,还问别的男生怎么看',
-    req: '每天聊快一个月,没有暧昧',
-    attitudes: [
-      ['态度', '她把你当可靠的倾听者，不在候选名单里'],
-      ['信号', '什么都说=信任你；问别的男生怎么看=你没进候选'],
-      ['卡点', '你太稳太配合，一点情绪起伏都没有'],
-      ['另一种可能', '也可能是在试探你，但快一个月没有任何暧昧迹象'],
-    ],
-    analyze: '不是她讨厌你，是她把你放进了"安全的好人"位置，而不是"有吸引力的男人"。她什么都说=信任你，但她问别的男生怎么看=你没在她的考虑范围里。现在该做的不是表白，而是打破这个定位。',
-    action: [
-      ['建议', '来一次反差，制造点情绪起伏，打破"好哥们"形象', 'accent'],
-      ['暂时不要', '直接表白、继续当完美倾听者、追问她怎么看', 'warn'],
-    ],
-    mindset: '先让她意识到你是个男人、是潜在的对象，而不是情绪垃圾桶。偶尔慢回、偶尔不接话，把张力拿回来一点。',
-    replies: [
-      ['调侃', '你问一圈下来不还是我最靠谱,他们懂什么', ''],
-      ['自荐', '哦?还搞民意调查呢?那我投我自己一票', ''],
-      ['推荐', '你问他们干嘛,想听真话还是想听哄你的', 'pick'],
-    ],
-  },
-  {
-    name: '初识 · 关心',
-    input: '我今天感冒了。',
-    req: '认识一周,刚建立舒适感',
-    attitudes: [
-      ['信号', '主动分享自己的状态 = 愿意继续聊'],
-      ['阶段', '刚认识一周，关心别过头'],
-      ['风险', '用力过猛的关心会吓到人'],
-      ['另一种可能', '也可能只是随口一说'],
-    ],
-    analyze: '她主动跟你说自己的状态，说明有基本的熟络感，愿意继续互动。刚认识一周，关键是"轻轻接住"。最怕的是马上进入嘘寒问暖伺候模式，那会给人压力。一两句就好，别追问。',
-    action: [
-      ['建议', '轻轻关心一句，控制在一两句', 'accent'],
-      ['暂时不要', '连环嘘寒问暖、借机暧昧、说要去照顾她', 'warn'],
-    ],
-    mindset: '关心有度。让她知道你在，但别把人家当病人。轻轻一句，温度刚好。',
-    replies: [
-      ['推荐', '最近降温是挺容易中招的,多休息,别硬撑', 'pick'],
-      ['自然', '感冒了就别熬夜啦,喝点热水早点睡,好得快', ''],
-      ['关心', '那你这两天注意保暖,少喝冰的,养一养', ''],
-    ],
-  },
-];
-
-(function() {
-  var tabs = document.getElementById('demoTabs');
-  var stack = document.getElementById('demoStack');
-  if (!tabs || !stack) return;
-
-  var attitudesEl = document.getElementById('d-attitudes');
-  var actionEl    = document.getElementById('d-action');
-  var repliesEl   = document.getElementById('d-replies');
-
-  function kv(rows) {
-    return rows.map(function(r) {
-      var cls = r[2] ? ' v-' + r[2] : '';
-      return '<div class="demo-kv"><span class="k">' + r[0] +
-        '</span><span class="v' + cls + '">' + r[1] + '</span></div>';
-    }).join('');
-  }
-  function replies(rows) {
-    return rows.map(function(r) {
-      var pick = r[2] === 'pick' ? ' demo-reply-pick' : '';
-      return '<div class="demo-reply' + pick + '"><div class="r-tag">' +
-        r[0] + '</div><div class="r-text">' + r[1] + '</div></div>';
-    }).join('');
-  }
-
-  function render(i) {
-    var s = SCENARIOS[i];
-
-    tabs.querySelectorAll('.demo-tab').forEach(function(t, idx) {
-      t.classList.toggle('active', idx === i);
-    });
-
-    stack.classList.add('switching');
-    setTimeout(function() {
-      document.getElementById('d-input').textContent = s.input;
-      document.getElementById('d-req').textContent = s.req || '';
-      if (s.req) {
-        document.getElementById('d-req').style.display = '';
-      } else {
-        document.getElementById('d-req').style.display = 'none';
-      }
-      attitudesEl.innerHTML = kv(s.attitudes);
-      document.getElementById('d-analyze').innerHTML = s.analyze;
-      actionEl.innerHTML    = kv(s.action);
-      document.getElementById('d-mindset').innerHTML = s.mindset || '';
-      repliesEl.innerHTML   = replies(s.replies);
-
-      stack.classList.remove('switching');
-    }, 150);
-  }
-
-  SCENARIOS.forEach(function(s, i) {
-    var b = document.createElement('button');
-    b.className = 'demo-tab' + (i === 0 ? ' active' : '');
-    b.type = 'button';
-    b.textContent = s.name;
-    b.addEventListener('click', function(){ render(i); });
-    tabs.appendChild(b);
+if (window.gsap && window.ScrollTrigger && !reducedMotion) {
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.reveal').forEach((element, index) => {
+    gsap.to(element, { scrollTrigger: { trigger: element, start: 'top 84%', once: true }, opacity: 1, y: 0, duration: .8, delay: (index % 4) * .07, ease: 'power3.out' });
   });
-
-  var n = SCENARIOS.length, cols = n;
-  for (var c = Math.ceil(Math.sqrt(n)); c < n; c++) {
-    if (n % c === 0) { cols = c; break; }
-  }
-  tabs.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))';
-
-  render(0);
-})();
+  gsap.to('.gallery-panel:nth-child(1)', { scrollTrigger: { trigger: '.gallery-stage', start: 'top bottom', end: 'bottom top', scrub: 1 }, x: -275, rotationY: 25, y: 18 });
+  gsap.to('.gallery-panel:nth-child(3)', { scrollTrigger: { trigger: '.gallery-stage', start: 'top bottom', end: 'bottom top', scrub: 1 }, x: 275, rotationY: -25, y: 18 });
+}
 </script>
 </body>
 </html>
