@@ -1,7 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- 北斗星盘 · 浅底宣纸形态（docs/brand/logo-beidou.md）：底 #F3EDDE / 主星 #1A1F2B / 金 #B8892E -->
-  <rect width="128" height="128" rx="30" fill="#F3EDDE"/>
-  <rect x=".75" y=".75" width="126.5" height="126.5" rx="29.25" fill="none" stroke="#1A1F2B" stroke-opacity=".1" stroke-width="1.5"/>
+  <!-- 北斗星盘 · 浅底形态（docs/brand/logo-beidou.md）：透明底融入页面，主星 #1A1F2B / 金 #B8892E -->
   <circle cx="64" cy="64" r="46" fill="none" stroke="#1A1F2B" stroke-width="4"/>
   <circle cx="64" cy="64" r="37.5" fill="none" stroke="#B8892E" stroke-width="1.4" opacity=".55"/>
   <path d="M40 66 L56 78 L72 76 L72 58 L84 44 L96 36" fill="none" stroke="#1A1F2B" stroke-width="2" opacity=".6"/>
