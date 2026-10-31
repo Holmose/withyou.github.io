@@ -119,6 +119,8 @@ button { font: inherit; }
 .section-heading p { max-width: 550px; margin-top: 19px; color: var(--ink-2); font-size: 16px; line-height: 1.9; }
 .tint-section { background: linear-gradient(180deg, var(--stage), var(--stage-2) 55%, var(--stage)); }
 .tint-section::before { position: absolute; inset: 0; content: ''; opacity: .5; background: linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/100% 64px, linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/64px 100%; mask-image: linear-gradient(to bottom, #000, transparent 72%); }
+.engine-deploy { display: flex; width: max-content; margin: 38px auto 0; align-items: center; gap: 9px; padding: 11px 24px; border: 1px solid oklch(.5 .1 70 / .3); border-radius: 999px; color: var(--gold); font-size: 13px; font-weight: 600; letter-spacing: .1em; }
+.engine-deploy::before { width: 7px; height: 7px; border-radius: 50%; content: ''; background: var(--glint); box-shadow: 0 0 0 3px oklch(.8 .115 85 / .2); }
 .method-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .method-card { padding: 25px 21px 23px; border: 1px solid var(--line); border-radius: 17px; background: oklch(1 0 0 / .45); transition: transform .35s var(--ease-cine), border-color .35s, background .35s; }
 .method-card:hover { border-color: var(--gold); background: oklch(1 0 0 / .7); transform: translateY(-4px) rotateX(2deg); }
@@ -238,6 +240,7 @@ button { font: inherit; }
   <div class="container nav-inner">
     <a class="brand" href="#top"><img class="brand-mark" src="assets/logo-mark.svg" alt="WithYou 关系智能助理" width="30" height="30"><span>WithYou</span></a>
     <nav class="nav-links" aria-label="主导航">
+      <a href="#engine">节奏引擎</a>
       <a href="#method">怎么判断</a>
       <a href="#gallery">空间画廊</a>
       <a href="#capabilities">核心能力</a>
@@ -247,6 +250,7 @@ button { font: inherit; }
     <button class="mobile-toggle" id="mobileToggle" aria-label="打开菜单" aria-expanded="false">☰</button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
+    <a href="#engine">节奏引擎</a>
     <a href="#method">怎么判断</a>
     <a href="#gallery">空间画廊</a>
     <a href="#capabilities">核心能力</a>
@@ -267,7 +271,7 @@ button { font: inherit; }
         <article class="capability" style="--i:0"><div class="step">STEP 01 · CONTEXT</div><h3>还原真实语境</h3><p>不只看最后一句，把聊天、背景和之前发生的事放在一起。</p></article>
         <article class="capability" style="--i:1"><div class="step">STEP 02 · STAGE</div><h3>判断关系阶段</h3><p>识别初识、熟悉、暧昧、冷却和修复，而不是凭感觉猜。</p></article>
         <article class="capability" style="--i:2"><div class="step">STEP 03 · BOUNDARY</div><h3>拆解情绪边界</h3><p>分清对方的情绪、边界和真实投入，避免过度解读。</p></article>
-        <article class="capability" style="--i:3"><div class="step">STEP 04 · ACTION</div><h3>给出下一步策略</h3><p>知道该接住、起伏、推进，还是先收一收。</p></article>
+        <article class="capability" style="--i:3"><div class="step">STEP 04 · RHYTHM</div><h3>报出全场节奏</h3><p>先看清全局：走到第几步、什么还没收尾，再说下一句。</p></article>
       </div>
       <div class="ticker" id="ticker"></div>
     </div>
@@ -275,13 +279,25 @@ button { font: inherit; }
   </section>
   <section class="section tint-section" id="method">
     <div class="container">
-      <div class="section-heading reveal"><div class="eyebrow">判断优先 · METHOD</div><h2>不是急着教你怎么回<br>而是先帮你看<em>明白情况</em></h2><p>每一次建议，都从语境开始。WithYou 会先把局面拆开，再决定这一轮该做什么。</p></div>
+      <div class="section-heading reveal"><div class="eyebrow">判断优先 · METHOD</div><h2>不是急着教你怎么回<br>而是先帮你看<em>明白情况</em></h2><p>每一次建议，都从语境开始。WithYou 会先盘一遍整体脉络，把局面拆开，再决定这一轮该做什么。</p></div>
       <div class="method-grid">
         <article class="method-card reveal"><div class="method-index">01 / 04</div><h3>把信息放回现场</h3><p>聊天记录、对方画像、过去的互动，都属于同一个真实现场。</p><div class="method-arrow">↘</div></article>
         <article class="method-card reveal"><div class="method-index">02 / 04</div><h3>判断双方状态</h3><p>区分你的焦虑和对方的回应，不让单一情绪替你做决定。</p><div class="method-arrow">↘</div></article>
         <article class="method-card reveal"><div class="method-index">03 / 04</div><h3>找到核心矛盾</h3><p>她是在试探、犹豫、冷却，还是只是需要一点空间。</p><div class="method-arrow">↘</div></article>
         <article class="method-card reveal"><div class="method-index">04 / 04</div><h3>选择合适动作</h3><p>接住、起伏、勾子、推进或回收，每一步都有边界。</p><div class="method-arrow">→</div></article>
       </div>
+    </div>
+  </section>
+  <section class="section tint-section" id="engine">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">引擎升级 · RHYTHM ENGINE</div><h2>不止看这一句<br>还能看<em>整体节奏</em></h2><p>自研关系节奏引擎已随全版本上线。以前每次分析只看当轮聊天；现在，WithYou 会持续记录这段关系的进展：每次分析，先帮你把整体脉络盘一遍，再处理当下这一步。</p></div>
+      <div class="method-grid">
+        <article class="method-card reveal"><div class="method-index">01 / 04</div><h3>看清进度</h3><p>关系走到第几步，全局在案，不用每次从头回忆。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">02 / 04</div><h3>待收尾清单</h3><p>邀过的约、问过的问题自动跟踪，谁还没回一目了然。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">03 / 04</div><h3>每轮盘点</h3><p>每次分析开头，先给整体节奏和本轮重点，再说下一句。</p><div class="method-arrow">↘</div></article>
+        <article class="method-card reveal"><div class="method-index">04 / 04</div><h3>换对话不丢</h3><p>节奏跟着「这段关系」走，不属于任何一次聊天。</p><div class="method-arrow">✓</div></article>
+      </div>
+      <div class="engine-deploy reveal">全版本上线 · 学员版 / 私教版 / 导师版</div>
     </div>
   </section>
   <section class="section gallery-section" id="gallery">
@@ -303,7 +319,7 @@ button { font: inherit; }
       <div class="section-heading reveal"><div class="eyebrow">核心能力 · CAPABILITIES</div><h2>你得到的不只是几句话<br>而是更会<em>看懂人</em></h2></div>
       <div class="feature-grid">
         <article class="feature-card large reveal"><div class="eyebrow">LONG MEMORY</div><h3>记住关系的来路</h3><p>每一次分析都不悬空。对方的节奏、你们的经历、上次没有说完的事，会成为下一次判断的一部分。</p></article>
-        <article class="feature-card reveal"><div class="feature-list"><div class="feature-item"><b>01</b><div><h4>画像管理</h4><p>把零散信息沉淀成能用的关系档案。</p></div></div><div class="feature-item"><b>02</b><div><h4>时间线</h4><p>回看变化，而不是被当下的一句话带走。</p></div></div><div class="feature-item"><b>03</b><div><h4>安全边界</h4><p>重要判断留给你，建议不替你承诺现实行动。</p></div></div></div></article>
+        <article class="feature-card reveal"><div class="feature-list"><div class="feature-item"><b>01</b><div><h4>画像管理</h4><p>把零散信息沉淀成能用的关系档案。</p></div></div><div class="feature-item"><b>02</b><div><h4>时间线</h4><p>回看变化，而不是被当下的一句话带走。</p></div></div><div class="feature-item"><b>03</b><div><h4>节奏记录</h4><p>整体节奏持续记录，回看走向更有依据。</p></div></div><div class="feature-item"><b>04</b><div><h4>安全边界</h4><p>重要判断留给你，建议不替你承诺现实行动。</p></div></div></div></article>
       </div>
     </div>
   </section>
@@ -332,7 +348,7 @@ menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () =
   toggle.textContent = '☰';
 }));
 const welcomeText = '把聊天记录发给 WithYou——先看懂对方的意思，再决定怎么回。';
-const tips = [['记忆', '上次的对话脉络已带入本轮分析。'], ['画像', '对方慢热、压力大，建议放缓节奏。'], ['边界', '连续追问会形成压迫——先接住情绪。'], ['策略', '先关心一句，再给空间，不急着推进。']];
+const tips = [['节奏', '这段关系走到第 3 步，上次邀的约还没收尾。'], ['记忆', '上次的对话脉络已带入本轮分析。'], ['画像', '对方慢热、压力大，建议放缓节奏。'], ['边界', '连续追问会形成压迫——先接住情绪。'], ['策略', '先关心一句，再给空间，不急着推进。']];
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const typeTarget = document.getElementById('typeTarget');
 const ticker = document.getElementById('ticker');
