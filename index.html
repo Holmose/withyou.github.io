@@ -88,7 +88,7 @@ button { font: inherit; }
 .hero.play .w-underline { animation: underline-in 1s var(--ease-cine) 1s forwards; }
 @keyframes underline-in { to { width: 240px; } }
 @keyframes logo-in { to { opacity: 1; transform: none; } }
-.hero h1 { max-width: 780px; margin: 35px auto 18px; font-size: clamp(42px, 6.1vw, 78px); font-weight: 760; line-height: 1.05; letter-spacing: -.075em; opacity: 0; transform: perspective(900px) rotateX(-92deg) translateZ(-40px); transform-origin: 50% 100%; animation: title-in 1s var(--ease-cine) 1.25s forwards; }
+.hero h1 { max-width: 780px; margin: 35px auto 18px; font-size: clamp(42px, 6.1vw, 78px); font-weight: 760; line-height: 1.05; letter-spacing: -.075em; text-wrap: balance; opacity: 0; transform: perspective(900px) rotateX(-92deg) translateZ(-40px); transform-origin: 50% 100%; animation: title-in 1s var(--ease-cine) 1.25s forwards; }
 @keyframes title-in { to { opacity: 1; transform: none; } }
 .hero h1 em { color: var(--gold); font-style: normal; }
 .hero-lead { max-width: 570px; min-height: 27px; margin: auto; color: var(--ink-2); font-size: 16px; line-height: 1.8; opacity: 0; animation: rise-in .8s var(--ease-cine) 1.75s forwards; } .caret { display: inline-block; width: 1px; height: 16px; margin-left: 3px; vertical-align: -2px; background: var(--glint); animation: caret-blink .8s step-end infinite; } @keyframes caret-blink { 50% { opacity: 0; } }
@@ -114,7 +114,7 @@ button { font: inherit; }
 @keyframes cue { 50% { transform: translateY(8px); opacity: .35; } }
 .section { position: relative; padding: 145px 0; }
 .section-heading { max-width: 680px; margin-bottom: 60px; }
-.section-heading h2 { margin-top: 21px; font-size: clamp(32px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -.065em; }
+.section-heading h2 { margin-top: 21px; font-size: clamp(32px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -.065em; text-wrap: balance; }
 .section-heading h2 em { color: var(--gold); font-style: normal; }
 .section-heading p { max-width: 550px; margin-top: 19px; color: var(--ink-2); font-size: 16px; line-height: 1.9; }
 .tint-section { background: linear-gradient(180deg, var(--stage), var(--stage-2) 55%, var(--stage)); }
