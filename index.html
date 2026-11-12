@@ -211,8 +211,12 @@ button { font: inherit; }
 .faq h3 { font-size: 16px; }
 .faq p { margin-top: 9px; color: var(--ink-2); font-size: 13px; line-height: 1.8; }
 .contact-section { padding: 90px 0; text-align: center; }
-.contact-section .section-heading { max-width: 620px; margin: 0 auto; }
-.contact-section .button-ghost { margin-top: 26px; }
+.contact-section .section-heading { max-width: 560px; margin: 0 auto 34px; }
+.contact-card { max-width: 480px; margin: 0 auto; padding: 30px 36px; background: oklch(1 0 0 / .55); border: 1px solid var(--line); border-left: 3px solid var(--glint); border-radius: 14px; text-align: left; transition: border-left-color .3s; }
+.contact-card:hover { border-left-color: var(--gold); }
+.contact-mail { display: block; margin: 0 0 12px; font-size: 21px; font-weight: 680; letter-spacing: -.02em; color: var(--ink); transition: color .2s; }
+.contact-mail:hover { color: var(--gold); }
+.contact-tags { color: var(--ink-2); font: 600 11px var(--mono); letter-spacing: .12em; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; color: var(--ink-2); font-size: 12px; }
 .footer-links { display: flex; gap: 20px; }
 .footer-links a:hover { color: var(--primary); }
@@ -417,11 +421,14 @@ button { font: inherit; }
   </section>
   <section class="section contact-section" id="contact">
     <div class="container">
-      <div class="section-heading reveal">
+      <div class="section-heading reveal" style="text-align:center">
         <div class="eyebrow" style="justify-content:center">联系 · CONTACT</div>
-        <h2>如果你在做<em>投资</em><br>或在做<em>关系动力学 / AI 算法</em></h2>
-        <p>WithYou 把人际关系动力学和 AI 算法结合，做成系统化带练辅助。如果你对这个方向感兴趣——投资、研究、算法或工程合作——欢迎写信。</p>
-        <a class="button-ghost" href="mailto:holmose@qq.com">holmose@qq.com <span>→</span></a>
+        <h2>如果你在做<em>投资</em>，或在做<em>关系动力学 / AI 算法</em></h2>
+        <p>WithYou 把人际关系动力学和 AI 算法结合，做成系统化带练辅助。投资、研究、算法或工程合作——欢迎写信。</p>
+      </div>
+      <div class="contact-card reveal">
+        <a class="contact-mail" href="mailto:holmose@qq.com">holmose@qq.com</a>
+        <div class="contact-tags">投资 · 关系动力学 · AI 算法</div>
       </div>
     </div>
   </section>
