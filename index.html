@@ -197,8 +197,22 @@ button { font: inherit; }
 .cta-section .section-heading p { margin-right: auto; margin-left: auto; }
 .cta-section .button-primary { margin-top: 30px; }
 .footer { padding: 29px 0; border-top: 1px solid var(--line); }
-.contact-email { display: block; width: max-content; margin: 38px auto 0; font-size: clamp(22px, 3vw, 32px); font-weight: 660; letter-spacing: -.02em; color: var(--ink); border-bottom: 2px solid var(--glint); padding-bottom: 6px; transition: color .25s, border-color .25s; }
-.contact-email:hover { color: var(--gold); }
+.quick-section { background: linear-gradient(180deg, var(--stage), var(--stage-2) 55%, var(--stage)); }
+.quick-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.quick-card { padding: 25px 22px; border: 1px solid var(--line); border-radius: 17px; background: oklch(1 0 0 / .55); box-shadow: 0 16px 36px oklch(.35 .06 95 / .06); transition: transform .35s var(--ease-cine), border-color .35s; }
+.quick-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.quick-card .index { color: var(--primary); font: 600 12px var(--mono); }
+.quick-card h3 { margin: 26px 0 8px; font-size: 19px; }
+.quick-card p { color: var(--ink-2); font-size: 13px; line-height: 1.8; }
+.quick-card strong { display: inline-block; margin-top: 19px; color: var(--gold); font-size: 12px; }
+.faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.faq { padding: 23px; border: 1px solid var(--line); border-radius: 16px; background: oklch(1 0 0 / .45); transition: border-color .35s; }
+.faq:hover { border-color: var(--gold); }
+.faq h3 { font-size: 16px; }
+.faq p { margin-top: 9px; color: var(--ink-2); font-size: 13px; line-height: 1.8; }
+.contact-section { padding: 90px 0; text-align: center; }
+.contact-section .section-heading { max-width: 620px; margin: 0 auto; }
+.contact-section .button-ghost { margin-top: 26px; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; color: var(--ink-2); font-size: 12px; }
 .footer-links { display: flex; gap: 20px; }
 .footer-links a:hover { color: var(--primary); }
@@ -208,7 +222,7 @@ button { font: inherit; }
   .nav-links { display: none; }
   .mobile-toggle { display: block; }
   .hero { min-height: 900px; }
-  .hero-cards, .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-cards, .method-grid, .quick-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery-panel { width: min(430px, 58vw); }
   .gallery-panel:nth-child(1) { transform: translate3d(-22vw, 34px, -80px) rotateY(18deg) rotateX(3deg); }
   .gallery-panel:nth-child(3) { transform: translate3d(22vw, 34px, -80px) rotateY(-18deg) rotateX(3deg); }
@@ -226,7 +240,7 @@ button { font: inherit; }
   .hero-lead { font-size: 14px; }
   .hero-actions { flex-direction: column; width: min(260px, 100%); margin-right: auto; margin-left: auto; }
   .button-primary, .button-ghost { width: 100%; }
-  .hero-cards, .method-grid, .feature-grid, .pillar-grid { grid-template-columns: 1fr; }
+  .hero-cards, .method-grid, .feature-grid, .pillar-grid, .quick-grid, .faq-grid { grid-template-columns: 1fr; }
   .capability { min-height: 0; }
   .section { padding: 92px 0; }
   .section-heading { margin-bottom: 38px; }
@@ -266,7 +280,7 @@ button { font: inherit; }
       <a href="#engine">节奏引擎</a>
       <a href="#method">怎么判断</a>
       <a href="#capabilities">核心能力</a>
-      <a href="help.html">使用帮助</a>
+      <a href="#faq">常见问题</a>
       <a href="#contact">联系</a>
     </nav>
     <a class="nav-cta" href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">进入带练 <span>↗</span></a>
@@ -278,7 +292,7 @@ button { font: inherit; }
     <a href="#engine">节奏引擎</a>
     <a href="#method">怎么判断</a>
     <a href="#capabilities">核心能力</a>
-    <a href="help.html">使用帮助</a>
+    <a href="#faq">常见问题</a>
     <a href="#contact">联系</a>
   </div>
 </header>
@@ -370,6 +384,33 @@ button { font: inherit; }
       </div>
     </div>
   </section>
+  <section class="section quick-section" id="quick">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">QUICK START · 4 STEPS</div><h2>带练循环<br>四步<em>走一轮</em></h2><p>带练是一个循环，不是一次咨询：发记录、看盘点、练动作、回看复盘。每一轮都让下一个动作更准。</p></div>
+      <div class="quick-grid">
+        <article class="quick-card reveal"><div class="index">01 / INPUT</div><h3>把记录发进来</h3><p>复制文字、粘贴聊天记录，或通过上传入口提交截图和文件。真实的对话是最好的练习材料。</p><strong>入口：聊天页输入框</strong></article>
+        <article class="quick-card reveal"><div class="index">02 / READ</div><h3>先看盘点，再看这一步</h3><p>先看整体脉络：走到第几步、哪些事还没收尾，再确认双方状态和本轮重点。</p><strong>入口：分析结果卡</strong></article>
+        <article class="quick-card reveal"><div class="index">03 / DRILL</div><h3>练今天这一动作</h3><p>每一轮抓一个动作来练：展示、表达或修复。对照建议去做，不求全，只求做得到位。</p><strong>入口：推荐动作 / 推荐回复</strong></article>
+        <article class="quick-card reveal"><div class="index">04 / REVIEW</div><h3>回看复盘再进下一轮</h3><p>回到聊天档案和画像看趋势：动作做到位了吗？节奏有没有变化？带着结论进下一轮。</p><strong>入口：聊天档案 / 时间线</strong></article>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-heading reveal"><div class="eyebrow">FAQ · 常见问题</div><h2>带练中最常问的<br><em>几个问题</em></h2></div>
+      <div class="faq-grid">
+        <article class="faq reveal"><h3>我应该发多长的聊天记录？</h3><p>优先发最近能体现变化的几轮，再补充必要背景。太短看不出节奏，太长可以分批发送。</p></article>
+        <article class="faq reveal"><h3>一定要先建画像吗？</h3><p>不需要。临时分析可以直接从聊天页开始；确定要长期跟进时，再建立对象档案。</p></article>
+        <article class="faq reveal"><h3>推荐回复可以直接复制吗？</h3><p>可以参考，但先确认它和真实关系、你的说话方式一致。判断是建议，不替你做现实承诺。</p></article>
+        <article class="faq reveal"><h3>分析结果不准确怎么办？</h3><p>补充上下文，指出哪一处不符合，再让 WithYou 基于新信息重判，不要只重复问同一个问题。</p></article>
+        <article class="faq reveal"><h3>分析开头那段整体脉络是什么？</h3><p>那是节奏引擎自动生成的进度盘点：关系走到第几步、哪些事还没收尾、这一轮建议先做什么——不用从头回忆背景。</p></article>
+        <article class="faq reveal"><h3>换了新对话，分析还能接上之前的进度吗？</h3><p>能。节奏记录跟着这段关系走，不属于任何一次聊天；换个聊天继续发，也能接上来路。</p></article>
+        <article class="faq reveal"><h3>为什么要反复练基础动作？</h3><p>因为大部分人卡的从来不是缺少奇招，而是基础动作做不稳定。把展示、表达、修复练到内化，上层的方法才执行得走样不了。</p></article>
+        <article class="faq reveal"><h3>更深层的内容什么时候学？</h3><p>按档位来：学员版先把基础动作跑通，私教版做带练纠偏和因人微调，导师版再进行更深的认知探讨。地基稳了，上层才接得住。</p></article>
+        <article class="faq reveal"><h3>WithYou 是替我聊天吗？</h3><p>不是。它负责看懂局面、给出依据和练习重点，决定和表达始终由你来——练的就是你自己的动作。</p></article>
+      </div>
+    </div>
+  </section>
   <section class="section cta-section">
     <div class="cta-orbit"></div>
     <div class="container"><div class="section-heading reveal"><div class="eyebrow" style="justify-content:center">START WITH CONTEXT</div><h2>下一句之前<br>先把<em>这一句看懂</em></h2><p>把聊天发给 WithYou。你不需要先想好问题，真实的语境就是最好的开始。产品系统仅限内部使用，注册入口已关闭。想了解合作或投资，见下方联系方式。</p><a class="button-primary" href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">开始使用 WithYou <span>↗</span></a></div></div>
@@ -377,15 +418,15 @@ button { font: inherit; }
   <section class="section contact-section" id="contact">
     <div class="container">
       <div class="section-heading reveal">
-        <div class="eyebrow">联系 · CONTACT</div>
-        <h2>如果你在做<em>投资</em><br>或在做<em>关系动力学 / AI</em></h2>
-        <p>WithYou 把人际关系动力学和 AI 结合，做成系统化带练辅助。如果你对这个方向感兴趣——投资、研究、专业合作——欢迎写信。</p>
+        <div class="eyebrow" style="justify-content:center">联系 · CONTACT</div>
+        <h2>如果你在做<em>投资</em><br>或在做<em>关系动力学 / AI 算法</em></h2>
+        <p>WithYou 把人际关系动力学和 AI 算法结合，做成系统化带练辅助。如果你对这个方向感兴趣——投资、研究、算法或工程合作——欢迎写信。</p>
+        <a class="button-ghost" href="mailto:holmose@qq.com">holmose@qq.com <span>→</span></a>
       </div>
-      <a class="contact-email reveal" href="mailto:holmose@qq.com">holmose@qq.com</a>
     </div>
   </section>
 </main>
-<footer class="footer"><div class="container footer-inner"><span>© 2026 WithYou · 产品系统仅限内部使用</span><div class="footer-links"><a href="help.html">使用帮助</a><a href="mailto:holmose@qq.com">holmose@qq.com</a><a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">进入产品 ↗</a></div></div></footer>
+<footer class="footer"><div class="container footer-inner"><span>© 2026 WithYou · 产品系统仅限内部使用</span><div class="footer-links"><a href="mailto:holmose@qq.com">holmose@qq.com</a><a href="https://chat.withyou.net.cn" target="_blank" rel="noopener noreferrer">进入产品 ↗</a></div></div></footer>
 <script defer src="assets/vendor/gsap.min.js"></script>
 <script defer src="assets/vendor/ScrollTrigger.min.js"></script>
 <script>
